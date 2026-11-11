@@ -1,0 +1,1077 @@
+<!doctype html>
+<!-- Asset Splitter v0.4.2 · https://github.com/zengtai/asset-splitter -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){var m="auto";try{m=localStorage.getItem("asset-splitter-theme")||"auto"}catch(e){}var d=m==="dark"||(m==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light"})()</script>
+<title>Asset Splitter</title>
+<style>
+:root{
+  color-scheme:light;
+  --page:radial-gradient(900px 520px at 8% -8%,#dfe4ff 0,transparent 62%),radial-gradient(800px 480px at 100% 0,#ffe6f1 0,transparent 58%),radial-gradient(900px 600px at 60% 110%,#e0f4ff 0,transparent 60%),#f2f4f9;
+  --panel:rgba(255,255,255,.80);--edge:rgba(15,23,42,.06);
+  --shadow:0 1px 2px rgba(15,23,42,.04),0 10px 30px rgba(15,23,42,.07);
+  --line:rgba(15,23,42,.08);--line2:rgba(15,23,42,.16);
+  --t1:#14161c;--t2:#596071;--t3:#8c93a3;
+  --f1:rgba(15,23,42,.05);--f2:rgba(15,23,42,.09);--f3:rgba(15,23,42,.045);--f4:rgba(15,23,42,.07);
+  --hover:rgba(15,23,42,.05);--active:rgba(15,23,42,.08);
+  --raised:#fff;--raised-sh:0 1px 2px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);
+  --glass:rgba(255,255,255,.74);--glass-edge:rgba(255,255,255,.9);--glass-sh:0 8px 28px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.05);
+  --stage:#e7eaf1;--stage-in:inset 0 0 0 1px rgba(255,255,255,.5);
+  --empty-bg:rgba(255,255,255,.45);--empty-bg-h:rgba(255,255,255,.65);--dash:rgba(15,23,42,.2);
+  --card:rgba(255,255,255,.7);
+  --ac:#4f5cf2;--ac2:#6a76f6;--acbg:rgba(79,92,242,.10);--ac-line:rgba(79,92,242,.38);--ring:rgba(79,92,242,.18);
+  --pri-a:#5d69f5;--pri-b:#4452ee;--pri-ah:#6b76f7;--pri-bh:#4f5cf2;--pri-sh:rgba(68,82,238,.45);
+  --ok:#16a06b;--ok-bg:rgba(22,160,107,.1);--warn:#d9730d;--warn-bg:rgba(217,115,13,.11);--err:#d93b3b;
+  --menu:rgba(255,255,255,.9);--menu-sh:0 16px 40px rgba(15,23,42,.18),0 2px 6px rgba(15,23,42,.06);
+  --toast:rgba(20,22,28,.92);--toast-fg:#fff;--toast-warn:#9a4b08;--toast-err:#a82b2b;
+  --ibg:#fff;--scroll:rgba(15,23,42,.2);
+  --ck1:#e3e6ed;--ck2:#ffffff;
+  --cv-out:rgba(15,23,42,.32);--cv-in:rgba(255,255,255,.85);--cv-sel:#4f5cf2;--cv-selfill:rgba(79,92,242,.15);--cv-hover:#7783f6;
+  --bar:linear-gradient(90deg,#8b95ff,#4f5cf2);
+  --logo:linear-gradient(140deg,#8b95ff,#4f5cf2 60%,#7a4ff2);
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --font:"Inter","SF Pro Text",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+}
+:root[data-theme=dark]{
+  color-scheme:dark;
+  --page:radial-gradient(900px 520px at 8% -8%,rgba(79,92,242,.24) 0,transparent 62%),radial-gradient(800px 480px at 100% 0,rgba(214,76,160,.13) 0,transparent 58%),radial-gradient(900px 600px at 60% 110%,rgba(36,140,210,.13) 0,transparent 60%),#0b0c10;
+  --panel:rgba(24,25,32,.74);--edge:rgba(255,255,255,.07);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 34px rgba(0,0,0,.45);
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.16);
+  --t1:#f2f3f7;--t2:#a3a9b9;--t3:#6f7686;
+  --f1:rgba(255,255,255,.06);--f2:rgba(255,255,255,.11);--f3:rgba(255,255,255,.05);--f4:rgba(255,255,255,.085);
+  --hover:rgba(255,255,255,.06);--active:rgba(255,255,255,.1);
+  --raised:rgba(255,255,255,.14);--raised-sh:0 1px 2px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06);
+  --glass:rgba(28,29,36,.72);--glass-edge:rgba(255,255,255,.1);--glass-sh:0 10px 30px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.04);
+  --stage:#0d0e12;--stage-in:inset 0 0 0 1px rgba(255,255,255,.03);
+  --empty-bg:rgba(255,255,255,.03);--empty-bg-h:rgba(255,255,255,.055);--dash:rgba(255,255,255,.18);
+  --card:rgba(255,255,255,.045);
+  --ac:#7480ff;--ac2:#929bff;--acbg:rgba(116,128,255,.16);--ac-line:rgba(146,155,255,.5);--ring:rgba(116,128,255,.28);
+  --pri-a:#7480ff;--pri-b:#5663f4;--pri-ah:#838eff;--pri-bh:#6572f6;--pri-sh:rgba(86,99,244,.5);
+  --ok:#3bc995;--ok-bg:rgba(59,201,149,.14);--warn:#f5a35c;--warn-bg:rgba(245,163,92,.14);--err:#ff6b6b;
+  --menu:rgba(32,33,41,.94);--menu-sh:0 18px 44px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);
+  --toast:rgba(244,245,250,.96);--toast-fg:#14161c;--toast-warn:#f5c08a;--toast-err:#ff9d9d;
+  --ibg:rgba(255,255,255,.09);--scroll:rgba(255,255,255,.2);
+  --ck1:#16171d;--ck2:#21232b;
+  --cv-out:rgba(0,0,0,.65);--cv-in:rgba(255,255,255,.85);--cv-sel:#929bff;--cv-selfill:rgba(146,155,255,.18);--cv-hover:#aab1ff;
+  --bar:linear-gradient(90deg,#929bff,#6572f6);
+  --logo:linear-gradient(140deg,#a0a8ff,#6572f6 60%,#9a6bf6);
+}
+*{box-sizing:border-box;scrollbar-width:thin;scrollbar-color:var(--scroll) transparent}
+html,body{height:100%;margin:0}
+body{
+  color:var(--t1);font:13.5px/1.5 var(--font);-webkit-font-smoothing:antialiased;
+  background:var(--page);background-attachment:fixed;
+  display:grid;grid-template-rows:52px 1fr 20px;gap:10px;padding:10px 10px 4px;overflow:hidden}
+button,input,select{font:inherit;color:inherit}
+button{background:var(--f1);border:0;border-radius:10px;padding:0 12px;height:32px;cursor:pointer;white-space:nowrap;color:var(--t1);font-weight:550;transition:background .12s,box-shadow .12s,transform .08s,color .12s}
+button:hover:not(:disabled){background:var(--f2)}
+button:active:not(:disabled){transform:scale(.97)}
+button:disabled{color:var(--t3);background:var(--f3);cursor:not-allowed}
+button.primary{background:linear-gradient(180deg,var(--pri-a),var(--pri-b));color:#fff;box-shadow:0 1px 2px var(--pri-sh),inset 0 1px 0 rgba(255,255,255,.28)}
+button.primary:hover:not(:disabled){background:linear-gradient(180deg,var(--pri-ah),var(--pri-bh))}
+button.primary:disabled{background:linear-gradient(180deg,var(--pri-a),var(--pri-b));color:#fff;opacity:.4;box-shadow:none}
+button.icon{width:32px;padding:0;font-size:16px;line-height:1}
+button.mini{height:24px;padding:0 9px;font-size:12px;border-radius:8px}
+button:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+input[type=number],input[type=text],select{background:var(--f3);border:1px solid transparent;border-radius:10px;height:32px;padding:0 10px;width:100%;transition:background .12s,border-color .12s,box-shadow .12s}
+input[type=number]:hover,input[type=text]:hover,select:hover{background:var(--f4)}
+input:focus,select:focus{outline:0;background:var(--ibg);border-color:var(--ac);box-shadow:0 0 0 4px var(--ring)}
+input[type=range]{width:100%;accent-color:var(--ac)}
+input[type=checkbox]{accent-color:var(--ac);width:15px;height:15px}
+
+/* 浮动卡片 */
+header,aside,#stage{border:1px solid var(--edge);border-radius:18px;box-shadow:var(--shadow)}
+header,aside{background:var(--panel);backdrop-filter:blur(24px) saturate(1.7);-webkit-backdrop-filter:blur(24px) saturate(1.7)}
+header{position:relative;z-index:20;display:flex;align-items:center;gap:4px;padding:0 12px}
+header button:not(.primary){background:transparent}
+header button:hover:not(:disabled):not(.primary){background:var(--hover)}
+header button:disabled{background:transparent;opacity:.5}
+.logo{display:flex;align-items:center;gap:9px;font-weight:650;margin-right:12px;letter-spacing:-.015em;font-size:14px}
+.logo::before{content:"";width:22px;height:22px;border-radius:7px;background:var(--logo);box-shadow:0 2px 6px var(--pri-sh),inset 0 1px 0 rgba(255,255,255,.4)}
+.logo b{font-weight:650;color:var(--t3)}
+.ver{font:11px var(--mono);color:var(--t2);background:var(--f1);border-radius:99px;padding:0 9px;line-height:20px;margin:0 8px 0 -4px;user-select:none}
+.gh{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;color:var(--t2);margin:0 2px 0 2px;transition:background .12s,color .12s,transform .08s}
+.gh:hover{background:var(--hover);color:var(--t1)}
+.gh:active{transform:scale(.95)}
+.gh:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.sep{width:1px;height:18px;background:var(--line);margin:0 6px}
+.grow{flex:1}
+.zoomv{min-width:46px;text-align:center;font:12px var(--mono);color:var(--t2)}
+main{display:grid;grid-template-columns:272px 1fr 312px;gap:10px;min-height:0}
+aside{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.ph{height:46px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;color:var(--t3);font-size:12px;font-weight:550}
+.ph b{color:var(--t1);font-weight:650;font-size:14px}
+#list{overflow:auto;flex:1;padding:0 8px 8px}
+.it{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:center;padding:5px 8px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:background .1s}
+.it:hover{background:var(--hover)}
+.it.sel{background:var(--acbg);border-color:var(--ac-line)}
+.it canvas{width:36px;height:36px;border-radius:9px;box-shadow:0 0 0 1px var(--line);background:repeating-conic-gradient(var(--ck1) 0 25%,var(--ck2) 0 50%) 0 0/8px 8px}
+.it .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:550}
+.it .sz{color:var(--t3);font:11px var(--mono)}
+.it input{height:26px}
+.hint{color:var(--t3);padding:24px 16px;text-align:center}
+#stage{position:relative;background:var(--stage);min-width:0;min-height:0;overflow:hidden;box-shadow:var(--shadow),var(--stage-in)}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+#empty{position:absolute;inset:72px 36px 36px;border:1.5px dashed var(--dash);border-radius:22px;background:var(--empty-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--t2);text-align:center;transition:border-color .12s,background .12s;cursor:pointer}
+#empty::before{content:"+";display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--acbg);color:var(--ac);font-size:28px;font-weight:300;margin-bottom:8px}
+#empty:hover{border-color:var(--ac-line);background:var(--empty-bg-h)}
+#empty.hot{border-color:var(--ac);background:var(--acbg)}
+#empty .big{font-size:16px;font-weight:650;color:var(--t1);letter-spacing:-.01em}
+#empty small{color:var(--t3)}
+.float{position:absolute;display:flex;gap:2px;background:var(--glass);border:1px solid var(--glass-edge);border-radius:999px;padding:3px;backdrop-filter:blur(18px) saturate(1.8);-webkit-backdrop-filter:blur(18px) saturate(1.8);box-shadow:var(--glass-sh)}
+.float button{height:28px;padding:0 12px;border-radius:999px;background:transparent;color:var(--t2)}
+.float button:hover:not(:disabled){background:var(--hover);color:var(--t1)}
+.float button.on{background:var(--ac);color:#fff;box-shadow:0 1px 3px var(--pri-sh),inset 0 1px 0 rgba(255,255,255,.25)}
+.float button.on kbd{background:rgba(255,255,255,.24);color:#fff}
+.float button.on:hover:not(:disabled){background:var(--ac2);color:#fff}
+.float button.on:hover:not(:disabled) kbd{background:rgba(255,255,255,.28);color:#fff}
+#tools{left:50%;top:14px;transform:translateX(-50%)}
+#busy{right:14px;top:14px;padding:5px 14px;color:var(--t2);display:none}
+
+/* 分段控件标签页 */
+.tabs{display:flex;gap:2px;margin:10px 12px 0;padding:3px;background:var(--f1);border-radius:12px}
+.tabs button{flex:1;height:28px;border-radius:9px;background:transparent;color:var(--t2);padding:0}
+.tabs button:hover:not(.on){background:var(--hover);color:var(--t1)}
+.tabs button.on{background:var(--raised);color:var(--t1);box-shadow:var(--raised-sh)}
+.pane{display:none;padding:16px 14px;overflow:auto;flex:1}
+.pane.on{display:block}
+.f{margin-bottom:18px}
+.f label{display:flex;justify-content:space-between;color:var(--t2);margin-bottom:7px;font-size:12.5px;font-weight:550}
+.f label span{font-family:var(--mono);color:var(--t1);font-weight:500}
+.f .d,.d{color:var(--t3);font-size:12px;margin-top:5px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.chk{display:flex;gap:8px;align-items:center;color:var(--t1);margin-bottom:14px}
+details{border-top:1px solid var(--line);padding-top:14px;margin-top:18px}
+summary{cursor:pointer;color:var(--t2);margin-bottom:8px;font-size:12.5px;font-weight:550}
+footer{display:flex;align-items:center;gap:16px;padding:0 10px;color:var(--t3);font:11px var(--mono)}
+footer .ok{color:var(--ok);margin-left:auto;font-family:var(--font);font-weight:550}
+#toast{position:fixed;left:50%;bottom:40px;transform:translate(-50%,14px);background:var(--toast);color:var(--toast-fg);padding:9px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.18s;max-width:80vw;box-shadow:0 10px 30px rgba(0,0,0,.3);font-weight:500}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.warn{background:var(--toast-warn)}
+#toast.err{background:var(--toast-err)}
+kbd{font:10.5px var(--mono);background:var(--f1);border-radius:5px;padding:1px 5px;color:var(--t3);margin-left:6px}
+.d kbd{margin-left:0}
+.an h4{margin:20px 0 9px;font-size:12.5px;color:var(--t2);font-weight:650}
+.an h4:first-child{margin-top:0}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.kv span:nth-child(odd){color:var(--t2)}
+.kv span:nth-child(even){font-family:var(--mono);text-align:right}
+.hist{display:grid;gap:6px}
+.hb{display:grid;grid-template-columns:56px 1fr 26px;gap:8px;align-items:center;cursor:pointer;font:11px var(--mono);color:var(--t2)}
+.hb i{display:block;height:9px;background:var(--bar);border-radius:99px;min-width:3px;opacity:.85}
+.hb:hover i{opacity:1}
+.hb span:last-child{text-align:right}
+.hb.zero{opacity:.4;cursor:default}
+.iss{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;border-radius:14px;margin-bottom:8px;background:var(--card);box-shadow:0 0 0 1px var(--line),0 1px 2px rgba(0,0,0,.04);cursor:pointer;transition:box-shadow .12s,transform .08s}
+.iss:hover{box-shadow:0 0 0 1px var(--ac-line),0 4px 12px var(--ring)}
+.iss:active{transform:scale(.99)}
+.iss.zero{opacity:.55;cursor:default;box-shadow:0 0 0 1px var(--line)}
+.iss.zero:hover{box-shadow:0 0 0 1px var(--line);transform:none}
+.iss small{display:block;color:var(--t3);font-size:11px}
+.iss b{font:650 12px var(--mono);color:var(--warn);background:var(--warn-bg);border-radius:99px;padding:1px 8px}
+.iss.zero b{color:var(--ok);background:var(--ok-bg)}
+.sw{display:inline-block;width:16px;height:16px;border-radius:5px;box-shadow:0 0 0 1px var(--line2);vertical-align:-4px;margin-right:6px}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:99px;background:var(--warn-bg);color:var(--warn);margin:0 4px 4px 0;font-weight:550}
+
+/* 自定义下拉 */
+.dd{position:relative}
+.ddbtn{display:flex;align-items:center;gap:8px}
+.ddbtn svg{opacity:.7;transition:transform .15s}
+.dd.open .ddbtn svg{transform:rotate(180deg)}
+.dd.open .ddbtn{background:var(--hover)}
+.sw2{width:16px;height:16px;border-radius:5px;flex:none;box-shadow:0 0 0 1px var(--line2)}
+.sw2.checker{background:repeating-conic-gradient(var(--ck1) 0 25%,var(--ck2) 0 50%) 0 0/8px 8px}
+.sw2.black{background:#000}.sw2.white{background:#fff}.sw2.magenta{background:#f0f}
+.menu{position:absolute;right:0;top:calc(100% + 8px);min-width:172px;padding:5px;z-index:60;opacity:0;visibility:hidden;transform:translateY(-4px) scale(.98);transform-origin:top right;transition:opacity .14s,transform .14s,visibility 0s linear .14s;background:var(--menu);backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);border:1px solid var(--line);border-radius:14px;box-shadow:var(--menu-sh)}
+.dd.open .menu{opacity:1;visibility:visible;transform:none;transition:opacity .14s,transform .14s,visibility 0s}
+header .menu .mi{display:flex;align-items:center;gap:10px;width:100%;height:32px;padding:0 10px;border:0;background:transparent;color:var(--t1);font-weight:500;text-align:left;border-radius:9px;box-shadow:none}
+header .menu .mi:hover:not(:disabled),header .menu .mi:focus-visible{background:var(--acbg);color:var(--t1);outline:0}
+header .menu .mi svg{margin-left:auto;color:var(--ac);opacity:0}
+header .menu .mi.on svg{opacity:1}
+header .menu .mi.on{font-weight:600}
+
+/* 主题切换 */
+.seg{display:flex;gap:2px;padding:2px;background:var(--f1);border-radius:999px;margin:0 6px 0 4px}
+header .seg button{width:28px;height:26px;padding:0;border-radius:999px;display:grid;place-items:center;color:var(--t3);background:transparent}
+header .seg button:hover:not(:disabled){background:var(--hover);color:var(--t1)}
+header .seg button[aria-pressed=true]{background:var(--raised);box-shadow:var(--raised-sh);color:var(--t1)}
+header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--raised)}
+
+@media (max-width:1180px){.ver{display:none}}
+@media (max-width:1100px){main{grid-template-columns:224px 1fr 276px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Asset <b>Splitter</b></div>
+  <span class="ver" title="版本 0.4.2">v0.4.2</span>
+  <button id="bOpen" class="primary">导入图集</button>
+  <input id="file" type="file" accept="image/png,image/webp" hidden>
+  <span class="sep"></span>
+  <button id="bUndo" class="icon" title="撤销 Ctrl+Z" disabled>↶</button>
+  <button id="bRedo" class="icon" title="重做 Ctrl+Shift+Z" disabled>↷</button>
+  <span class="sep"></span>
+  <button id="bZoomOut" class="icon" title="缩小">−</button>
+  <span id="zoomv" class="zoomv">100%</span>
+  <button id="bZoomIn" class="icon" title="放大">+</button>
+  <button id="bFit" title="适应窗口 F">适应<kbd>F</kbd></button>
+  <button id="b100" title="100% 显示 1">1:1</button>
+  <span class="grow"></span>
+  <a class="gh" href="https://github.com/zengtai/asset-splitter" target="_blank" rel="noopener noreferrer" title="GitHub · zengtai/asset-splitter" aria-label="在 GitHub 上查看源码"><svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  <div class="seg" id="themeSw" role="group" aria-label="主题"><button data-mode="light" title="浅色" aria-label="浅色" aria-pressed="false"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.5v1.4M8 13.1v1.4M1.5 8h1.4M13.1 8h1.4M3.4 3.4l1 1M11.6 11.6l1 1M12.6 3.4l-1 1M4.4 11.6l-1 1"/></svg></button><button data-mode="auto" title="跟随系统" aria-label="跟随系统" aria-pressed="true"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2.5" width="12" height="8.5" rx="1.8"/><path d="M5.5 13.8h5M8 11v2.8"/></svg></button><button data-mode="dark" title="深色" aria-label="深色" aria-pressed="false"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z"/></svg></button></div>
+  <div class="dd" id="bgDd">
+    <button id="bgBtn" class="ddbtn" title="预览背景" aria-haspopup="listbox" aria-expanded="false"><span id="bgSw" class="sw2 checker"></span><span id="bgLabel">棋盘格</span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="menu" id="bgMenu" role="listbox">
+      <button class="mi on" role="option" aria-selected="true" data-v="checker"><span class="sw2 checker"></span>棋盘格<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="mi" role="option" aria-selected="false" data-v="black"><span class="sw2 black"></span>纯黑<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="mi" role="option" aria-selected="false" data-v="white"><span class="sw2 white"></span>纯白<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="mi" role="option" aria-selected="false" data-v="magenta"><span class="sw2 magenta"></span>品红<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+  <button id="bZip" class="primary" disabled>导出</button>
+</header>
+
+<main>
+  <aside class="l">
+    <div class="ph"><span><b>切片</b> <span id="count">0</span></span><span><button id="bAll" class="mini">全选</button> <button id="bInv" class="mini">反选</button></span></div>
+    <div id="list"><div class="hint">导入图集后，切片会显示在这里</div></div>
+  </aside>
+
+  <section id="stage">
+    <canvas id="cv"></canvas>
+    <div id="empty">
+      <div class="big">拖拽图集到这里，或点击「导入图集」</div>
+      <div>支持带透明通道的 PNG、WebP · 全程在本机处理，不上传</div>
+      <small>也可以直接粘贴图片（Ctrl+V）</small>
+    </div>
+    <div id="tools" class="float">
+      <button id="tSelect" class="on" title="选择 V">选择<kbd>V</kbd></button>
+      <button id="tDraw" title="框选新建切片 R">框选<kbd>R</kbd></button>
+      <button id="tPan" title="平移 H（或按住空格）">平移<kbd>H</kbd></button>
+    </div>
+    <div id="busy" class="float">检测中…</div>
+  </section>
+
+  <aside class="r">
+    <div class="tabs">
+      <button data-tab="detect" class="on">检测</button>
+      <button data-tab="edit">编辑</button>
+      <button data-tab="analyze">分析</button>
+      <button data-tab="export">命名</button>
+    </div>
+
+    <div class="pane on" id="p-detect">
+      <div class="f"><label>Alpha 阈值 <span id="vAlpha">8</span></label>
+        <input id="iAlpha" type="range" min="0" max="254" value="8">
+        <div class="d">透明度不高于此值的像素视为背景</div></div>
+      <div class="f"><label>外扩 Padding <span><span id="vPad">0</span> px</span></label>
+        <input id="iPad" type="range" min="0" max="32" value="0"></div>
+      <div class="f"><label>小切片过滤 <span><span id="vMin">2</span> px</span></label>
+        <input id="iMin" type="range" min="1" max="64" value="2">
+        <div class="d">宽或高小于此值的切片会被丢弃</div></div>
+      <div class="f"><label>碎片合并距离 <span><span id="vGap">0</span> px</span></label>
+        <input id="iGap" type="range" min="0" max="64" value="0">
+        <div class="d">0 为关闭；距离内的相邻碎片合并为一个素材</div></div>
+      <div class="btns"><button id="bRedetect">重新检测</button></div>
+      <div class="d" style="margin-top:8px;color:var(--t3)">调整参数会重新检测并替换当前切片（包括手动编辑），拖动滑块算一步，可用 Ctrl+Z 连同参数一起恢复。</div>
+    </div>
+
+    <div class="pane" id="p-edit">
+      <div id="editNone" class="hint">选中一个切片后可编辑坐标、尺寸和名称</div>
+      <div id="editOne" style="display:none">
+        <div class="f"><label>名称</label><input id="eName" type="text"></div>
+        <div class="row2 f">
+          <div><label>X</label><input id="eX" type="number"></div>
+          <div><label>Y</label><input id="eY" type="number"></div>
+          <div><label>宽</label><input id="eW" type="number" min="1"></div>
+          <div><label>高</label><input id="eH" type="number" min="1"></div>
+        </div>
+      </div>
+      <label class="chk"><input id="cSnap" type="checkbox" checked> 框选后吸附到不透明边缘</label>
+      <div class="btns">
+        <button id="bMerge" disabled>合并选中 (M)</button>
+        <button id="bDel" disabled>删除选中 (Del)</button>
+      </div>
+      <details open><summary>快捷键</summary>
+        <div class="d" style="line-height:2">
+          <kbd>V</kbd> 选择 · <kbd>R</kbd> 框选新建 · <kbd>H</kbd> 平移 / 按住 <kbd>Space</kbd> / 中键<br>
+          空白处拖动：框选多个切片<br>
+          <kbd>滚轮</kbd> 缩放 · <kbd>F</kbd> 适应 · <kbd>1</kbd> 100%<br>
+          <kbd>方向键</kbd> 微调 1px（<kbd>Shift</kbd> 10px）<br>
+          <kbd>Ctrl</kbd>+<kbd>A</kbd> 全选 · <kbd>Ctrl</kbd>+<kbd>I</kbd> 反选<br>
+          列表中 <kbd>Shift</kbd>+点击 连选 · <kbd>Ctrl</kbd>+点击 加选
+        </div>
+      </details>
+    </div>
+
+    <div class="pane" id="p-analyze"><div class="an" id="anBody"></div></div>
+
+    <div class="pane" id="p-export">
+      <div class="f"><label>命名前缀</label><input id="iPrefix" type="text" value="sprite_">
+        <div class="d">未手动命名的切片按「前缀 + 三位序号」导出，如 sprite_001.png</div></div>
+      <div class="btns" style="margin-bottom:12px">
+        <button id="bExpSel" class="primary" disabled>导出选中</button>
+      </div>
+      <div class="d" id="expInfo" style="color:var(--t3)"></div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <span id="sPos">x — y —</span>
+  <span id="sSel">未选中</span>
+  <span id="sImg">未导入</span>
+  <span class="ok">● 全程本地处理，文件不会上传</span>
+</footer>
+<div id="toast"></div>
+
+<script>
+//<pure>
+function detectBoxes(data, W, H, P) {
+  const vis = new Uint8Array(W * H), stack = new Int32Array(W * H), bs = [];
+  const th = P.alpha;
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      if (vis[i] || data[i * 4 + 3] <= th) continue;
+      let sp = 0; stack[sp++] = i; vis[i] = 1;
+      let x0 = x, x1 = x, y0 = y, y1 = y;
+      while (sp) {
+        const j = stack[--sp], jx = j % W, jy = (j - jx) / W;
+        if (jx < x0) x0 = jx; if (jx > x1) x1 = jx;
+        if (jy < y0) y0 = jy; if (jy > y1) y1 = jy;
+        for (let dy = -1; dy <= 1; dy++) {
+          const ny = jy + dy; if (ny < 0 || ny >= H) continue;
+          for (let dx = -1; dx <= 1; dx++) {
+            const nx = jx + dx; if (nx < 0 || nx >= W) continue;
+            const k = ny * W + nx;
+            if (!vis[k] && data[k * 4 + 3] > th) { vis[k] = 1; stack[sp++] = k; }
+          }
+        }
+      }
+      bs.push({ x0, y0, x1, y1 });
+    }
+  }
+  let boxes = bs;
+  const g = P.gap | 0;
+  if (g > 0 && bs.length > 1) {
+    const par = bs.map((_, i) => i);
+    const find = a => { while (par[a] !== a) { par[a] = par[par[a]]; a = par[a]; } return a; };
+    const order = bs.map((_, i) => i).sort((a, b) => bs[a].x0 - bs[b].x0);
+    for (let ai = 0; ai < order.length; ai++) {
+      const a = bs[order[ai]];
+      for (let bi = ai + 1; bi < order.length; bi++) {
+        const b = bs[order[bi]];
+        if (b.x0 - g > a.x1) { /* 后续 x0 只会更大，但 a.x1 可能被其他更宽的框覆盖，故仅对当前 a 终止 */ break; }
+        if (b.y0 - g <= a.y1 && a.y0 - g <= b.y1) {
+          const ra = find(order[ai]), rb = find(order[bi]);
+          if (ra !== rb) par[rb] = ra;
+        }
+      }
+    }
+    const m = new Map();
+    for (let i = 0; i < bs.length; i++) {
+      const r = find(i), b = bs[i], c = m.get(r);
+      if (!c) m.set(r, { x0: b.x0, y0: b.y0, x1: b.x1, y1: b.y1 });
+      else { c.x0 = Math.min(c.x0, b.x0); c.y0 = Math.min(c.y0, b.y0); c.x1 = Math.max(c.x1, b.x1); c.y1 = Math.max(c.y1, b.y1); }
+    }
+    boxes = [...m.values()];
+  }
+  const out = [];
+  const p = P.pad | 0;
+  for (const b of boxes) {
+    const w = b.x1 - b.x0 + 1, h = b.y1 - b.y0 + 1;
+    if (w < P.min || h < P.min) continue;
+    const x0 = Math.max(0, b.x0 - p), y0 = Math.max(0, b.y0 - p);
+    const x1 = Math.min(W - 1, b.x1 + p), y1 = Math.min(H - 1, b.y1 + p);
+    out.push({ x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1 });
+  }
+  out.sort((a, b) => a.y - b.y || a.x - b.x);
+  return out;
+}
+
+function opaqueBBox(data, W, H, rx, ry, rw, rh, th) {
+  let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1;
+  for (let y = ry; y < ry + rh; y++) for (let x = rx; x < rx + rw; x++) {
+    if (data[(y * W + x) * 4 + 3] > th) {
+      if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+    }
+  }
+  return x1 < 0 ? null : { x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1 };
+}
+
+function analyzeSlice(data, W, H, s, th) {
+  let opaque = 0, semi = 0, sumA = 0, h = 2166136261 >>> 0;
+  let tx0 = 1e9, ty0 = 1e9, tx1 = -1, ty1 = -1;
+  const hist = new Map();
+  for (let y = s.y; y < s.y + s.h; y++) {
+    for (let x = s.x; x < s.x + s.w; x++) {
+      const i = (y * W + x) * 4, a = data[i + 3];
+      let r = 0, g = 0, b = 0;
+      if (a) { r = data[i]; g = data[i + 1]; b = data[i + 2]; }
+      h = Math.imul(h ^ r, 16777619); h = Math.imul(h ^ g, 16777619); h = Math.imul(h ^ b, 16777619); h = Math.imul(h ^ a, 16777619);
+      if (a > th) {
+        opaque++; sumA += a; if (a < 255) semi++;
+        if (x < tx0) tx0 = x; if (x > tx1) tx1 = x; if (y < ty0) ty0 = y; if (y > ty1) ty1 = y;
+        const key = ((r >> 4) << 8) | ((g >> 4) << 4) | (b >> 4);
+        hist.set(key, (hist.get(key) || 0) + 1);
+      }
+    }
+  }
+  const colors = [...hist.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, n]) => {
+    const c = v => (v * 17).toString(16).padStart(2, '0');
+    return { hex: '#' + c((k >> 8) & 15) + c((k >> 4) & 15) + c(k & 15), pct: n / Math.max(1, opaque) };
+  });
+  const total = s.w * s.h;
+  return {
+    opaque, total, fill: opaque / total, semi, semiRatio: opaque ? semi / opaque : 0, avgA: opaque ? sumA / opaque : 0,
+    colors, hash: (h >>> 0).toString(16) + ':' + s.w + 'x' + s.h,
+    tight: tx1 < 0 ? null : { x: tx0, y: ty0, w: tx1 - tx0 + 1, h: ty1 - ty0 + 1 },
+    edge: tx1 >= 0 && (tx0 === 0 || ty0 === 0 || tx1 === W - 1 || ty1 === H - 1)
+  };
+}
+
+const CRC_T =(() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(u8) { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+
+function makeZip(files) {
+  const enc = new TextEncoder(), parts = [], cds = [];
+  let off = 0;
+  const d = new Date();
+  const dt = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+  const dd = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  for (const f of files) {
+    const nb = enc.encode(f.name), crc = crc32(f.data), n = f.data.length;
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true);
+    lh.setUint16(8, 0, true); lh.setUint16(10, dt, true); lh.setUint16(12, dd, true);
+    lh.setUint32(14, crc, true); lh.setUint32(18, n, true); lh.setUint32(22, n, true);
+    lh.setUint16(26, nb.length, true); lh.setUint16(28, 0, true);
+    parts.push(new Uint8Array(lh.buffer), nb, f.data);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true);
+    ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true); ch.setUint16(12, dt, true); ch.setUint16(14, dd, true);
+    ch.setUint32(16, crc, true); ch.setUint32(20, n, true); ch.setUint32(24, n, true);
+    ch.setUint16(28, nb.length, true); ch.setUint16(30, 0, true); ch.setUint16(32, 0, true);
+    ch.setUint16(34, 0, true); ch.setUint16(36, 0, true); ch.setUint32(38, 0, true); ch.setUint32(42, off, true);
+    cds.push(new Uint8Array(ch.buffer), nb);
+    off += 30 + nb.length + n;
+  }
+  const cdSize = cds.reduce((a, b) => a + b.length, 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
+  end.setUint32(12, cdSize, true); end.setUint32(16, off, true);
+  return new Blob([...parts, ...cds, new Uint8Array(end.buffer)], { type: 'application/zip' });
+}
+//</pure>
+
+// ============ 应用状态 ============
+const $ = s => document.querySelector(s);
+const stage = $('#stage'), cv = $('#cv'), ctx = cv.getContext('2d');
+let src = null, imgData = null, W = 0, H = 0, baseName = 'atlas';
+let slices = [], sel = new Set(), nextId = 1, hover = null;
+let view = { s: 1, x: 0, y: 0 };
+let tool = 'select', spaceDown = false, bgMode = 'checker';
+const P = { alpha: 8, pad: 0, min: 2, gap: 0 };
+let hist = [], histIdx = -1, edited = false, burstOpen = false;
+let anCache = new Map(), lastIdx = -1;
+let drag = null;
+
+const bgColors = { black: '#000', white: '#fff', magenta: '#ff00ff' };
+const checkerCv = document.createElement('canvas'); checkerCv.width = checkerCv.height = 16;
+let checkerPat = null, TC = {};
+function readTC() {
+  const cs = getComputedStyle(document.documentElement), g = n => cs.getPropertyValue(n).trim();
+  TC = { bg: g('--stage'), ck1: g('--ck1'), ck2: g('--ck2'), out: g('--cv-out'), inn: g('--cv-in'), sel: g('--cv-sel'), selfill: g('--cv-selfill'), hover: g('--cv-hover') };
+  const c = checkerCv.getContext('2d'); c.fillStyle = TC.ck1; c.fillRect(0, 0, 16, 16); c.fillStyle = TC.ck2; c.fillRect(0, 0, 8, 8); c.fillRect(8, 8, 8, 8);
+  checkerPat = ctx.createPattern(checkerCv, 'repeat');
+}
+readTC();
+
+// ============ 工具函数 ============
+let toastT;
+function toast(msg, kind) {
+  const t = $('#toast'); t.textContent = msg; t.className = 'show ' + (kind || '');
+  clearTimeout(toastT); toastT = setTimeout(() => t.className = '', 2600);
+}
+const pad3 = n => String(n).padStart(3, '0');
+const prefix = () => $('#iPrefix').value;
+const nameOf = (s, i) => s.name || prefix() + pad3(i + 1);
+const clone = o => JSON.parse(JSON.stringify(o));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const cleanName = n => n.replace(/[\\/:*?"<>|]/g, '_').replace(/\.png$/i, '').trim();
+
+// ============ 历史 ============
+function snap() { return JSON.stringify({ slices, nextId, P, ed: edited }); }
+// auto=true 表示由自动检测产生（不算“手动编辑”）
+function commit(auto) {
+  edited = !auto; burstOpen = false;
+  hist.length = histIdx + 1; hist.push(snap());
+  if (hist.length > 100) hist.shift();
+  histIdx = hist.length - 1; syncHist();
+}
+function restore(i) {
+  const o = JSON.parse(hist[i]); slices = o.slices; nextId = o.nextId; edited = !!o.ed; burstOpen = false;
+  if (o.P) { Object.assign(P, o.P); syncParams(); }
+  sel = new Set([...sel].filter(id => slices.some(s => s.id === id)));
+  histIdx = i; syncHist(); renderList(); selChanged();
+}
+function syncParams() {
+  [['iAlpha', 'vAlpha', 'alpha'], ['iPad', 'vPad', 'pad'], ['iMin', 'vMin', 'min'], ['iGap', 'vGap', 'gap']].forEach(([i, v, k]) => { $('#' + i).value = P[k]; $('#' + v).textContent = P[k]; });
+}
+function undo() { if (histIdx > 0) restore(histIdx - 1); }
+function redo() { if (histIdx < hist.length - 1) restore(histIdx + 1); }
+function syncHist() { $('#bUndo').disabled = histIdx <= 0; $('#bRedo').disabled = histIdx >= hist.length - 1; }
+
+// ============ 加载 ============
+async function loadFile(file) {
+  if (!file || !/^image\/(png|webp)$/.test(file.type)) { toast('仅支持带透明通道的 PNG / WebP', 'warn'); return; }
+  if (edited && slices.length && !confirm('当前图集有手动编辑，导入新图集会清空切片和撤销历史，且无法恢复。继续吗？')) return;
+  try {
+    const bmp = await createImageBitmap(file);
+    src = document.createElement('canvas'); src.width = W = bmp.width; src.height = H = bmp.height;
+    const c = src.getContext('2d', { willReadFrequently: true }); c.drawImage(bmp, 0, 0);
+    imgData = c.getImageData(0, 0, W, H);
+    baseName = (file.name || 'atlas').replace(/\.[^.]+$/, '') || 'atlas';
+    if (!$('#iPrefix').dataset.touched) $('#iPrefix').value = baseName + '_';
+    anCache.clear(); lastIdx = -1;
+    $('#empty').style.display = 'none';
+    $('#sImg').textContent = `${W}×${H}px · ${baseName}`;
+    let hasAlpha = false; const d = imgData.data;
+    for (let i = 3; i < d.length; i += 4) if (d[i] < 255) { hasAlpha = true; break; }
+    fit();
+    runDetect(true);
+    if (!hasAlpha) toast('这张图没有透明像素，自动检测无法分割，请用「框选」手动切', 'warn');
+  } catch (e) { toast('无法读取这张图片', 'err'); console.error(e); }
+}
+
+// ============ 检测 ============
+let detTimer;
+function scheduleDetect() { clearTimeout(detTimer); $('#busy').style.display = 'block'; detTimer = setTimeout(() => runDetect(false, true), 140); }
+function runDetect(first, fromSlider) {
+  if (!imgData) return;
+  $('#busy').style.display = 'block';
+  setTimeout(() => {
+    const lost = !first && edited;
+    const boxes = detectBoxes(imgData.data, W, H, P);
+    slices = boxes.map(b => ({ id: nextId++, x: b.x, y: b.y, w: b.w, h: b.h, name: '' }));
+    sel.clear();
+    if (first) { hist = []; histIdx = -1; }
+    if (!first && fromSlider && burstOpen) { edited = false; hist[histIdx] = snap(); syncHist(); }  // 拖动滑块期间合并为一步
+    else { commit(true); burstOpen = !!fromSlider; }
+    renderList(); selChanged();
+    $('#busy').style.display = 'none';
+    toast(first ? `检测到 ${slices.length} 个素材` : lost ? `重新检测：${slices.length} 个素材，手动编辑已被替换（Ctrl+Z 可恢复）` : `重新检测：${slices.length} 个素材（可撤销）`, lost ? 'warn' : undefined);
+  }, 10);
+}
+
+// ============ 视图 ============
+function stageSize() { const r = stage.getBoundingClientRect(); return { w: r.width, h: r.height }; }
+function fit() {
+  if (!src) return; const r = stageSize();
+  view.s = clamp(Math.min((r.w - 48) / W, (r.h - 48) / H), 0.02, 8);
+  view.x = (r.w - W * view.s) / 2; view.y = (r.h - H * view.s) / 2; draw();
+}
+function zoomAt(cx, cy, f) {
+  const ns = clamp(view.s * f, 0.02, 64), k = ns / view.s;
+  view.x = cx - (cx - view.x) * k; view.y = cy - (cy - view.y) * k; view.s = ns; draw();
+}
+function centerOn(s) {
+  const r = stageSize();
+  const x0 = view.x + s.x * view.s, y0 = view.y + s.y * view.s, x1 = x0 + s.w * view.s, y1 = y0 + s.h * view.s;
+  if (x0 < 0 || y0 < 0 || x1 > r.w || y1 > r.h) {
+    view.x = r.w / 2 - (s.x + s.w / 2) * view.s; view.y = r.h / 2 - (s.y + s.h / 2) * view.s; draw();
+  }
+}
+const toImg = (mx, my) => ({ x: (mx - view.x) / view.s, y: (my - view.y) / view.s });
+
+function draw() {
+  const r = stageSize(), dpr = window.devicePixelRatio || 1;
+  const pw = Math.round(r.w * dpr), ph = Math.round(r.h * dpr);
+  if (cv.width !== pw || cv.height !== ph) { cv.width = pw; cv.height = ph; }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = TC.bg; ctx.fillRect(0, 0, r.w, r.h);
+  $('#zoomv').textContent = Math.round(view.s * 100) + '%';
+  if (!src) return;
+  const x0 = view.x, y0 = view.y, w = W * view.s, h = H * view.s;
+  ctx.fillStyle = bgMode === 'checker' ? checkerPat : bgColors[bgMode];
+  ctx.fillRect(x0, y0, w, h);
+  ctx.imageSmoothingEnabled = view.s < 1;
+  ctx.drawImage(src, x0, y0, w, h);
+  // 切片框
+  for (const s of slices) {
+    if (sel.has(s.id)) continue;
+    const sx = Math.round(view.x + s.x * view.s) + .5, sy = Math.round(view.y + s.y * view.s) + .5;
+    const sw = Math.max(1, Math.round(s.w * view.s)), sh = Math.max(1, Math.round(s.h * view.s));
+    if (sx > r.w || sy > r.h || sx + sw < 0 || sy + sh < 0) continue;
+    const hv = hover === s.id;
+    ctx.lineWidth = 3; ctx.strokeStyle = TC.out; ctx.strokeRect(sx, sy, sw, sh);
+    ctx.lineWidth = 1; ctx.strokeStyle = hv ? TC.hover : TC.inn; ctx.strokeRect(sx, sy, sw, sh);
+  }
+  for (const s of slices) {
+    if (!sel.has(s.id)) continue;
+    const sx = view.x + s.x * view.s, sy = view.y + s.y * view.s, sw = s.w * view.s, sh = s.h * view.s;
+    ctx.fillStyle = TC.selfill; ctx.fillRect(sx, sy, sw, sh);
+    ctx.lineWidth = 2; ctx.strokeStyle = TC.sel; ctx.strokeRect(sx, sy, sw, sh);
+  }
+  if (drag && drag.kind === 'marquee' && drag.moved) {
+    const x0 = view.x + Math.min(drag.a.x, drag.b.x) * view.s, y0 = view.y + Math.min(drag.a.y, drag.b.y) * view.s;
+    const w = Math.abs(drag.a.x - drag.b.x) * view.s, h = Math.abs(drag.a.y - drag.b.y) * view.s;
+    ctx.fillStyle = TC.selfill; ctx.fillRect(x0, y0, w, h);
+    ctx.lineWidth = 1; ctx.strokeStyle = TC.hover; ctx.strokeRect(Math.round(x0) + .5, Math.round(y0) + .5, w, h);
+  }
+  if (drag && drag.kind === 'draw') {
+    const a = drag.a, b = drag.b;
+    const rx = Math.min(a.x, b.x), ry = Math.min(a.y, b.y), rw = Math.abs(a.x - b.x), rh = Math.abs(a.y - b.y);
+    ctx.setLineDash([6, 4]); ctx.lineWidth = 1.5; ctx.strokeStyle = TC.hover;
+    ctx.strokeRect(view.x + rx * view.s, view.y + ry * view.s, rw * view.s, rh * view.s); ctx.setLineDash([]);
+  }
+}
+new ResizeObserver(() => draw()).observe(stage);
+
+// ============ 切片列表 ============
+const listEls = new Map();
+function renderList() {
+  const box = $('#list'); box.textContent = ''; listEls.clear();
+  $('#count').textContent = slices.length;
+  const has = slices.length > 0;
+  syncExport();
+  if (!has) { box.innerHTML = '<div class="hint">' + (src ? '没有检测到素材，可调整参数或用「框选」手动切' : '导入图集后，切片会显示在这里') + '</div>'; return; }
+  const frag = document.createDocumentFragment();
+  slices.forEach((s, i) => {
+    const el = document.createElement('div'); el.className = 'it'; el.dataset.id = s.id;
+    const th = document.createElement('canvas'); th.width = th.height = 40;
+    const tc = th.getContext('2d'); tc.imageSmoothingEnabled = false;
+    const k = Math.min(40 / s.w, 40 / s.h, 4), dw = s.w * k, dh = s.h * k;
+    tc.drawImage(src, s.x, s.y, s.w, s.h, (40 - dw) / 2, (40 - dh) / 2, dw, dh);
+    const info = document.createElement('div');
+    info.innerHTML = '<div class="nm"></div><div class="sz"></div>';
+    info.firstChild.textContent = nameOf(s, i);
+    info.lastChild.textContent = `${s.w}×${s.h} @ ${s.x},${s.y}`;
+    el.append(th, info);
+    el.addEventListener('click', e => {
+      let single = false;
+      if (e.shiftKey && lastIdx >= 0) {
+        const a = Math.min(lastIdx, i), b = Math.max(lastIdx, i);
+        sel = new Set(slices.slice(a, b + 1).map(x => x.id));
+      } else if (e.ctrlKey || e.metaKey) {
+        sel.has(s.id) ? sel.delete(s.id) : sel.add(s.id); lastIdx = i;
+      } else { sel = new Set([s.id]); lastIdx = i; single = true; }
+      selChanged(); if (single) centerOn(s);
+    });
+    el.addEventListener('dblclick', () => renameInline(el, s, i));
+    el.addEventListener('mouseenter', () => { hover = s.id; draw(); });
+    el.addEventListener('mouseleave', () => { hover = null; draw(); });
+    listEls.set(s.id, el); frag.appendChild(el);
+  });
+  box.appendChild(frag);
+  syncListSel();
+}
+function syncListSel() { for (const [id, el] of listEls) el.classList.toggle('sel', sel.has(id)); }
+function renameInline(el, s, i) {
+  const nm = el.querySelector('.nm'); const inp = document.createElement('input'); inp.type = 'text'; inp.value = nameOf(s, i);
+  nm.replaceWith(inp); inp.focus(); inp.select();
+  const done = ok => {
+    if (ok) { const v = cleanName(inp.value); if (v && v !== nameOf(s, i)) { s.name = v; commit(); } }
+    renderList(); selChanged();
+  };
+  inp.addEventListener('keydown', e => { e.stopPropagation(); if (e.key === 'Enter') done(true); if (e.key === 'Escape') done(false); });
+  inp.addEventListener('blur', () => done(true), { once: true });
+  inp.addEventListener('click', e => e.stopPropagation());
+}
+
+// ============ 选中与编辑面板 ============
+const selected = () => slices.filter(s => sel.has(s.id));
+function selChanged() {
+  syncListSel(); draw();
+  const ss = selected();
+  $('#bDel').disabled = ss.length === 0; $('#bMerge').disabled = ss.length < 2;  $('#bDel').textContent = ss.length ? `删除选中 (${ss.length})` : '删除选中 (Del)';
+  $('#sSel').textContent = ss.length === 0 ? `共 ${slices.length} 个切片` : ss.length === 1 ? `选中 ${ss[0].w}×${ss[0].h} @ ${ss[0].x},${ss[0].y}` : `选中 ${ss.length} 个`;
+  syncExport();
+  const one = ss.length === 1;
+  $('#editOne').style.display = one ? 'block' : 'none'; $('#editNone').style.display = one ? 'none' : 'block';
+  $('#editNone').textContent = ss.length > 1 ? `已选中 ${ss.length} 个切片，可合并或删除` : '选中一个切片后可编辑坐标、尺寸和名称';
+  if (one) {
+    const s = ss[0]; $('#eName').value = nameOf(s, slices.indexOf(s));
+    $('#eX').value = s.x; $('#eY').value = s.y; $('#eW').value = s.w; $('#eH').value = s.h;
+  }
+  refreshAnalysis();
+}
+function applyEdit() {
+  const ss = selected(); if (ss.length !== 1) return; const s = ss[0];
+  const x = clamp(+$('#eX').value | 0, 0, W - 1), y = clamp(+$('#eY').value | 0, 0, H - 1);
+  const w = clamp(+$('#eW').value | 0, 1, W - x), h = clamp(+$('#eH').value | 0, 1, H - y);
+  Object.assign(s, { x, y, w, h });
+  const v = cleanName($('#eName').value); const auto = prefix() + pad3(slices.indexOf(s) + 1);
+  s.name = v && v !== auto ? v : '';
+  commit(); renderList(); selChanged();
+}
+['#eName', '#eX', '#eY', '#eW', '#eH'].forEach(id => $(id).addEventListener('change', applyEdit));
+
+function deleteSel() {
+  if (!sel.size) return;
+  const n = sel.size;
+  slices = slices.filter(s => !sel.has(s.id)); sel.clear(); lastIdx = -1; commit(); renderList(); selChanged();
+  toast(`已删除 ${n} 个切片，Ctrl+Z 可撤销`);
+}
+function mergeSel() {
+  const ss = selected(); if (ss.length < 2) return;
+  const x0 = Math.min(...ss.map(s => s.x)), y0 = Math.min(...ss.map(s => s.y));
+  const x1 = Math.max(...ss.map(s => s.x + s.w)), y1 = Math.max(...ss.map(s => s.y + s.h));
+  const first = slices.indexOf(ss[0]);
+  slices = slices.filter(s => !sel.has(s.id));
+  const n = { id: nextId++, x: x0, y: y0, w: x1 - x0, h: y1 - y0, name: '' };
+  slices.splice(Math.min(first, slices.length), 0, n);
+  sel = new Set([n.id]); commit(); renderList(); selChanged();
+}
+function nudge(dx, dy) {
+  const ss = selected(); if (!ss.length) return;
+  for (const s of ss) { s.x = clamp(s.x + dx, 0, W - s.w); s.y = clamp(s.y + dy, 0, H - s.h); }
+  commit(); renderList(); selChanged();
+}
+$('#bDel').onclick = deleteSel; $('#bMerge').onclick = mergeSel;
+
+// ============ 画布交互 ============
+function hitTest(ix, iy) {
+  let best = null, ba = Infinity;
+  for (const s of slices) if (ix >= s.x && iy >= s.y && ix < s.x + s.w && iy < s.y + s.h) { const a = s.w * s.h; if (a < ba) { ba = a; best = s; } }
+  return best;
+}
+function marqueeSel(d) {
+  const x0 = Math.min(d.a.x, d.b.x), x1 = Math.max(d.a.x, d.b.x), y0 = Math.min(d.a.y, d.b.y), y1 = Math.max(d.a.y, d.b.y);
+  const n = new Set(d.base);
+  for (const s of slices) if (s.x < x1 && s.x + s.w > x0 && s.y < y1 && s.y + s.h > y0) n.add(s.id);
+  return n;
+}
+const mpos = e => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+function curTool() { return spaceDown ? 'pan' : tool; }
+function setCursor() { cv.style.cursor = curTool() === 'pan' ? (drag && drag.kind === 'pan' ? 'grabbing' : 'grab') : curTool() === 'draw' ? 'crosshair' : 'default'; }
+
+cv.addEventListener('mousedown', e => {
+  if (!src) return;
+  const m = mpos(e), p = toImg(m.x, m.y), t = e.button === 1 ? 'pan' : curTool();
+  if (e.button === 2) return;
+  if (t === 'pan') { drag = { kind: 'pan', mx: m.x, my: m.y, vx: view.x, vy: view.y }; }
+  else if (t === 'draw') { drag = { kind: 'draw', a: { x: clamp(Math.round(p.x), 0, W), y: clamp(Math.round(p.y), 0, H) } }; drag.b = drag.a; }
+  else {
+    const h = hitTest(p.x, p.y);
+    if (h) {
+      if (e.shiftKey || e.ctrlKey || e.metaKey) sel.has(h.id) ? sel.delete(h.id) : sel.add(h.id); else sel = new Set([h.id]);
+      selChanged();
+    } else {
+      const add = e.shiftKey || e.ctrlKey || e.metaKey;
+      drag = { kind: 'marquee', a: p, b: p, base: add ? new Set(sel) : new Set(), moved: false };
+      if (!add && sel.size) { sel.clear(); selChanged(); }
+    }
+  }
+  setCursor(); e.preventDefault();
+});
+window.addEventListener('mousemove', e => {
+  const m = mpos(e), p = toImg(m.x, m.y);
+  if (src && m.x >= 0 && m.y >= 0 && m.x <= stage.clientWidth && m.y <= stage.clientHeight) $('#sPos').textContent = `x ${Math.floor(p.x)}  y ${Math.floor(p.y)}`;
+  if (drag) {
+    if (drag.kind === 'pan') { view.x = drag.vx + m.x - drag.mx; view.y = drag.vy + m.y - drag.my; }
+    else if (drag.kind === 'draw') drag.b = { x: clamp(Math.round(p.x), 0, W), y: clamp(Math.round(p.y), 0, H) };
+    else if (drag.kind === 'marquee') { drag.b = p; drag.moved = true; sel = marqueeSel(drag); syncListSel(); }
+    draw();
+  } else if (src && curTool() === 'select' && e.target === cv) {
+    const h = hitTest(p.x, p.y), id = h ? h.id : null;
+    if (id !== hover) { hover = id; draw(); }
+  }
+});
+window.addEventListener('mouseup', () => {
+  if (!drag) return;
+  if (drag.kind === 'marquee') {
+    if (drag.moved) { sel = marqueeSel(drag); selChanged(); }
+    drag = null; draw(); return;
+  }
+  if (drag.kind === 'draw') {
+    const a = drag.a, b = drag.b;
+    let r = { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(a.x - b.x), h: Math.abs(a.y - b.y) };
+    if (r.w >= 2 && r.h >= 2) {
+      if ($('#cSnap').checked) {
+        const bb = opaqueBBox(imgData.data, W, H, r.x, r.y, r.w, r.h, P.alpha);
+        if (bb) r = bb; else { toast('选区内没有不透明像素', 'warn'); drag = null; draw(); return; }
+      }
+      const n = { id: nextId++, x: r.x, y: r.y, w: r.w, h: r.h, name: '' };
+      slices.push(n); sel = new Set([n.id]); commit(); renderList(); selChanged();
+    }
+  }
+  drag = null; setCursor(); draw();
+});
+cv.addEventListener('wheel', e => {
+  if (!src) return; e.preventDefault();
+  const m = mpos(e); zoomAt(m.x, m.y, Math.pow(1.0015, -e.deltaY));
+}, { passive: false });
+cv.addEventListener('contextmenu', e => e.preventDefault());
+
+// ============ 工具栏 ============
+function setTool(t) {
+  tool = t;
+  $('#tSelect').classList.toggle('on', t === 'select'); $('#tDraw').classList.toggle('on', t === 'draw'); $('#tPan').classList.toggle('on', t === 'pan');
+  setCursor();
+}
+$('#tSelect').onclick = () => setTool('select'); $('#tDraw').onclick = () => setTool('draw'); $('#tPan').onclick = () => setTool('pan');
+$('#bUndo').onclick = undo; $('#bRedo').onclick = redo;
+$('#bFit').onclick = fit;
+$('#b100').onclick = () => { if (src) zoomAt(stage.clientWidth / 2, stage.clientHeight / 2, 1 / view.s); };
+$('#bZoomIn').onclick = () => zoomAt(stage.clientWidth / 2, stage.clientHeight / 2, 1.25);
+$('#bZoomOut').onclick = () => zoomAt(stage.clientWidth / 2, stage.clientHeight / 2, 0.8);
+// 背景选择（自定义下拉）
+const bgNames = { checker: '棋盘格', black: '纯黑', white: '纯白', magenta: '品红' };
+const bgDd = $('#bgDd');
+function bgOpen(o) {
+  bgDd.classList.toggle('open', o); $('#bgBtn').setAttribute('aria-expanded', o);
+  if (o) { const c = bgDd.querySelector('.mi.on'); if (c) c.focus(); }
+}
+function setBg(v) {
+  bgMode = v; $('#bgLabel').textContent = bgNames[v]; $('#bgSw').className = 'sw2 ' + v;
+  bgDd.querySelectorAll('.mi').forEach(i => { const on = i.dataset.v === v; i.classList.toggle('on', on); i.setAttribute('aria-selected', on); });
+  draw();
+}
+$('#bgBtn').addEventListener('click', e => { e.stopPropagation(); bgOpen(!bgDd.classList.contains('open')); });
+$('#bgMenu').addEventListener('click', e => { const it = e.target.closest('.mi'); if (!it) return; setBg(it.dataset.v); bgOpen(false); $('#bgBtn').focus(); });
+$('#bgMenu').addEventListener('keydown', e => {
+  const items = [...bgDd.querySelectorAll('.mi')], i = items.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+  else if (e.key === 'Escape') { bgOpen(false); $('#bgBtn').focus(); }
+  e.stopPropagation();
+});
+document.addEventListener('click', () => bgOpen(false));
+
+// 右栏标签页
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === 'p-' + b.dataset.tab));
+  refreshAnalysis();
+});
+
+// 检测参数
+[['iAlpha', 'vAlpha', 'alpha'], ['iPad', 'vPad', 'pad'], ['iMin', 'vMin', 'min'], ['iGap', 'vGap', 'gap']].forEach(([i, v, k]) => {
+  $('#' + i).addEventListener('input', e => { P[k] = +e.target.value; $('#' + v).textContent = e.target.value; scheduleDetect(); });
+  $('#' + i).addEventListener('change', () => { burstOpen = false; });
+});
+$('#bRedetect').onclick = () => { burstOpen = false; runDetect(false); };
+$('#iPrefix').addEventListener('input', e => { e.target.dataset.touched = '1'; renderList(); selChanged(); });
+
+// ============ 导入 ============
+$('#bOpen').onclick = () => $('#file').click();
+$('#file').onchange = e => { loadFile(e.target.files[0]); e.target.value = ''; };
+const emptyEl = $('#empty');
+window.addEventListener('dragover', e => { e.preventDefault(); emptyEl.classList.add('hot'); });
+window.addEventListener('dragleave', e => { if (!e.relatedTarget) emptyEl.classList.remove('hot'); });
+window.addEventListener('drop', e => { e.preventDefault(); emptyEl.classList.remove('hot'); loadFile(e.dataTransfer.files[0]); });
+window.addEventListener('paste', e => { const f = [...(e.clipboardData?.files || [])][0]; if (f) loadFile(f); });
+emptyEl.addEventListener('click', () => $('#file').click());
+
+// ============ 导出 ============
+function download(blob, name) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+function cropBlob(s) {
+  return new Promise(res => {
+    const c = document.createElement('canvas'); c.width = s.w; c.height = s.h;
+    c.getContext('2d').drawImage(src, s.x, s.y, s.w, s.h, 0, 0, s.w, s.h); c.toBlob(res, 'image/png');
+  });
+}
+function uniqueNames(list) {
+  const used = new Map();
+  return list.map(s => {
+    const base = s.name || prefix() + pad3(slices.indexOf(s) + 1) || 'slice';
+    const n = used.get(base) || 0; used.set(base, n + 1);
+    return (n ? `${base}_${n + 1}` : base) + '.png';
+  });
+}
+async function exportList(list, zipName) {
+  if (!list.length) return;
+  const names = uniqueNames(list);
+  if (list.length === 1) { download(await cropBlob(list[0]), names[0]); toast('已导出 ' + names[0]); return; }
+  toast('正在打包…');
+  const files = [];
+  for (let i = 0; i < list.length; i++) files.push({ name: names[i], data: new Uint8Array(await (await cropBlob(list[i])).arrayBuffer()) });
+  download(makeZip(files), zipName); toast(`已导出 ${files.length} 个素材`);
+}
+// 按钮文案随“选中数 / 总数”变化：1 个 → PNG，多个 → ZIP，并预告文件名
+function syncExport() {
+  const total = slices.length, ss = selected(), n = ss.length;
+  const bZip = $('#bZip'), bSel = $('#bExpSel'), info = $('#expInfo');
+  bZip.disabled = total === 0;
+  const allLabel = total === 0 ? '导出' : total === 1 ? '导出 PNG' : `导出全部 ZIP（${total}）`;
+  bZip.textContent = allLabel;
+  // 只有 1 个切片时，“导出选中”与“导出”完全相同，隐藏避免重复
+  bSel.style.display = total === 1 ? 'none' : '';
+  bSel.disabled = n === 0;
+  bSel.textContent = n === 0 ? '导出选中' : n === 1 ? '导出选中 · PNG' : `导出选中 · ZIP（${n}）`;
+  let t;
+  if (total === 0) t = '导入图集并检测后即可导出。';
+  else if (n === 0 && total === 1) t = `将导出 ${uniqueNames(slices)[0]}（${slices[0].w}×${slices[0].h}）。`;
+  else if (n === 0) t = `未选中切片。右上角“导出”会把 ${total} 个切片打包为 ${baseName}_slices.zip；选中一个或多个切片后，可在这里只导出选中的。`;
+  else if (n === 1) t = `选中的切片将导出为 ${uniqueNames(ss)[0]}（${ss[0].w}×${ss[0].h}）。`;
+  else t = `选中的 ${n} 个切片将打包为 ${baseName}_selected.zip。`;
+  info.textContent = t;
+}
+$('#bZip').onclick = () => exportList(slices, baseName + '_slices.zip');
+$('#bExpSel').onclick = () => exportList(selected(), baseName + '_selected.zip');
+
+// ============ 切片分析 ============
+let anSets = {};
+function getAn(s) {
+  const k = `${s.x},${s.y},${s.w},${s.h},${P.alpha}`;
+  let a = anCache.get(k);
+  if (!a) { a = analyzeSlice(imgData.data, W, H, s, P.alpha); anCache.set(k, a); }
+  return a;
+}
+const FLAG_LABEL = { dup: '重复', small: '过小', big: '过大', edge: '贴边', ratio: '极端长宽比', semi: '半透明多' };
+function computeFlags() {
+  const areas = slices.map(s => s.w * s.h).sort((a, b) => a - b);
+  const med = areas.length ? areas[areas.length >> 1] : 0;
+  const sets = { dup: [], dupExtra: [], small: [], big: [], edge: [], ratio: [], semi: [] };
+  const groups = new Map();
+  for (const s of slices) {
+    const a = getAn(s), area = s.w * s.h;
+    if (!groups.has(a.hash)) groups.set(a.hash, []); groups.get(a.hash).push(s.id);
+    if (s.w < 8 || s.h < 8 || area < med * 0.1) sets.small.push(s.id);
+    if (med && area > med * 8) sets.big.push(s.id);
+    if (a.edge) sets.edge.push(s.id);
+    if (Math.max(s.w, s.h) / Math.min(s.w, s.h) > 8) sets.ratio.push(s.id);
+    if (a.opaque && a.semiRatio > 0.5) sets.semi.push(s.id);
+  }
+  let dupGroups = 0;
+  for (const g of groups.values()) if (g.length > 1) { dupGroups++; sets.dup.push(...g); sets.dupExtra.push(...g.slice(1)); }
+  return { med, sets, dupGroups };
+}
+const pct = v => (v * 100).toFixed(1) + '%';
+function stat(arr) {
+  const a = [...arr].sort((x, y) => x - y);
+  return { min: a[0], max: a[a.length - 1], avg: a.reduce((p, c) => p + c, 0) / a.length, med: a[a.length >> 1] };
+}
+function refreshAnalysis() {
+  if (!$('#p-analyze').classList.contains('on')) return;
+  const box = $('#anBody');
+  if (!imgData || !slices.length) { box.innerHTML = '<div class="hint">导入图集并检测后，可在这里分析切片</div>'; anSets = {}; return; }
+  const F = computeFlags(); anSets = { ...F.sets };
+  const ws = stat(slices.map(s => s.w)), hs = stat(slices.map(s => s.h));
+  const areaSum = slices.reduce((p, s) => p + s.w * s.h, 0);
+  let h = '<h4>概览</h4><div class="kv">' +
+    `<span>切片数量</span><span>${slices.length}</span>` +
+    `<span>宽 最小 / 中位 / 最大</span><span>${ws.min} / ${ws.med} / ${ws.max}</span>` +
+    `<span>高 最小 / 中位 / 最大</span><span>${hs.min} / ${hs.med} / ${hs.max}</span>` +
+    `<span>平均尺寸</span><span>${ws.avg.toFixed(1)}×${hs.avg.toFixed(1)}</span>` +
+    `<span>切片面积占图集</span><span>${pct(areaSum / (W * H))}</span></div>`;
+  const bk = [[16, '≤16'], [32, '17–32'], [64, '33–64'], [128, '65–128'], [256, '129–256'], [1e9, '>256']];
+  const bids = bk.map(() => []);
+  for (const s of slices) { const m = Math.max(s.w, s.h); bids[bk.findIndex(b => m <= b[0])].push(s.id); }
+  const mx = Math.max(...bids.map(b => b.length));
+  h += '<h4>尺寸分布（按长边，点击选中）</h4><div class="hist">';
+  bk.forEach((b, i) => { anSets['h' + i] = bids[i]; const n = bids[i].length;
+    h += `<div class="hb ${n ? '' : 'zero'}" ${n ? `data-set="h${i}"` : ''}><span>${b[1]}</span><i style="width:${n / mx * 100}%"></i><span>${n}</span></div>`; });
+  h += '</div><h4>问题检查（点击选中，可再删除）</h4>';
+  const rows = [
+    ['dup', `重复切片（${F.dupGroups} 组）`, '像素内容完全相同', F.sets.dup.length],
+    ['dupExtra', '多余副本', '每组保留第一个，其余选中', F.sets.dupExtra.length],
+    ['small', '过小', '宽或高 < 8px，或面积 < 中位数的 10%', F.sets.small.length],
+    ['big', '过大', '面积 > 中位数的 8 倍，可能误合并', F.sets.big.length],
+    ['edge', '触及图集边缘', '素材像素贴着图集边界，可能被裁切', F.sets.edge.length],
+    ['ratio', '极端长宽比', '长边 / 短边 > 8', F.sets.ratio.length],
+    ['semi', '半透明占比高', '半透明像素 > 50%，可能是阴影或光晕', F.sets.semi.length]
+  ];
+  for (const [k, t, d, n] of rows)
+    h += `<div class="iss ${n ? '' : 'zero'}" ${n ? `data-set="${k}"` : ''}><div>${t}<small>${d}</small></div><b>${n || '✓'}</b></div>`;
+  const ss = selected();
+  h += '<h4>选中切片</h4>';
+  if (!ss.length) h += '<div class="d" style="color:var(--t3)">在画布或列表中选中切片，查看详细分析</div>';
+  else if (ss.length === 1) {
+    const s = ss[0], a = getAn(s);
+    const tags = Object.keys(FLAG_LABEL).filter(k => F.sets[k].includes(s.id)).map(k => `<span class="tag">${FLAG_LABEL[k]}</span>`).join('');
+    const tightTxt = a.tight ? `${a.tight.w}×${a.tight.h}` + (a.tight.w === s.w && a.tight.h === s.h ? '（已最紧）' : '（可收紧）') : '无不透明像素';
+    h += (tags ? `<div style="margin-bottom:6px">${tags}</div>` : '') + '<div class="kv">' +
+      `<span>尺寸</span><span>${s.w}×${s.h}</span><span>位置</span><span>${s.x}, ${s.y}</span>` +
+      `<span>不透明像素</span><span>${a.opaque} / ${a.total}</span><span>填充率</span><span>${pct(a.fill)}</span>` +
+      `<span>半透明占比</span><span>${pct(a.semiRatio)}</span><span>平均 Alpha</span><span>${a.avgA.toFixed(0)}</span>` +
+      `<span>紧凑包围盒</span><span>${tightTxt}</span></div>` +
+      '<div style="margin-top:8px;color:var(--t2)">主色</div><div>' +
+      (a.colors.length ? a.colors.map(c => `<span style="display:inline-block;margin:4px 12px 0 0"><span class="sw" style="background:${c.hex}"></span><span style="font-family:var(--mono)">${c.hex} ${pct(c.pct)}</span></span>`).join('') : '—') + '</div>';
+  } else {
+    const ans = ss.map(getAn);
+    h += '<div class="kv">' + `<span>选中数量</span><span>${ss.length}</span>` +
+      `<span>面积合计</span><span>${ss.reduce((p, s) => p + s.w * s.h, 0)}</span>` +
+      `<span>平均填充率</span><span>${pct(ans.reduce((p, a) => p + a.fill, 0) / ans.length)}</span></div>`;
+  }
+  if (ss.length) h += `<div class="btns" style="margin-top:12px"><button data-act="trim">收紧到不透明边缘</button><button data-act="del">删除选中 (${ss.length})</button></div>`;
+  box.innerHTML = h;
+}
+$('#anBody').addEventListener('click', e => {
+  const t = e.target.closest('[data-set],[data-act]'); if (!t) return;
+  if (t.dataset.act === 'del') return deleteSel();
+  if (t.dataset.act === 'trim') return trimSel();
+  const ids = anSets[t.dataset.set] || [];
+  sel = new Set(ids); lastIdx = -1; selChanged();
+  if (ids.length) { const f = slices.find(s => s.id === ids[0]); if (f) centerOn(f); }
+  toast(`已选中 ${ids.length} 个切片`);
+});
+function trimSel() {
+  let n = 0;
+  for (const s of selected()) {
+    const bb = opaqueBBox(imgData.data, W, H, s.x, s.y, s.w, s.h, P.alpha);
+    if (bb && (bb.x !== s.x || bb.y !== s.y || bb.w !== s.w || bb.h !== s.h)) { Object.assign(s, bb); n++; }
+  }
+  if (n) { commit(); renderList(); selChanged(); }
+  toast(n ? `已收紧 ${n} 个切片（可撤销）` : '选中的切片已是最紧边界');
+}
+function invertSel() { sel = new Set(slices.filter(s => !sel.has(s.id)).map(s => s.id)); lastIdx = -1; selChanged(); }
+$('#bAll').onclick = () => { sel = new Set(slices.map(s => s.id)); selChanged(); };
+$('#bInv').onclick = invertSel;
+
+// ============ 键盘 ============
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && bgDd.classList.contains('open')) { bgOpen(false); $('#bgBtn').focus(); return; }
+  const tag = (e.target.tagName || '').toLowerCase();
+  if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
+  const mod = e.ctrlKey || e.metaKey, k = e.key.toLowerCase();
+  if (e.code === 'Space') { if (!spaceDown) { spaceDown = true; setCursor(); } e.preventDefault(); return; }
+  if (mod && k === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
+  if (mod && k === 'y') { e.preventDefault(); redo(); return; }
+  if (mod && k === 'a') { e.preventDefault(); sel = new Set(slices.map(s => s.id)); selChanged(); return; }
+  if (mod && k === 'i') { e.preventDefault(); invertSel(); return; }
+  if (mod) return;
+  if (k === 'v') setTool('select'); else if (k === 'r') setTool('draw'); else if (k === 'h') setTool('pan');
+  else if (k === 'f') fit(); else if (k === '1') $('#b100').click(); else if (k === 'm') mergeSel();
+  else if (k === 'delete' || k === 'backspace') { e.preventDefault(); deleteSel(); }
+  else if (k === 'escape') { sel.clear(); selChanged(); }
+  else if (k.startsWith('arrow')) {
+    e.preventDefault(); const st = e.shiftKey ? 10 : 1;
+    nudge(k === 'arrowleft' ? -st : k === 'arrowright' ? st : 0, k === 'arrowup' ? -st : k === 'arrowdown' ? st : 0);
+  }
+});
+window.addEventListener('keyup', e => { if (e.code === 'Space') { spaceDown = false; setCursor(); } });
+
+// ============ 主题（浅色 / 深色 / 跟随系统）============
+const THEME_KEY = 'asset-splitter-theme';
+const darkMq = window.matchMedia('(prefers-color-scheme: dark)');
+let themeMode = 'auto';
+try { themeMode = localStorage.getItem(THEME_KEY) || 'auto'; } catch (e) {}
+function applyTheme() {
+  const dark = themeMode === 'dark' || (themeMode === 'auto' && darkMq.matches);
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  document.querySelectorAll('#themeSw button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === themeMode)));
+  readTC(); draw();
+}
+document.querySelectorAll('#themeSw button').forEach(b => b.addEventListener('click', () => {
+  themeMode = b.dataset.mode;
+  try { localStorage.setItem(THEME_KEY, themeMode); } catch (e) {}
+  applyTheme();
+}));
+darkMq.addEventListener('change', () => { if (themeMode === 'auto') applyTheme(); });
+applyTheme();
+
+draw(); syncHist(); selChanged();
+</script>
+</body>
+</html>
