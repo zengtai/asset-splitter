@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Asset Splitter v0.4.2 · https://github.com/zengtai/asset-splitter -->
+<!-- Asset Splitter v0.6.0 · https://github.com/zengtai/asset-splitter -->
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
@@ -209,28 +209,32 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
 <body>
 <header>
   <div class="logo">Asset <b>Splitter</b></div>
-  <span class="ver" title="版本 0.4.2">v0.4.2</span>
-  <button id="bOpen" class="primary">导入图集</button>
+  <span class="ver" id="ver" title="Version 0.6.0">v0.6.0</span>
+  <button id="bOpen" class="primary" data-i18n="open">导入图集</button>
   <input id="file" type="file" accept="image/png,image/webp" hidden>
   <span class="sep"></span>
-  <button id="bUndo" class="icon" title="撤销 Ctrl+Z" disabled>↶</button>
-  <button id="bRedo" class="icon" title="重做 Ctrl+Shift+Z" disabled>↷</button>
+  <button id="bUndo" class="icon" data-i18n-title="undo" title="撤销 Ctrl+Z" disabled>↶</button>
+  <button id="bRedo" class="icon" data-i18n-title="redo" title="重做 Ctrl+Shift+Z" disabled>↷</button>
   <span class="sep"></span>
-  <button id="bZoomOut" class="icon" title="缩小">−</button>
+  <button id="bZoomOut" class="icon" data-i18n-title="zoomOut" title="缩小">−</button>
   <span id="zoomv" class="zoomv">100%</span>
-  <button id="bZoomIn" class="icon" title="放大">+</button>
-  <button id="bFit" title="适应窗口 F">适应<kbd>F</kbd></button>
-  <button id="b100" title="100% 显示 1">1:1</button>
+  <button id="bZoomIn" class="icon" data-i18n-title="zoomIn" title="放大">+</button>
+  <button id="bFit" data-i18n-title="fitTitle" data-i18n-html="fit" title="适应窗口 F">适应<kbd>F</kbd></button>
+  <button id="b100" data-i18n-title="b100" title="100% 显示 1">1:1</button>
   <span class="grow"></span>
-  <a class="gh" href="https://github.com/zengtai/asset-splitter" target="_blank" rel="noopener noreferrer" title="GitHub · zengtai/asset-splitter" aria-label="在 GitHub 上查看源码"><svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-  <div class="seg" id="themeSw" role="group" aria-label="主题"><button data-mode="light" title="浅色" aria-label="浅色" aria-pressed="false"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.5v1.4M8 13.1v1.4M1.5 8h1.4M13.1 8h1.4M3.4 3.4l1 1M11.6 11.6l1 1M12.6 3.4l-1 1M4.4 11.6l-1 1"/></svg></button><button data-mode="auto" title="跟随系统" aria-label="跟随系统" aria-pressed="true"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2.5" width="12" height="8.5" rx="1.8"/><path d="M5.5 13.8h5M8 11v2.8"/></svg></button><button data-mode="dark" title="深色" aria-label="深色" aria-pressed="false"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z"/></svg></button></div>
+  <a class="gh" href="https://github.com/zengtai/asset-splitter" target="_blank" rel="noopener noreferrer" title="GitHub · zengtai/asset-splitter" data-i18n-aria="ghLabel" aria-label="在 GitHub 上查看源码"><svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  <div class="seg" id="themeSw" role="group" data-i18n-aria="theme" aria-label="主题"><button data-mode="light" data-i18n-title="themeLight" data-i18n-aria="themeLight" title="浅色" aria-label="浅色" aria-pressed="false"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.5v1.4M8 13.1v1.4M1.5 8h1.4M13.1 8h1.4M3.4 3.4l1 1M11.6 11.6l1 1M12.6 3.4l-1 1M4.4 11.6l-1 1"/></svg></button><button data-mode="auto" data-i18n-title="themeAuto" data-i18n-aria="themeAuto" title="跟随系统" aria-label="跟随系统" aria-pressed="true"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2.5" width="12" height="8.5" rx="1.8"/><path d="M5.5 13.8h5M8 11v2.8"/></svg></button><button data-mode="dark" data-i18n-title="themeDark" data-i18n-aria="themeDark" title="深色" aria-label="深色" aria-pressed="false"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z"/></svg></button></div>
+  <div class="dd" id="langDd">
+    <button id="langBtn" class="ddbtn" data-i18n-title="lang" data-i18n-aria="lang" title="语言" aria-label="语言" aria-haspopup="listbox" aria-expanded="false"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true" style="opacity:1"><circle cx="8" cy="8" r="6.2"/><path d="M1.9 8h12.2M8 1.8c1.8 1.7 2.7 3.8 2.7 6.2S9.8 12.5 8 14.2C6.2 12.5 5.3 10.4 5.3 8S6.2 3.5 8 1.8z"/></svg><span id="langLabel">简</span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="menu" id="langMenu" role="listbox"></div>
+  </div>
   <div class="dd" id="bgDd">
-    <button id="bgBtn" class="ddbtn" title="预览背景" aria-haspopup="listbox" aria-expanded="false"><span id="bgSw" class="sw2 checker"></span><span id="bgLabel">棋盘格</span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button id="bgBtn" class="ddbtn" data-i18n-title="bgTitle" title="预览背景" aria-haspopup="listbox" aria-expanded="false"><span id="bgSw" class="sw2 checker"></span><span id="bgLabel">棋盘格</span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <div class="menu" id="bgMenu" role="listbox">
-      <button class="mi on" role="option" aria-selected="true" data-v="checker"><span class="sw2 checker"></span>棋盘格<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <button class="mi" role="option" aria-selected="false" data-v="black"><span class="sw2 black"></span>纯黑<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <button class="mi" role="option" aria-selected="false" data-v="white"><span class="sw2 white"></span>纯白<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <button class="mi" role="option" aria-selected="false" data-v="magenta"><span class="sw2 magenta"></span>品红<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="mi on" role="option" aria-selected="true" data-v="checker"><span class="sw2 checker"></span><span data-i18n="bgChecker">棋盘格</span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="mi" role="option" aria-selected="false" data-v="black"><span class="sw2 black"></span><span data-i18n="bgBlack">纯黑</span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="mi" role="option" aria-selected="false" data-v="white"><span class="sw2 white"></span><span data-i18n="bgWhite">纯白</span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="mi" role="option" aria-selected="false" data-v="magenta"><span class="sw2 magenta"></span><span data-i18n="bgMagenta">品红</span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
   </div>
   <button id="bZip" class="primary" disabled>导出</button>
@@ -238,67 +242,67 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
 
 <main>
   <aside class="l">
-    <div class="ph"><span><b>切片</b> <span id="count">0</span></span><span><button id="bAll" class="mini">全选</button> <button id="bInv" class="mini">反选</button></span></div>
+    <div class="ph"><span><b data-i18n="slices">切片</b> <span id="count">0</span></span><span><button id="bAll" class="mini" data-i18n="selAll">全选</button> <button id="bInv" class="mini" data-i18n="selInv">反选</button></span></div>
     <div id="list"><div class="hint">导入图集后，切片会显示在这里</div></div>
   </aside>
 
   <section id="stage">
     <canvas id="cv"></canvas>
     <div id="empty">
-      <div class="big">拖拽图集到这里，或点击「导入图集」</div>
-      <div>支持带透明通道的 PNG、WebP · 全程在本机处理，不上传</div>
-      <small>也可以直接粘贴图片（Ctrl+V）</small>
+      <div class="big" data-i18n="emptyBig">拖拽图集到这里，或点击「导入图集」</div>
+      <div data-i18n="emptySub">支持带透明通道的 PNG、WebP · 全程在本机处理，不上传</div>
+      <small data-i18n="emptyPaste">也可以直接粘贴图片（Ctrl+V）</small>
     </div>
     <div id="tools" class="float">
-      <button id="tSelect" class="on" title="选择 V">选择<kbd>V</kbd></button>
-      <button id="tDraw" title="框选新建切片 R">框选<kbd>R</kbd></button>
-      <button id="tPan" title="平移 H（或按住空格）">平移<kbd>H</kbd></button>
+      <button id="tSelect" class="on" data-i18n-title="toolSelectT" data-i18n-html="toolSelect" title="选择 V">选择<kbd>V</kbd></button>
+      <button id="tDraw" data-i18n-title="toolDrawT" data-i18n-html="toolDraw" title="框选新建切片 R">框选<kbd>R</kbd></button>
+      <button id="tPan" data-i18n-title="toolPanT" data-i18n-html="toolPan" title="平移 H（或按住空格）">平移<kbd>H</kbd></button>
     </div>
-    <div id="busy" class="float">检测中…</div>
+    <div id="busy" class="float" data-i18n="busy">检测中…</div>
   </section>
 
   <aside class="r">
     <div class="tabs">
-      <button data-tab="detect" class="on">检测</button>
-      <button data-tab="edit">编辑</button>
-      <button data-tab="analyze">分析</button>
-      <button data-tab="export">命名</button>
+      <button data-tab="detect" class="on" data-i18n="tab_detect">检测</button>
+      <button data-tab="edit" data-i18n="tab_edit">编辑</button>
+      <button data-tab="analyze" data-i18n="tab_analyze">分析</button>
+      <button data-tab="export" data-i18n="tab_export">命名</button>
     </div>
 
     <div class="pane on" id="p-detect">
-      <div class="f"><label>Alpha 阈值 <span id="vAlpha">8</span></label>
+      <div class="f"><label><span data-i18n="alpha">Alpha 阈值</span> <span id="vAlpha">8</span></label>
         <input id="iAlpha" type="range" min="0" max="254" value="8">
-        <div class="d">透明度不高于此值的像素视为背景</div></div>
-      <div class="f"><label>外扩 Padding <span><span id="vPad">0</span> px</span></label>
+        <div class="d" data-i18n="alphaD">透明度不高于此值的像素视为背景</div></div>
+      <div class="f"><label><span data-i18n="pad">外扩 Padding</span> <span><span id="vPad">0</span> px</span></label>
         <input id="iPad" type="range" min="0" max="32" value="0"></div>
-      <div class="f"><label>小切片过滤 <span><span id="vMin">2</span> px</span></label>
+      <div class="f"><label><span data-i18n="min">小切片过滤</span> <span><span id="vMin">2</span> px</span></label>
         <input id="iMin" type="range" min="1" max="64" value="2">
-        <div class="d">宽或高小于此值的切片会被丢弃</div></div>
-      <div class="f"><label>碎片合并距离 <span><span id="vGap">0</span> px</span></label>
+        <div class="d" data-i18n="minD">宽或高小于此值的切片会被丢弃</div></div>
+      <div class="f"><label><span data-i18n="gap">碎片合并距离</span> <span><span id="vGap">0</span> px</span></label>
         <input id="iGap" type="range" min="0" max="64" value="0">
-        <div class="d">0 为关闭；距离内的相邻碎片合并为一个素材</div></div>
-      <div class="btns"><button id="bRedetect">重新检测</button></div>
-      <div class="d" style="margin-top:8px;color:var(--t3)">调整参数会重新检测并替换当前切片（包括手动编辑），拖动滑块算一步，可用 Ctrl+Z 连同参数一起恢复。</div>
+        <div class="d" data-i18n="gapD">0 为关闭；距离内的相邻碎片合并为一个素材</div></div>
+      <div class="btns"><button id="bRedetect" data-i18n="redetect">重新检测</button></div>
+      <div class="d" data-i18n="detectNote" style="margin-top:8px;color:var(--t3)">调整参数会重新检测并替换当前切片（包括手动编辑），拖动滑块算一步，可用 Ctrl+Z 连同参数一起恢复。</div>
     </div>
 
     <div class="pane" id="p-edit">
-      <div id="editNone" class="hint">选中一个切片后可编辑坐标、尺寸和名称</div>
+      <div id="editNone" class="hint" data-i18n="editNone">选中一个切片后可编辑坐标、尺寸和名称</div>
       <div id="editOne" style="display:none">
-        <div class="f"><label>名称</label><input id="eName" type="text"></div>
+        <div class="f"><label data-i18n="name">名称</label><input id="eName" type="text"></div>
         <div class="row2 f">
           <div><label>X</label><input id="eX" type="number"></div>
           <div><label>Y</label><input id="eY" type="number"></div>
-          <div><label>宽</label><input id="eW" type="number" min="1"></div>
-          <div><label>高</label><input id="eH" type="number" min="1"></div>
+          <div><label data-i18n="w">宽</label><input id="eW" type="number" min="1"></div>
+          <div><label data-i18n="h">高</label><input id="eH" type="number" min="1"></div>
         </div>
       </div>
-      <label class="chk"><input id="cSnap" type="checkbox" checked> 框选后吸附到不透明边缘</label>
+      <label class="chk"><input id="cSnap" type="checkbox" checked> <span data-i18n="snap">框选后吸附到不透明边缘</span></label>
       <div class="btns">
-        <button id="bMerge" disabled>合并选中 (M)</button>
+        <button id="bMerge" disabled data-i18n="merge">合并选中 (M)</button>
         <button id="bDel" disabled>删除选中 (Del)</button>
       </div>
-      <details open><summary>快捷键</summary>
-        <div class="d" style="line-height:2">
+      <details open><summary data-i18n="shortcutsT">快捷键</summary>
+        <div class="d" style="line-height:2" data-i18n-html="shortcuts">
           <kbd>V</kbd> 选择 · <kbd>R</kbd> 框选新建 · <kbd>H</kbd> 平移 / 按住 <kbd>Space</kbd> / 中键<br>
           空白处拖动：框选多个切片<br>
           <kbd>滚轮</kbd> 缩放 · <kbd>F</kbd> 适应 · <kbd>1</kbd> 100%<br>
@@ -312,8 +316,8 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
     <div class="pane" id="p-analyze"><div class="an" id="anBody"></div></div>
 
     <div class="pane" id="p-export">
-      <div class="f"><label>命名前缀</label><input id="iPrefix" type="text" value="sprite_">
-        <div class="d">未手动命名的切片按「前缀 + 三位序号」导出，如 sprite_001.png</div></div>
+      <div class="f"><label data-i18n="prefixLabel">命名前缀</label><input id="iPrefix" type="text" value="sprite_">
+        <div class="d" data-i18n="prefixD">未手动命名的切片按「前缀 + 三位序号」导出，如 sprite_001.png</div></div>
       <div class="btns" style="margin-bottom:12px">
         <button id="bExpSel" class="primary" disabled>导出选中</button>
       </div>
@@ -326,7 +330,7 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
   <span id="sPos">x — y —</span>
   <span id="sSel">未选中</span>
   <span id="sImg">未导入</span>
-  <span class="ok">● 全程本地处理，文件不会上传</span>
+  <span class="ok" data-i18n="footLocal">● 全程本地处理，文件不会上传</span>
 </footer>
 <div id="toast"></div>
 
@@ -470,6 +474,387 @@ function makeZip(files) {
 }
 //</pure>
 
+// ============ 多语言 ============
+const pl = (n, one, many) => n === 1 ? one : many;
+const I18N = {
+  zh: {
+    open: '导入图集', undo: '撤销 Ctrl+Z', redo: '重做 Ctrl+Shift+Z', zoomOut: '缩小', zoomIn: '放大',
+    fitTitle: '适应窗口 F', fit: '适应<kbd>F</kbd>', b100: '100% 显示 1', ghLabel: '在 GitHub 上查看源码',
+    theme: '主题', themeLight: '浅色', themeAuto: '跟随系统', themeDark: '深色', lang: '语言',
+    bgTitle: '预览背景', bgChecker: '棋盘格', bgBlack: '纯黑', bgWhite: '纯白', bgMagenta: '品红', verTitle: '版本',
+    slices: '切片', selAll: '全选', selInv: '反选',
+    listEmpty: '导入图集后，切片会显示在这里', listNone: '没有检测到素材，可调整参数或用「框选」手动切',
+    emptyBig: '拖拽图集到这里，或点击「导入图集」', emptySub: '支持带透明通道的 PNG、WebP · 全程在本机处理，不上传', emptyPaste: '也可以直接粘贴图片（Ctrl+V）',
+    toolSelectT: '选择 V', toolSelect: '选择<kbd>V</kbd>', toolDrawT: '框选新建切片 R', toolDraw: '框选<kbd>R</kbd>', toolPanT: '平移 H（或按住空格）', toolPan: '平移<kbd>H</kbd>',
+    busy: '检测中…', tab_detect: '检测', tab_edit: '编辑', tab_analyze: '分析', tab_export: '命名',
+    alpha: 'Alpha 阈值', alphaD: '透明度不高于此值的像素视为背景', pad: '外扩 Padding', min: '小切片过滤', minD: '宽或高小于此值的切片会被丢弃',
+    gap: '碎片合并距离', gapD: '0 为关闭；距离内的相邻碎片合并为一个素材', redetect: '重新检测',
+    detectNote: '调整参数会重新检测并替换当前切片（包括手动编辑），拖动滑块算一步，可用 Ctrl+Z 连同参数一起恢复。',
+    editNone: '选中一个切片后可编辑坐标、尺寸和名称', editMulti: '已选中 {n} 个切片，可合并或删除',
+    name: '名称', w: '宽', h: '高', snap: '框选后吸附到不透明边缘', merge: '合并选中 (M)', del: '删除选中 (Del)', delN: '删除选中 ({n})',
+    shortcutsT: '快捷键',
+    shortcuts: '<kbd>V</kbd> 选择 · <kbd>R</kbd> 框选新建 · <kbd>H</kbd> 平移 / 按住 <kbd>Space</kbd> / 中键<br>空白处拖动：框选多个切片<br><kbd>滚轮</kbd> 缩放 · <kbd>F</kbd> 适应 · <kbd>1</kbd> 100%<br><kbd>方向键</kbd> 微调 1px（<kbd>Shift</kbd> 10px）<br><kbd>Ctrl</kbd>+<kbd>A</kbd> 全选 · <kbd>Ctrl</kbd>+<kbd>I</kbd> 反选<br>列表中 <kbd>Shift</kbd>+点击 连选 · <kbd>Ctrl</kbd>+点击 加选',
+    prefixLabel: '命名前缀', prefixD: '未手动命名的切片按「前缀 + 三位序号」导出，如 sprite_001.png', expSel0: '导出选中',
+    footLocal: '● 全程本地处理，文件不会上传', notOpened: '未导入',
+    selNone: '共 {n} 个切片', selOne: '选中 {w}×{h} @ {x},{y}', selMany: '选中 {n} 个',
+    errType: '仅支持带透明通道的 PNG / WebP', confirmLoad: '当前图集有手动编辑，导入新图集会清空切片和撤销历史，且无法恢复。继续吗？',
+    errRead: '无法读取这张图片', noAlpha: '这张图没有透明像素，自动检测无法分割，请用「框选」手动切',
+    detected: '检测到 {n} 个素材', redetLost: '重新检测：{n} 个素材，手动编辑已被替换（Ctrl+Z 可恢复）', redet: '重新检测：{n} 个素材（可撤销）',
+    deleted: '已删除 {n} 个切片，Ctrl+Z 可撤销', emptySel: '选区内没有不透明像素',
+    exported: '已导出 {name}', packing: '正在打包…', exportedN: '已导出 {n} 个素材',
+    expAll0: '导出', expAll1: '导出 PNG', expAllN: '导出全部 ZIP（{n}）', expSel1: '导出选中 · PNG', expSelN: '导出选中 · ZIP（{n}）',
+    info0: '导入图集并检测后即可导出。', infoOne: '将导出 {name}（{w}×{h}）。',
+    infoNoSel: '未选中切片。右上角“导出”会把 {n} 个切片打包为 {zip}；选中一个或多个切片后，可在这里只导出选中的。',
+    infoSel1: '选中的切片将导出为 {name}（{w}×{h}）。', infoSelN: '选中的 {n} 个切片将打包为 {zip}。',
+    flag_dup: '重复', flag_small: '过小', flag_big: '过大', flag_edge: '贴边', flag_ratio: '极端长宽比', flag_semi: '半透明多',
+    anEmpty: '导入图集并检测后，可在这里分析切片', anOverview: '概览', anCount: '切片数量', anW: '宽 最小 / 中位 / 最大', anH: '高 最小 / 中位 / 最大',
+    anAvg: '平均尺寸', anCover: '切片面积占图集', anHist: '尺寸分布（按长边，点击选中）', anIssues: '问题检查（点击选中，可再删除）',
+    issDup: '重复切片（{n} 组）', issDupD: '像素内容完全相同', issDupEx: '多余副本', issDupExD: '每组保留第一个，其余选中',
+    issSmall: '过小', issSmallD: '宽或高 < 8px，或面积 < 中位数的 10%', issBig: '过大', issBigD: '面积 > 中位数的 8 倍，可能误合并',
+    issEdge: '触及图集边缘', issEdgeD: '素材像素贴着图集边界，可能被裁切', issRatio: '极端长宽比', issRatioD: '长边 / 短边 > 8',
+    issSemi: '半透明占比高', issSemiD: '半透明像素 > 50%，可能是阴影或光晕',
+    anSel: '选中切片', anSelHint: '在画布或列表中选中切片，查看详细分析',
+    tightOk: '（已最紧）', tightCan: '（可收紧）', tightNone: '无不透明像素',
+    kSize: '尺寸', kPos: '位置', kOpaque: '不透明像素', kFill: '填充率', kSemi: '半透明占比', kAvgA: '平均 Alpha', kTight: '紧凑包围盒', kColors: '主色',
+    kCount: '选中数量', kArea: '面积合计', kAvgFill: '平均填充率', trim: '收紧到不透明边缘',
+    selectedToast: '已选中 {n} 个切片', trimmed: '已收紧 {n} 个切片（可撤销）', trimNone: '选中的切片已是最紧边界'
+  },
+  en: {
+    open: 'Open image', undo: 'Undo Ctrl+Z', redo: 'Redo Ctrl+Shift+Z', zoomOut: 'Zoom out', zoomIn: 'Zoom in',
+    fitTitle: 'Fit to window F', fit: 'Fit<kbd>F</kbd>', b100: 'Actual size 1', ghLabel: 'View source on GitHub',
+    theme: 'Theme', themeLight: 'Light', themeAuto: 'System', themeDark: 'Dark', lang: 'Language',
+    bgTitle: 'Preview background', bgChecker: 'Checkerboard', bgBlack: 'Black', bgWhite: 'White', bgMagenta: 'Magenta', verTitle: 'Version',
+    slices: 'Slices', selAll: 'All', selInv: 'Invert',
+    listEmpty: 'Slices will appear here after you open an image', listNone: 'No sprites detected. Adjust the parameters, or slice manually with the Draw tool',
+    emptyBig: 'Drop an atlas here, or click "Open image"', emptySub: 'PNG and WebP with transparency · processed locally, never uploaded', emptyPaste: 'You can also paste an image (Ctrl+V)',
+    toolSelectT: 'Select V', toolSelect: 'Select<kbd>V</kbd>', toolDrawT: 'Draw a new slice R', toolDraw: 'Draw<kbd>R</kbd>', toolPanT: 'Pan H (or hold Space)', toolPan: 'Pan<kbd>H</kbd>',
+    busy: 'Detecting…', tab_detect: 'Detect', tab_edit: 'Edit', tab_analyze: 'Analyze', tab_export: 'Naming',
+    alpha: 'Alpha threshold', alphaD: 'Pixels with alpha at or below this value are treated as background', pad: 'Padding', min: 'Min size filter', minD: 'Slices narrower or shorter than this are discarded',
+    gap: 'Fragment merge gap', gapD: '0 = off. Neighboring fragments within this distance are merged into one sprite', redetect: 'Re-detect',
+    detectNote: 'Changing a parameter re-detects and replaces the current slices (including manual edits). One slider drag counts as one step; Ctrl+Z restores the slices together with the parameters.',
+    editNone: 'Select a slice to edit its position, size and name', editMulti: v => `${v.n} slices selected. You can merge or delete them`,
+    name: 'Name', w: 'W', h: 'H', snap: 'Snap drawn slices to opaque edges', merge: 'Merge selected (M)', del: 'Delete selected (Del)', delN: 'Delete selected ({n})',
+    shortcutsT: 'Shortcuts',
+    shortcuts: '<kbd>V</kbd> Select · <kbd>R</kbd> Draw slice · <kbd>H</kbd> Pan / hold <kbd>Space</kbd> / middle button<br>Drag on empty space: marquee-select slices<br><kbd>Wheel</kbd> Zoom · <kbd>F</kbd> Fit · <kbd>1</kbd> 100%<br><kbd>Arrow keys</kbd> Nudge 1 px (<kbd>Shift</kbd> 10 px)<br><kbd>Ctrl</kbd>+<kbd>A</kbd> Select all · <kbd>Ctrl</kbd>+<kbd>I</kbd> Invert<br>In the list: <kbd>Shift</kbd>+click range · <kbd>Ctrl</kbd>+click toggle',
+    prefixLabel: 'Name prefix', prefixD: 'Unnamed slices are exported as "prefix + 3-digit index", e.g. sprite_001.png', expSel0: 'Export selected',
+    footLocal: '● Processed locally. Nothing is uploaded', notOpened: 'No image',
+    selNone: v => `${v.n} ${pl(v.n, 'slice', 'slices')}`, selOne: 'Selected {w}×{h} @ {x},{y}', selMany: '{n} selected',
+    errType: 'Only PNG / WebP images with transparency are supported', confirmLoad: 'You have manual edits. Opening a new image clears the slices and undo history, and this cannot be undone. Continue?',
+    errRead: "Couldn't read this image", noAlpha: "This image has no transparent pixels, so auto-detect can't split it. Use the Draw tool to slice manually",
+    detected: v => `Detected ${v.n} ${pl(v.n, 'sprite', 'sprites')}`,
+    redetLost: v => `Re-detected ${v.n} ${pl(v.n, 'sprite', 'sprites')}. Manual edits were replaced (Ctrl+Z to restore)`,
+    redet: v => `Re-detected ${v.n} ${pl(v.n, 'sprite', 'sprites')} (undoable)`,
+    deleted: v => `Deleted ${v.n} ${pl(v.n, 'slice', 'slices')}. Press Ctrl+Z to undo`, emptySel: 'No opaque pixels in the selection',
+    exported: 'Exported {name}', packing: 'Packing…', exportedN: v => `Exported ${v.n} ${pl(v.n, 'sprite', 'sprites')}`,
+    expAll0: 'Export', expAll1: 'Export PNG', expAllN: 'Export all as ZIP ({n})', expSel1: 'Export selected · PNG', expSelN: 'Export selected · ZIP ({n})',
+    info0: 'Open an image and run detection to export.', infoOne: 'Will export {name} ({w}×{h}).',
+    infoNoSel: 'Nothing selected. "Export" at the top right packs all {n} slices into {zip}. Select one or more slices to export only those here.',
+    infoSel1: 'The selected slice will be exported as {name} ({w}×{h}).', infoSelN: 'The {n} selected slices will be packed into {zip}.',
+    flag_dup: 'Duplicate', flag_small: 'Too small', flag_big: 'Too big', flag_edge: 'Touches edge', flag_ratio: 'Extreme ratio', flag_semi: 'Mostly translucent',
+    anEmpty: 'Open an image and run detection to analyze slices here', anOverview: 'Overview', anCount: 'Slices', anW: 'Width min / median / max', anH: 'Height min / median / max',
+    anAvg: 'Average size', anCover: 'Slice area vs atlas', anHist: 'Size distribution (by longest side, click to select)', anIssues: 'Checks (click to select, then delete if needed)',
+    issDupD: 'Identical pixel content', issDupEx: 'Extra copies', issDupExD: 'Keeps the first of each group and selects the rest',
+    issSmall: 'Too small', issSmallD: 'Width or height < 8 px, or area < 10% of the median', issBig: 'Too big', issBigD: 'Area > 8× the median; may be wrongly merged',
+    issEdge: 'Touches atlas edge', issEdgeD: 'Opaque pixels touch the atlas border; may be cropped', issRatio: 'Extreme aspect ratio', issRatioD: 'Long side / short side > 8',
+    issSemi: 'High translucency', issSemiD: 'Translucent pixels > 50%; may be a shadow or glow',
+    anSel: 'Selected slice', anSelHint: 'Select a slice on the canvas or in the list to see its analysis',
+    tightOk: ' (already tight)', tightCan: ' (can be tightened)', tightNone: 'No opaque pixels',
+    kSize: 'Size', kPos: 'Position', kOpaque: 'Opaque pixels', kFill: 'Fill', kSemi: 'Translucent share', kAvgA: 'Average alpha', kTight: 'Tight bounding box', kColors: 'Dominant colors',
+    kCount: 'Selected', kArea: 'Total area', kAvgFill: 'Average fill', trim: 'Trim to opaque edges',
+    selectedToast: v => `Selected ${v.n} ${pl(v.n, 'slice', 'slices')}`, trimmed: v => `Trimmed ${v.n} ${pl(v.n, 'slice', 'slices')} (undoable)`, trimNone: 'The selected slices are already tight'
+  }
+};
+I18N.en.issDup = v => `Duplicate slices (${v.n} ${pl(v.n, 'group', 'groups')})`;
+I18N['zh-TW'] = {
+  open: '匯入圖集', undo: '復原 Ctrl+Z', redo: '重做 Ctrl+Shift+Z', zoomOut: '縮小', zoomIn: '放大',
+  fitTitle: '符合視窗 F', fit: '符合<kbd>F</kbd>', b100: '以 100% 顯示 1', ghLabel: '在 GitHub 上檢視原始碼',
+  theme: '主題', themeLight: '淺色', themeAuto: '跟隨系統', themeDark: '深色', lang: '語言',
+  bgTitle: '預覽背景', bgChecker: '棋盤格', bgBlack: '純黑', bgWhite: '純白', bgMagenta: '洋紅', verTitle: '版本',
+  slices: '切片', selAll: '全選', selInv: '反選',
+  listEmpty: '匯入圖集後，切片會顯示在這裡', listNone: '沒有偵測到素材，可調整參數或用「框選」手動切',
+  emptyBig: '將圖集拖曳到這裡，或點選「匯入圖集」', emptySub: '支援帶透明通道的 PNG、WebP · 全程在本機處理，不會上傳', emptyPaste: '也可以直接貼上圖片（Ctrl+V）',
+  toolSelectT: '選取 V', toolSelect: '選取<kbd>V</kbd>', toolDrawT: '框選新增切片 R', toolDraw: '框選<kbd>R</kbd>', toolPanT: '平移 H（或按住空白鍵）', toolPan: '平移<kbd>H</kbd>',
+  busy: '偵測中…', tab_detect: '偵測', tab_edit: '編輯', tab_analyze: '分析', tab_export: '命名',
+  alpha: 'Alpha 閾值', alphaD: '透明度不高於此值的像素視為背景', pad: '外擴 Padding', min: '小切片過濾', minD: '寬或高小於此值的切片會被捨棄',
+  gap: '碎片合併距離', gapD: '0 為關閉；距離內的相鄰碎片會合併為一個素材', redetect: '重新偵測',
+  detectNote: '調整參數會重新偵測並取代目前的切片（包括手動編輯），拖曳滑桿算一步，可用 Ctrl+Z 連同參數一起還原。',
+  editNone: '選取一個切片後，可編輯座標、尺寸和名稱', editMulti: '已選取 {n} 個切片，可合併或刪除',
+  name: '名稱', w: '寬', h: '高', snap: '框選後吸附到不透明邊緣', merge: '合併選取 (M)', del: '刪除選取 (Del)', delN: '刪除選取 ({n})',
+  shortcutsT: '快速鍵',
+  shortcuts: '<kbd>V</kbd> 選取 · <kbd>R</kbd> 框選新增 · <kbd>H</kbd> 平移 / 按住 <kbd>Space</kbd> / 滑鼠中鍵<br>空白處拖曳：框選多個切片<br><kbd>滾輪</kbd> 縮放 · <kbd>F</kbd> 符合視窗 · <kbd>1</kbd> 100%<br><kbd>方向鍵</kbd> 微調 1px（<kbd>Shift</kbd> 10px）<br><kbd>Ctrl</kbd>+<kbd>A</kbd> 全選 · <kbd>Ctrl</kbd>+<kbd>I</kbd> 反選<br>清單中 <kbd>Shift</kbd>+點選 連選 · <kbd>Ctrl</kbd>+點選 加選',
+  prefixLabel: '命名前綴', prefixD: '未手動命名的切片會以「前綴 + 三位數序號」匯出，如 sprite_001.png', expSel0: '匯出選取',
+  footLocal: '● 全程在本機處理，檔案不會上傳', notOpened: '未匯入',
+  selNone: '共 {n} 個切片', selOne: '已選取 {w}×{h} @ {x},{y}', selMany: '已選取 {n} 個',
+  errType: '僅支援帶透明通道的 PNG / WebP', confirmLoad: '目前圖集有手動編輯，匯入新圖集會清空切片和復原記錄，且無法還原。要繼續嗎？',
+  errRead: '無法讀取這張圖片', noAlpha: '這張圖沒有透明像素，自動偵測無法分割，請用「框選」手動切',
+  detected: '偵測到 {n} 個素材', redetLost: '重新偵測：{n} 個素材，手動編輯已被取代（Ctrl+Z 可還原）', redet: '重新偵測：{n} 個素材（可復原）',
+  deleted: '已刪除 {n} 個切片，Ctrl+Z 可復原', emptySel: '選取範圍內沒有不透明像素',
+  exported: '已匯出 {name}', packing: '正在打包…', exportedN: '已匯出 {n} 個素材',
+  expAll0: '匯出', expAll1: '匯出 PNG', expAllN: '匯出全部 ZIP（{n}）', expSel1: '匯出選取 · PNG', expSelN: '匯出選取 · ZIP（{n}）',
+  info0: '匯入圖集並偵測後即可匯出。', infoOne: '將匯出 {name}（{w}×{h}）。',
+  infoNoSel: '未選取切片。右上角「匯出」會把 {n} 個切片打包為 {zip}；選取一個或多個切片後，可在這裡只匯出選取的。',
+  infoSel1: '選取的切片將匯出為 {name}（{w}×{h}）。', infoSelN: '選取的 {n} 個切片將打包為 {zip}。',
+  flag_dup: '重複', flag_small: '過小', flag_big: '過大', flag_edge: '貼邊', flag_ratio: '極端長寬比', flag_semi: '半透明多',
+  anEmpty: '匯入圖集並偵測後，可在這裡分析切片', anOverview: '概覽', anCount: '切片數量', anW: '寬 最小 / 中位 / 最大', anH: '高 最小 / 中位 / 最大',
+  anAvg: '平均尺寸', anCover: '切片面積占圖集', anHist: '尺寸分布（依長邊，點選即可選取）', anIssues: '問題檢查（點選即可選取，之後可刪除）',
+  issDup: '重複切片（{n} 組）', issDupD: '像素內容完全相同', issDupEx: '多餘副本', issDupExD: '每組保留第一個，其餘選取',
+  issSmall: '過小', issSmallD: '寬或高 < 8px，或面積 < 中位數的 10%', issBig: '過大', issBigD: '面積 > 中位數的 8 倍，可能誤合併',
+  issEdge: '觸及圖集邊緣', issEdgeD: '素材像素貼著圖集邊界，可能被裁切', issRatio: '極端長寬比', issRatioD: '長邊 / 短邊 > 8',
+  issSemi: '半透明占比高', issSemiD: '半透明像素 > 50%，可能是陰影或光暈',
+  anSel: '選取的切片', anSelHint: '在畫布或清單中選取切片，即可查看詳細分析',
+  tightOk: '（已最緊）', tightCan: '（可收緊）', tightNone: '無不透明像素',
+  kSize: '尺寸', kPos: '位置', kOpaque: '不透明像素', kFill: '填滿率', kSemi: '半透明占比', kAvgA: '平均 Alpha', kTight: '緊湊邊界框', kColors: '主色',
+  kCount: '選取數量', kArea: '面積合計', kAvgFill: '平均填滿率', trim: '收緊到不透明邊緣',
+  selectedToast: '已選取 {n} 個切片', trimmed: '已收緊 {n} 個切片（可復原）', trimNone: '選取的切片已是最緊邊界'
+};
+I18N.ja = {
+  open: '画像を開く', undo: '元に戻す Ctrl+Z', redo: 'やり直す Ctrl+Shift+Z', zoomOut: '縮小', zoomIn: '拡大',
+  fitTitle: 'ウィンドウに合わせる F', fit: '全体<kbd>F</kbd>', b100: '等倍表示 1', ghLabel: 'GitHub でソースを見る',
+  theme: 'テーマ', themeLight: 'ライト', themeAuto: 'システム', themeDark: 'ダーク', lang: '言語',
+  bgTitle: 'プレビュー背景', bgChecker: '市松模様', bgBlack: '黒', bgWhite: '白', bgMagenta: 'マゼンタ', verTitle: 'バージョン',
+  slices: 'スライス', selAll: '全選択', selInv: '反転',
+  listEmpty: '画像を開くと、ここにスライスが表示されます', listNone: 'スプライトが検出されませんでした。パラメータを調整するか、「矩形」ツールで手動で切り出してください',
+  emptyBig: 'ここに画像をドロップするか、「画像を開く」をクリック', emptySub: '透過 PNG / WebP に対応 · すべてローカルで処理され、アップロードされません', emptyPaste: '画像の貼り付け（Ctrl+V）も使えます',
+  toolSelectT: '選択 V', toolSelect: '選択<kbd>V</kbd>', toolDrawT: '新しいスライスを描く R', toolDraw: '矩形<kbd>R</kbd>', toolPanT: '移動 H（またはスペースキー長押し）', toolPan: '移動<kbd>H</kbd>',
+  busy: '検出中…', tab_detect: '検出', tab_edit: '編集', tab_analyze: '分析', tab_export: '名前',
+  alpha: 'アルファしきい値', alphaD: 'アルファがこの値以下のピクセルは背景として扱います', pad: 'パディング', min: '小スライスの除外', minD: '幅または高さがこの値より小さいスライスは破棄されます',
+  gap: '断片の結合距離', gapD: '0 でオフ。この距離内の隣り合う断片を 1 つのスプライトに結合します', redetect: '再検出',
+  detectNote: 'パラメータを変更すると再検出され、現在のスライス（手動編集を含む）が置き換わります。スライダーのドラッグは 1 操作として記録され、Ctrl+Z でパラメータごと元に戻せます。',
+  editNone: 'スライスを選択すると、位置・サイズ・名前を編集できます', editMulti: '{n} 個のスライスを選択中。結合または削除できます',
+  name: '名前', w: '幅', h: '高さ', snap: '描画後に不透明な端へスナップ', merge: '選択を結合 (M)', del: '選択を削除 (Del)', delN: '選択を削除 ({n})',
+  shortcutsT: 'ショートカット',
+  shortcuts: '<kbd>V</kbd> 選択 · <kbd>R</kbd> 矩形で作成 · <kbd>H</kbd> 移動 / <kbd>Space</kbd> 長押し / 中ボタン<br>空白部分をドラッグ：複数スライスを範囲選択<br><kbd>ホイール</kbd> ズーム · <kbd>F</kbd> 全体表示 · <kbd>1</kbd> 100%<br><kbd>矢印キー</kbd> 1px 微調整（<kbd>Shift</kbd> で 10px）<br><kbd>Ctrl</kbd>+<kbd>A</kbd> 全選択 · <kbd>Ctrl</kbd>+<kbd>I</kbd> 反転<br>リスト内：<kbd>Shift</kbd>+クリックで範囲選択 · <kbd>Ctrl</kbd>+クリックで追加選択',
+  prefixLabel: '名前の接頭辞', prefixD: '名前を付けていないスライスは「接頭辞 + 3 桁の連番」で書き出されます（例：sprite_001.png）', expSel0: '選択を書き出し',
+  footLocal: '● すべてローカルで処理され、ファイルはアップロードされません', notOpened: '未読み込み',
+  selNone: '{n} 個のスライス', selOne: '選択 {w}×{h} @ {x},{y}', selMany: '{n} 個を選択',
+  errType: '透過情報のある PNG / WebP のみ対応しています', confirmLoad: '手動編集があります。新しい画像を開くとスライスと履歴が消去され、元に戻せません。続行しますか？',
+  errRead: 'この画像を読み込めませんでした', noAlpha: 'この画像には透明ピクセルがないため、自動検出では分割できません。「矩形」ツールで手動で切り出してください',
+  detected: '{n} 個のスプライトを検出しました', redetLost: '再検出：{n} 個のスプライト。手動編集は置き換えられました（Ctrl+Z で復元）', redet: '再検出：{n} 個のスプライト（元に戻せます）',
+  deleted: '{n} 個のスライスを削除しました。Ctrl+Z で元に戻せます', emptySel: '選択範囲に不透明ピクセルがありません',
+  exported: '{name} を書き出しました', packing: 'パッケージ化中…', exportedN: '{n} 個のスプライトを書き出しました',
+  expAll0: '書き出し', expAll1: 'PNG を書き出し', expAllN: 'すべて ZIP で書き出し（{n}）', expSel1: '選択を書き出し · PNG', expSelN: '選択を書き出し · ZIP（{n}）',
+  info0: '画像を開いて検出すると書き出せます。', infoOne: '{name}（{w}×{h}）を書き出します。',
+  infoNoSel: 'スライスが選択されていません。右上の「書き出し」は {n} 個のスライスを {zip} にまとめます。1 つ以上選択すると、ここで選択分だけ書き出せます。',
+  infoSel1: '選択したスライスを {name}（{w}×{h}）として書き出します。', infoSelN: '選択した {n} 個のスライスを {zip} にまとめます。',
+  flag_dup: '重複', flag_small: '小さい', flag_big: '大きい', flag_edge: '端に接触', flag_ratio: '極端な縦横比', flag_semi: '半透明が多い',
+  anEmpty: '画像を開いて検出すると、ここでスライスを分析できます', anOverview: '概要', anCount: 'スライス数', anW: '幅 最小 / 中央値 / 最大', anH: '高さ 最小 / 中央値 / 最大',
+  anAvg: '平均サイズ', anCover: '画像に占めるスライス面積', anHist: 'サイズ分布（長辺基準・クリックで選択）', anIssues: 'チェック（クリックで選択、必要なら削除）',
+  issDup: '重複スライス（{n} グループ）', issDupD: 'ピクセル内容が完全に同じ', issDupEx: '余分なコピー', issDupExD: '各グループの最初の 1 つを残し、残りを選択',
+  issSmall: '小さい', issSmallD: '幅または高さが 8px 未満、または面積が中央値の 10% 未満', issBig: '大きい', issBigD: '面積が中央値の 8 倍超。誤って結合された可能性があります',
+  issEdge: '画像の端に接触', issEdgeD: '不透明ピクセルが画像の境界に接しており、切れている可能性があります', issRatio: '極端な縦横比', issRatioD: '長辺 / 短辺 > 8',
+  issSemi: '半透明の割合が高い', issSemiD: '半透明ピクセルが 50% 超。影やグローの可能性があります',
+  anSel: '選択中のスライス', anSelHint: 'キャンバスまたはリストでスライスを選択すると、詳細な分析が表示されます',
+  tightOk: '（最小）', tightCan: '（縮小可能）', tightNone: '不透明ピクセルなし',
+  kSize: 'サイズ', kPos: '位置', kOpaque: '不透明ピクセル', kFill: '充填率', kSemi: '半透明の割合', kAvgA: '平均アルファ', kTight: '最小外接矩形', kColors: '主要な色',
+  kCount: '選択数', kArea: '面積合計', kAvgFill: '平均充填率', trim: '不透明な端まで縮める',
+  selectedToast: '{n} 個のスライスを選択しました', trimmed: '{n} 個のスライスを縮めました（元に戻せます）', trimNone: '選択したスライスはすでに最小です'
+};
+I18N.ko = {
+  open: '이미지 열기', undo: '실행 취소 Ctrl+Z', redo: '다시 실행 Ctrl+Shift+Z', zoomOut: '축소', zoomIn: '확대',
+  fitTitle: '창에 맞춤 F', fit: '맞춤<kbd>F</kbd>', b100: '100% 보기 1', ghLabel: 'GitHub에서 소스 보기',
+  theme: '테마', themeLight: '라이트', themeAuto: '시스템', themeDark: '다크', lang: '언어',
+  bgTitle: '미리보기 배경', bgChecker: '체크무늬', bgBlack: '검정', bgWhite: '흰색', bgMagenta: '마젠타', verTitle: '버전',
+  slices: '슬라이스', selAll: '전체', selInv: '반전',
+  listEmpty: '이미지를 열면 슬라이스가 여기에 표시됩니다', listNone: '감지된 스프라이트가 없습니다. 매개변수를 조정하거나 「그리기」 도구로 직접 자르세요',
+  emptyBig: '이미지를 여기에 끌어다 놓거나 「이미지 열기」를 클릭하세요', emptySub: '투명 채널이 있는 PNG, WebP 지원 · 모든 처리는 로컬에서 이뤄지며 업로드되지 않습니다', emptyPaste: '이미지를 바로 붙여넣을 수도 있습니다 (Ctrl+V)',
+  toolSelectT: '선택 V', toolSelect: '선택<kbd>V</kbd>', toolDrawT: '새 슬라이스 그리기 R', toolDraw: '그리기<kbd>R</kbd>', toolPanT: '이동 H (또는 스페이스바 누르기)', toolPan: '이동<kbd>H</kbd>',
+  busy: '감지 중…', tab_detect: '감지', tab_edit: '편집', tab_analyze: '분석', tab_export: '이름',
+  alpha: '알파 임계값', alphaD: '알파가 이 값 이하인 픽셀은 배경으로 처리합니다', pad: '패딩', min: '작은 슬라이스 필터', minD: '너비 또는 높이가 이 값보다 작은 슬라이스는 버립니다',
+  gap: '조각 병합 거리', gapD: '0이면 끔. 이 거리 안의 인접한 조각을 하나의 스프라이트로 합칩니다', redetect: '다시 감지',
+  detectNote: '매개변수를 바꾸면 다시 감지하여 현재 슬라이스(수동 편집 포함)를 대체합니다. 슬라이더를 한 번 드래그하면 한 단계로 기록되며, Ctrl+Z로 매개변수와 함께 복원할 수 있습니다.',
+  editNone: '슬라이스를 선택하면 좌표, 크기, 이름을 편집할 수 있습니다', editMulti: '슬라이스 {n}개 선택됨. 병합하거나 삭제할 수 있습니다',
+  name: '이름', w: '너비', h: '높이', snap: '그린 뒤 불투명 가장자리에 맞춤', merge: '선택 병합 (M)', del: '선택 삭제 (Del)', delN: '선택 삭제 ({n})',
+  shortcutsT: '단축키',
+  shortcuts: '<kbd>V</kbd> 선택 · <kbd>R</kbd> 그려서 만들기 · <kbd>H</kbd> 이동 / <kbd>Space</kbd> 누르기 / 가운데 버튼<br>빈 곳 드래그: 여러 슬라이스 범위 선택<br><kbd>휠</kbd> 확대/축소 · <kbd>F</kbd> 맞춤 · <kbd>1</kbd> 100%<br><kbd>방향키</kbd> 1px 미세 이동 (<kbd>Shift</kbd> 10px)<br><kbd>Ctrl</kbd>+<kbd>A</kbd> 전체 선택 · <kbd>Ctrl</kbd>+<kbd>I</kbd> 반전<br>목록에서: <kbd>Shift</kbd>+클릭 범위 선택 · <kbd>Ctrl</kbd>+클릭 추가 선택',
+  prefixLabel: '이름 접두사', prefixD: '이름을 지정하지 않은 슬라이스는 「접두사 + 3자리 번호」로 내보냅니다. 예: sprite_001.png', expSel0: '선택 내보내기',
+  footLocal: '● 모든 처리가 로컬에서 이뤄지며 파일은 업로드되지 않습니다', notOpened: '열린 이미지 없음',
+  selNone: '슬라이스 {n}개', selOne: '선택 {w}×{h} @ {x},{y}', selMany: '{n}개 선택됨',
+  errType: '투명 채널이 있는 PNG / WebP만 지원합니다', confirmLoad: '수동 편집 내용이 있습니다. 새 이미지를 열면 슬라이스와 실행 취소 기록이 지워지며 되돌릴 수 없습니다. 계속할까요?',
+  errRead: '이 이미지를 읽을 수 없습니다', noAlpha: '이 이미지에는 투명 픽셀이 없어 자동 감지로 나눌 수 없습니다. 「그리기」 도구로 직접 자르세요',
+  detected: '스프라이트 {n}개를 감지했습니다', redetLost: '다시 감지: 스프라이트 {n}개. 수동 편집이 대체되었습니다 (Ctrl+Z로 복원)', redet: '다시 감지: 스프라이트 {n}개 (실행 취소 가능)',
+  deleted: '슬라이스 {n}개를 삭제했습니다. Ctrl+Z로 되돌릴 수 있습니다', emptySel: '선택 영역에 불투명 픽셀이 없습니다',
+  exported: '{name} 내보냄', packing: '압축 중…', exportedN: '스프라이트 {n}개를 내보냈습니다',
+  expAll0: '내보내기', expAll1: 'PNG 내보내기', expAllN: '전체 ZIP으로 내보내기 ({n})', expSel1: '선택 내보내기 · PNG', expSelN: '선택 내보내기 · ZIP ({n})',
+  info0: '이미지를 열고 감지한 뒤 내보낼 수 있습니다.', infoOne: '{name} ({w}×{h})을(를) 내보냅니다.',
+  infoNoSel: '선택된 슬라이스가 없습니다. 오른쪽 위의 「내보내기」는 슬라이스 {n}개를 {zip}(으)로 묶습니다. 하나 이상 선택하면 여기서 선택한 것만 내보낼 수 있습니다.',
+  infoSel1: '선택한 슬라이스를 {name} ({w}×{h})(으)로 내보냅니다.', infoSelN: '선택한 슬라이스 {n}개를 {zip}(으)로 묶습니다.',
+  flag_dup: '중복', flag_small: '너무 작음', flag_big: '너무 큼', flag_edge: '가장자리 접촉', flag_ratio: '극단적 비율', flag_semi: '반투명 많음',
+  anEmpty: '이미지를 열고 감지하면 여기서 슬라이스를 분석할 수 있습니다', anOverview: '개요', anCount: '슬라이스 수', anW: '너비 최소 / 중앙값 / 최대', anH: '높이 최소 / 중앙값 / 최대',
+  anAvg: '평균 크기', anCover: '이미지 대비 슬라이스 면적', anHist: '크기 분포 (긴 변 기준, 클릭하여 선택)', anIssues: '문제 검사 (클릭하여 선택, 필요하면 삭제)',
+  issDup: '중복 슬라이스 ({n}개 그룹)', issDupD: '픽셀 내용이 완전히 동일', issDupEx: '불필요한 사본', issDupExD: '그룹마다 첫 번째만 남기고 나머지를 선택',
+  issSmall: '너무 작음', issSmallD: '너비 또는 높이 < 8px, 또는 면적 < 중앙값의 10%', issBig: '너무 큼', issBigD: '면적 > 중앙값의 8배. 잘못 병합되었을 수 있습니다',
+  issEdge: '이미지 가장자리 접촉', issEdgeD: '불투명 픽셀이 이미지 경계에 닿아 잘렸을 수 있습니다', issRatio: '극단적 가로세로 비율', issRatioD: '긴 변 / 짧은 변 > 8',
+  issSemi: '반투명 비율 높음', issSemiD: '반투명 픽셀 > 50%. 그림자나 글로우일 수 있습니다',
+  anSel: '선택한 슬라이스', anSelHint: '캔버스나 목록에서 슬라이스를 선택하면 상세 분석이 표시됩니다',
+  tightOk: ' (이미 최소)', tightCan: ' (줄일 수 있음)', tightNone: '불투명 픽셀 없음',
+  kSize: '크기', kPos: '위치', kOpaque: '불투명 픽셀', kFill: '채움률', kSemi: '반투명 비율', kAvgA: '평균 알파', kTight: '최소 경계 상자', kColors: '주요 색상',
+  kCount: '선택 수', kArea: '면적 합계', kAvgFill: '평균 채움률', trim: '불투명 가장자리로 줄이기',
+  selectedToast: '슬라이스 {n}개를 선택했습니다', trimmed: '슬라이스 {n}개를 줄였습니다 (실행 취소 가능)', trimNone: '선택한 슬라이스는 이미 최소 경계입니다'
+};
+I18N.es = {
+  open: 'Abrir imagen', undo: 'Deshacer Ctrl+Z', redo: 'Rehacer Ctrl+Shift+Z', zoomOut: 'Alejar', zoomIn: 'Acercar',
+  fitTitle: 'Ajustar a la ventana F', fit: 'Ajustar<kbd>F</kbd>', b100: 'Tamaño real 1', ghLabel: 'Ver el código en GitHub',
+  theme: 'Tema', themeLight: 'Claro', themeAuto: 'Sistema', themeDark: 'Oscuro', lang: 'Idioma',
+  bgTitle: 'Fondo de vista previa', bgChecker: 'Tablero', bgBlack: 'Negro', bgWhite: 'Blanco', bgMagenta: 'Magenta', verTitle: 'Versión',
+  slices: 'Recortes', selAll: 'Todo', selInv: 'Invertir',
+  listEmpty: 'Los recortes aparecerán aquí al abrir una imagen', listNone: 'No se detectaron sprites. Ajusta los parámetros o recorta a mano con la herramienta Dibujar',
+  emptyBig: 'Suelta un atlas aquí o haz clic en «Abrir imagen»', emptySub: 'PNG y WebP con transparencia · se procesa en local, nunca se sube', emptyPaste: 'También puedes pegar una imagen (Ctrl+V)',
+  toolSelectT: 'Seleccionar V', toolSelect: 'Seleccionar<kbd>V</kbd>', toolDrawT: 'Dibujar un recorte nuevo R', toolDraw: 'Dibujar<kbd>R</kbd>', toolPanT: 'Mover H (o mantén Espacio)', toolPan: 'Mover<kbd>H</kbd>',
+  busy: 'Detectando…', tab_detect: 'Detectar', tab_edit: 'Editar', tab_analyze: 'Analizar', tab_export: 'Nombres',
+  alpha: 'Umbral alfa', alphaD: 'Los píxeles con alfa igual o inferior a este valor se tratan como fondo', pad: 'Relleno', min: 'Filtro de tamaño mínimo', minD: 'Se descartan los recortes con ancho o alto menor que este valor',
+  gap: 'Distancia de fusión de fragmentos', gapD: '0 = desactivado. Los fragmentos vecinos dentro de esta distancia se fusionan en un solo sprite', redetect: 'Detectar de nuevo',
+  detectNote: 'Al cambiar un parámetro se vuelve a detectar y se reemplazan los recortes actuales (incluidas las ediciones manuales). Arrastrar un control deslizante cuenta como un paso; Ctrl+Z restaura los recortes junto con los parámetros.',
+  editNone: 'Selecciona un recorte para editar su posición, tamaño y nombre', editMulti: v => `${v.n} recortes seleccionados. Puedes fusionarlos o eliminarlos`,
+  name: 'Nombre', w: 'An.', h: 'Al.', snap: 'Ajustar lo dibujado a los bordes opacos', merge: 'Fusionar selección (M)', del: 'Eliminar selección (Supr)', delN: 'Eliminar selección ({n})',
+  shortcutsT: 'Atajos',
+  shortcuts: '<kbd>V</kbd> Seleccionar · <kbd>R</kbd> Dibujar recorte · <kbd>H</kbd> Mover / mantén <kbd>Espacio</kbd> / botón central<br>Arrastrar en un espacio vacío: selección por área<br><kbd>Rueda</kbd> Zoom · <kbd>F</kbd> Ajustar · <kbd>1</kbd> 100%<br><kbd>Flechas</kbd> Mover 1 px (<kbd>Shift</kbd> 10 px)<br><kbd>Ctrl</kbd>+<kbd>A</kbd> Seleccionar todo · <kbd>Ctrl</kbd>+<kbd>I</kbd> Invertir<br>En la lista: <kbd>Shift</kbd>+clic rango · <kbd>Ctrl</kbd>+clic alternar',
+  prefixLabel: 'Prefijo de nombre', prefixD: 'Los recortes sin nombre se exportan como «prefijo + índice de 3 dígitos», p. ej. sprite_001.png', expSel0: 'Exportar selección',
+  footLocal: '● Procesado en local. No se sube nada', notOpened: 'Sin imagen',
+  selNone: v => `${v.n} ${pl(v.n, 'recorte', 'recortes')}`, selOne: 'Seleccionado {w}×{h} @ {x},{y}', selMany: '{n} seleccionados',
+  errType: 'Solo se admiten imágenes PNG / WebP con transparencia', confirmLoad: 'Tienes ediciones manuales. Abrir otra imagen borra los recortes y el historial, y no se puede deshacer. ¿Continuar?',
+  errRead: 'No se pudo leer esta imagen', noAlpha: 'Esta imagen no tiene píxeles transparentes, así que la detección automática no puede dividirla. Usa la herramienta Dibujar para recortar a mano',
+  detected: v => `${v.n} ${pl(v.n, 'sprite detectado', 'sprites detectados')}`,
+  redetLost: v => `Nueva detección: ${v.n} ${pl(v.n, 'sprite', 'sprites')}. Se reemplazaron las ediciones manuales (Ctrl+Z para restaurar)`,
+  redet: v => `Nueva detección: ${v.n} ${pl(v.n, 'sprite', 'sprites')} (se puede deshacer)`,
+  deleted: v => `${v.n} ${pl(v.n, 'recorte eliminado', 'recortes eliminados')}. Ctrl+Z para deshacer`, emptySel: 'No hay píxeles opacos en la selección',
+  exported: 'Exportado {name}', packing: 'Empaquetando…', exportedN: v => `${v.n} ${pl(v.n, 'sprite exportado', 'sprites exportados')}`,
+  expAll0: 'Exportar', expAll1: 'Exportar PNG', expAllN: 'Exportar todo en ZIP ({n})', expSel1: 'Exportar selección · PNG', expSelN: 'Exportar selección · ZIP ({n})',
+  info0: 'Abre una imagen y ejecuta la detección para exportar.', infoOne: 'Se exportará {name} ({w}×{h}).',
+  infoNoSel: 'Nada seleccionado. «Exportar», arriba a la derecha, empaqueta los {n} recortes en {zip}. Selecciona uno o más recortes para exportar solo esos desde aquí.',
+  infoSel1: 'El recorte seleccionado se exportará como {name} ({w}×{h}).', infoSelN: 'Los {n} recortes seleccionados se empaquetarán en {zip}.',
+  flag_dup: 'Duplicado', flag_small: 'Muy pequeño', flag_big: 'Muy grande', flag_edge: 'Toca el borde', flag_ratio: 'Proporción extrema', flag_semi: 'Muy translúcido',
+  anEmpty: 'Abre una imagen y ejecuta la detección para analizar los recortes aquí', anOverview: 'Resumen', anCount: 'Recortes', anW: 'Ancho mín. / mediana / máx.', anH: 'Alto mín. / mediana / máx.',
+  anAvg: 'Tamaño medio', anCover: 'Área de recortes sobre el atlas', anHist: 'Distribución de tamaños (por lado mayor, clic para seleccionar)', anIssues: 'Comprobaciones (clic para seleccionar y luego eliminar)',
+  issDup: v => `Recortes duplicados (${v.n} ${pl(v.n, 'grupo', 'grupos')})`, issDupD: 'Contenido de píxeles idéntico', issDupEx: 'Copias sobrantes', issDupExD: 'Conserva el primero de cada grupo y selecciona el resto',
+  issSmall: 'Muy pequeño', issSmallD: 'Ancho o alto < 8 px, o área < 10 % de la mediana', issBig: 'Muy grande', issBigD: 'Área > 8 veces la mediana; puede ser una fusión errónea',
+  issEdge: 'Toca el borde del atlas', issEdgeD: 'Los píxeles opacos tocan el borde del atlas; puede estar recortado', issRatio: 'Proporción extrema', issRatioD: 'Lado largo / lado corto > 8',
+  issSemi: 'Mucha translucidez', issSemiD: 'Píxeles translúcidos > 50 %; puede ser una sombra o un resplandor',
+  anSel: 'Recorte seleccionado', anSelHint: 'Selecciona un recorte en el lienzo o en la lista para ver su análisis',
+  tightOk: ' (ya es el mínimo)', tightCan: ' (se puede ajustar)', tightNone: 'Sin píxeles opacos',
+  kSize: 'Tamaño', kPos: 'Posición', kOpaque: 'Píxeles opacos', kFill: 'Relleno', kSemi: 'Proporción translúcida', kAvgA: 'Alfa medio', kTight: 'Caja delimitadora mínima', kColors: 'Colores dominantes',
+  kCount: 'Seleccionados', kArea: 'Área total', kAvgFill: 'Relleno medio', trim: 'Ajustar a los bordes opacos',
+  selectedToast: v => `${v.n} ${pl(v.n, 'recorte seleccionado', 'recortes seleccionados')}`, trimmed: v => `${v.n} ${pl(v.n, 'recorte ajustado', 'recortes ajustados')} (se puede deshacer)`, trimNone: 'Los recortes seleccionados ya están ajustados'
+};
+I18N.de = {
+  open: 'Bild öffnen', undo: 'Rückgängig Strg+Z', redo: 'Wiederholen Strg+Umschalt+Z', zoomOut: 'Verkleinern', zoomIn: 'Vergrößern',
+  fitTitle: 'An Fenster anpassen F', fit: 'Einpassen<kbd>F</kbd>', b100: 'Originalgröße 1', ghLabel: 'Quellcode auf GitHub ansehen',
+  theme: 'Design', themeLight: 'Hell', themeAuto: 'System', themeDark: 'Dunkel', lang: 'Sprache',
+  bgTitle: 'Vorschau-Hintergrund', bgChecker: 'Schachbrett', bgBlack: 'Schwarz', bgWhite: 'Weiß', bgMagenta: 'Magenta', verTitle: 'Version',
+  slices: 'Ausschnitte', selAll: 'Alle', selInv: 'Umkehren',
+  listEmpty: 'Nach dem Öffnen eines Bildes erscheinen hier die Ausschnitte', listNone: 'Keine Sprites erkannt. Passe die Parameter an oder schneide mit dem Zeichnen-Werkzeug manuell aus',
+  emptyBig: 'Atlas hierher ziehen oder auf „Bild öffnen“ klicken', emptySub: 'PNG und WebP mit Transparenz · wird lokal verarbeitet, nichts wird hochgeladen', emptyPaste: 'Du kannst auch ein Bild einfügen (Strg+V)',
+  toolSelectT: 'Auswählen V', toolSelect: 'Auswahl<kbd>V</kbd>', toolDrawT: 'Neuen Ausschnitt zeichnen R', toolDraw: 'Zeichnen<kbd>R</kbd>', toolPanT: 'Verschieben H (oder Leertaste halten)', toolPan: 'Hand<kbd>H</kbd>',
+  busy: 'Erkennung läuft…', tab_detect: 'Erkennen', tab_edit: 'Bearbeiten', tab_analyze: 'Analyse', tab_export: 'Namen',
+  alpha: 'Alpha-Schwellwert', alphaD: 'Pixel mit Alpha kleiner oder gleich diesem Wert gelten als Hintergrund', pad: 'Abstand (Padding)', min: 'Mindestgrößen-Filter', minD: 'Ausschnitte, die schmaler oder niedriger als dieser Wert sind, werden verworfen',
+  gap: 'Fragment-Zusammenführung', gapD: '0 = aus. Benachbarte Fragmente innerhalb dieses Abstands werden zu einem Sprite zusammengeführt', redetect: 'Neu erkennen',
+  detectNote: 'Wenn du einen Parameter änderst, wird neu erkannt und die aktuellen Ausschnitte (auch manuelle Änderungen) werden ersetzt. Ein Ziehen am Regler zählt als ein Schritt; mit Strg+Z werden Ausschnitte samt Parametern wiederhergestellt.',
+  editNone: 'Wähle einen Ausschnitt, um Position, Größe und Namen zu bearbeiten', editMulti: v => `${v.n} Ausschnitte ausgewählt. Du kannst sie zusammenführen oder löschen`,
+  name: 'Name', w: 'B', h: 'H', snap: 'Gezeichnete Ausschnitte an deckende Kanten anlegen', merge: 'Auswahl zusammenführen (M)', del: 'Auswahl löschen (Entf)', delN: 'Auswahl löschen ({n})',
+  shortcutsT: 'Tastenkürzel',
+  shortcuts: '<kbd>V</kbd> Auswahl · <kbd>R</kbd> Ausschnitt zeichnen · <kbd>H</kbd> Verschieben / <kbd>Leertaste</kbd> halten / mittlere Taste<br>Auf leerer Fläche ziehen: mehrere Ausschnitte aufziehen<br><kbd>Mausrad</kbd> Zoom · <kbd>F</kbd> Einpassen · <kbd>1</kbd> 100 %<br><kbd>Pfeiltasten</kbd> 1 px verschieben (<kbd>Umschalt</kbd> 10 px)<br><kbd>Strg</kbd>+<kbd>A</kbd> Alle auswählen · <kbd>Strg</kbd>+<kbd>I</kbd> Umkehren<br>In der Liste: <kbd>Umschalt</kbd>+Klick Bereich · <kbd>Strg</kbd>+Klick umschalten',
+  prefixLabel: 'Namenspräfix', prefixD: 'Nicht benannte Ausschnitte werden als „Präfix + dreistelliger Index“ exportiert, z. B. sprite_001.png', expSel0: 'Auswahl exportieren',
+  footLocal: '● Lokal verarbeitet. Es wird nichts hochgeladen', notOpened: 'Kein Bild',
+  selNone: v => `${v.n} ${pl(v.n, 'Ausschnitt', 'Ausschnitte')}`, selOne: 'Ausgewählt {w}×{h} @ {x},{y}', selMany: '{n} ausgewählt',
+  errType: 'Nur PNG- / WebP-Bilder mit Transparenz werden unterstützt', confirmLoad: 'Es gibt manuelle Änderungen. Beim Öffnen eines neuen Bildes werden Ausschnitte und Verlauf gelöscht, das lässt sich nicht rückgängig machen. Fortfahren?',
+  errRead: 'Dieses Bild konnte nicht gelesen werden', noAlpha: 'Dieses Bild hat keine transparenten Pixel, die automatische Erkennung kann es daher nicht teilen. Schneide mit dem Zeichnen-Werkzeug manuell aus',
+  detected: v => `${v.n} ${pl(v.n, 'Sprite', 'Sprites')} erkannt`,
+  redetLost: v => `Neu erkannt: ${v.n} ${pl(v.n, 'Sprite', 'Sprites')}. Manuelle Änderungen wurden ersetzt (Strg+Z stellt sie wieder her)`,
+  redet: v => `Neu erkannt: ${v.n} ${pl(v.n, 'Sprite', 'Sprites')} (rückgängig möglich)`,
+  deleted: v => `${v.n} ${pl(v.n, 'Ausschnitt', 'Ausschnitte')} gelöscht. Mit Strg+Z rückgängig machen`, emptySel: 'Die Auswahl enthält keine deckenden Pixel',
+  exported: '{name} exportiert', packing: 'Wird gepackt…', exportedN: v => `${v.n} ${pl(v.n, 'Sprite', 'Sprites')} exportiert`,
+  expAll0: 'Exportieren', expAll1: 'PNG exportieren', expAllN: 'Alle als ZIP exportieren ({n})', expSel1: 'Auswahl exportieren · PNG', expSelN: 'Auswahl exportieren · ZIP ({n})',
+  info0: 'Öffne ein Bild und starte die Erkennung, um zu exportieren.', infoOne: '{name} ({w}×{h}) wird exportiert.',
+  infoNoSel: 'Nichts ausgewählt. „Exportieren“ oben rechts packt alle {n} Ausschnitte in {zip}. Wähle einen oder mehrere Ausschnitte, um hier nur diese zu exportieren.',
+  infoSel1: 'Der ausgewählte Ausschnitt wird als {name} ({w}×{h}) exportiert.', infoSelN: 'Die {n} ausgewählten Ausschnitte werden in {zip} gepackt.',
+  flag_dup: 'Duplikat', flag_small: 'Zu klein', flag_big: 'Zu groß', flag_edge: 'Berührt Rand', flag_ratio: 'Extremes Verhältnis', flag_semi: 'Viel Halbtransparenz',
+  anEmpty: 'Öffne ein Bild und starte die Erkennung, um hier Ausschnitte zu analysieren', anOverview: 'Überblick', anCount: 'Ausschnitte', anW: 'Breite min. / Median / max.', anH: 'Höhe min. / Median / max.',
+  anAvg: 'Durchschnittsgröße', anCover: 'Ausschnittsfläche am Atlas', anHist: 'Größenverteilung (nach längster Seite, Klick zum Auswählen)', anIssues: 'Prüfungen (Klick zum Auswählen, danach ggf. löschen)',
+  issDup: v => `Doppelte Ausschnitte (${v.n} ${pl(v.n, 'Gruppe', 'Gruppen')})`, issDupD: 'Identischer Pixelinhalt', issDupEx: 'Überzählige Kopien', issDupExD: 'Behält je Gruppe den ersten und wählt den Rest aus',
+  issSmall: 'Zu klein', issSmallD: 'Breite oder Höhe < 8 px oder Fläche < 10 % des Medians', issBig: 'Zu groß', issBigD: 'Fläche > 8× Median; evtl. fälschlich zusammengeführt',
+  issEdge: 'Berührt Atlasrand', issEdgeD: 'Deckende Pixel berühren den Atlasrand; evtl. abgeschnitten', issRatio: 'Extremes Seitenverhältnis', issRatioD: 'Lange Seite / kurze Seite > 8',
+  issSemi: 'Hohe Halbtransparenz', issSemiD: 'Halbtransparente Pixel > 50 %; evtl. Schatten oder Leuchten',
+  anSel: 'Ausgewählter Ausschnitt', anSelHint: 'Wähle einen Ausschnitt auf der Zeichenfläche oder in der Liste, um seine Analyse zu sehen',
+  tightOk: ' (bereits minimal)', tightCan: ' (kann verkleinert werden)', tightNone: 'Keine deckenden Pixel',
+  kSize: 'Größe', kPos: 'Position', kOpaque: 'Deckende Pixel', kFill: 'Füllgrad', kSemi: 'Halbtransparenter Anteil', kAvgA: 'Mittleres Alpha', kTight: 'Minimale Begrenzung', kColors: 'Hauptfarben',
+  kCount: 'Ausgewählt', kArea: 'Gesamtfläche', kAvgFill: 'Mittlerer Füllgrad', trim: 'Auf deckende Kanten verkleinern',
+  selectedToast: v => `${v.n} ${pl(v.n, 'Ausschnitt', 'Ausschnitte')} ausgewählt`, trimmed: v => `${v.n} ${pl(v.n, 'Ausschnitt', 'Ausschnitte')} verkleinert (rückgängig möglich)`, trimNone: 'Die ausgewählten Ausschnitte sind bereits minimal'
+};
+I18N.fr = {
+  open: 'Ouvrir une image', undo: 'Annuler Ctrl+Z', redo: 'Rétablir Ctrl+Maj+Z', zoomOut: 'Zoom arrière', zoomIn: 'Zoom avant',
+  fitTitle: 'Ajuster à la fenêtre F', fit: 'Ajuster<kbd>F</kbd>', b100: 'Taille réelle 1', ghLabel: 'Voir le code source sur GitHub',
+  theme: 'Thème', themeLight: 'Clair', themeAuto: 'Système', themeDark: 'Sombre', lang: 'Langue',
+  bgTitle: 'Arrière-plan de l’aperçu', bgChecker: 'Damier', bgBlack: 'Noir', bgWhite: 'Blanc', bgMagenta: 'Magenta', verTitle: 'Version',
+  slices: 'Découpes', selAll: 'Tout', selInv: 'Inverser',
+  listEmpty: 'Les découpes s’afficheront ici après l’ouverture d’une image', listNone: 'Aucun sprite détecté. Ajustez les paramètres ou découpez à la main avec l’outil Dessiner',
+  emptyBig: 'Déposez un atlas ici ou cliquez sur « Ouvrir une image »', emptySub: 'PNG et WebP avec transparence · traitement local, rien n’est envoyé', emptyPaste: 'Vous pouvez aussi coller une image (Ctrl+V)',
+  toolSelectT: 'Sélectionner V', toolSelect: 'Sélection<kbd>V</kbd>', toolDrawT: 'Dessiner une nouvelle découpe R', toolDraw: 'Dessiner<kbd>R</kbd>', toolPanT: 'Déplacer H (ou maintenir Espace)', toolPan: 'Main<kbd>H</kbd>',
+  busy: 'Détection…', tab_detect: 'Détection', tab_edit: 'Édition', tab_analyze: 'Analyse', tab_export: 'Noms',
+  alpha: 'Seuil alpha', alphaD: 'Les pixels dont l’alpha est inférieur ou égal à cette valeur sont considérés comme du fond', pad: 'Marge (padding)', min: 'Filtre de taille minimale', minD: 'Les découpes plus étroites ou moins hautes que cette valeur sont ignorées',
+  gap: 'Distance de fusion des fragments', gapD: '0 = désactivé. Les fragments voisins situés à cette distance sont fusionnés en un seul sprite', redetect: 'Détecter à nouveau',
+  detectNote: `Modifier un paramètre relance la détection et remplace les découpes actuelles (y compris les modifications manuelles). Un glissement de curseur compte pour une seule étape ; Ctrl+Z restaure les découpes avec les paramètres.`,
+  editNone: 'Sélectionnez une découpe pour modifier sa position, sa taille et son nom', editMulti: v => `${v.n} ${pl(v.n, 'découpe sélectionnée', 'découpes sélectionnées')}. Vous pouvez les fusionner ou les supprimer`,
+  name: 'Nom', w: 'L', h: 'H', snap: 'Aimanter les découpes dessinées aux bords opaques', merge: 'Fusionner la sélection (M)', del: 'Supprimer la sélection (Suppr)', delN: 'Supprimer la sélection ({n})',
+  shortcutsT: 'Raccourcis',
+  shortcuts: `<kbd>V</kbd> Sélection · <kbd>R</kbd> Dessiner une découpe · <kbd>H</kbd> Déplacer / maintenir <kbd>Espace</kbd> / bouton central<br>Glisser sur une zone vide : sélection par zone<br><kbd>Molette</kbd> Zoom · <kbd>F</kbd> Ajuster · <kbd>1</kbd> 100 %<br><kbd>Flèches</kbd> Décaler de 1 px (<kbd>Maj</kbd> 10 px)<br><kbd>Ctrl</kbd>+<kbd>A</kbd> Tout sélectionner · <kbd>Ctrl</kbd>+<kbd>I</kbd> Inverser<br>Dans la liste : <kbd>Maj</kbd>+clic plage · <kbd>Ctrl</kbd>+clic basculer`,
+  prefixLabel: 'Préfixe de nom', prefixD: 'Les découpes sans nom sont exportées sous la forme « préfixe + indice à 3 chiffres », p. ex. sprite_001.png', expSel0: 'Exporter la sélection',
+  footLocal: '● Traitement local. Rien n’est envoyé', notOpened: 'Aucune image',
+  selNone: v => `${v.n} ${pl(v.n, 'découpe', 'découpes')}`, selOne: 'Sélection {w}×{h} @ {x},{y}', selMany: '{n} sélectionnées',
+  errType: 'Seules les images PNG / WebP avec transparence sont prises en charge', confirmLoad: 'Vous avez des modifications manuelles. Ouvrir une nouvelle image efface les découpes et l’historique, sans retour possible. Continuer ?',
+  errRead: 'Impossible de lire cette image', noAlpha: `Cette image n’a aucun pixel transparent : la détection automatique ne peut pas la découper. Utilisez l’outil Dessiner pour découper à la main`,
+  detected: v => `${v.n} ${pl(v.n, 'sprite détecté', 'sprites détectés')}`,
+  redetLost: v => `Nouvelle détection : ${v.n} ${pl(v.n, 'sprite', 'sprites')}. Les modifications manuelles ont été remplacées (Ctrl+Z pour restaurer)`,
+  redet: v => `Nouvelle détection : ${v.n} ${pl(v.n, 'sprite', 'sprites')} (annulable)`,
+  deleted: v => `${v.n} ${pl(v.n, 'découpe supprimée', 'découpes supprimées')}. Ctrl+Z pour annuler`, emptySel: 'Aucun pixel opaque dans la sélection',
+  exported: '{name} exporté', packing: 'Création de l’archive…', exportedN: v => `${v.n} ${pl(v.n, 'sprite exporté', 'sprites exportés')}`,
+  expAll0: 'Exporter', expAll1: 'Exporter en PNG', expAllN: 'Tout exporter en ZIP ({n})', expSel1: 'Exporter la sélection · PNG', expSelN: 'Exporter la sélection · ZIP ({n})',
+  info0: 'Ouvrez une image et lancez la détection pour exporter.', infoOne: '{name} ({w}×{h}) sera exporté.',
+  infoNoSel: 'Aucune sélection. « Exporter », en haut à droite, regroupe les {n} découpes dans {zip}. Sélectionnez une ou plusieurs découpes pour n’exporter que celles-ci ici.',
+  infoSel1: 'La découpe sélectionnée sera exportée sous le nom {name} ({w}×{h}).', infoSelN: 'Les {n} découpes sélectionnées seront regroupées dans {zip}.',
+  flag_dup: 'Doublon', flag_small: 'Trop petit', flag_big: 'Trop grand', flag_edge: 'Touche le bord', flag_ratio: 'Ratio extrême', flag_semi: 'Très translucide',
+  anEmpty: 'Ouvrez une image et lancez la détection pour analyser les découpes ici', anOverview: 'Aperçu', anCount: 'Découpes', anW: 'Largeur min. / médiane / max.', anH: 'Hauteur min. / médiane / max.',
+  anAvg: 'Taille moyenne', anCover: 'Surface des découpes / atlas', anHist: 'Répartition des tailles (par plus grand côté, clic pour sélectionner)', anIssues: 'Vérifications (clic pour sélectionner, puis supprimer si besoin)',
+  issDup: v => `Découpes en double (${v.n} ${pl(v.n, 'groupe', 'groupes')})`, issDupD: 'Contenu de pixels identique', issDupEx: 'Copies en trop', issDupExD: 'Conserve la première de chaque groupe et sélectionne les autres',
+  issSmall: 'Trop petit', issSmallD: 'Largeur ou hauteur < 8 px, ou surface < 10 % de la médiane', issBig: 'Trop grand', issBigD: 'Surface > 8 fois la médiane ; peut être une fusion erronée',
+  issEdge: 'Touche le bord de l’atlas', issEdgeD: 'Des pixels opaques touchent la bordure de l’atlas ; peut être rogné', issRatio: 'Proportions extrêmes', issRatioD: 'Grand côté / petit côté > 8',
+  issSemi: 'Forte translucidité', issSemiD: 'Pixels translucides > 50 % ; peut être une ombre ou une lueur',
+  anSel: 'Découpe sélectionnée', anSelHint: 'Sélectionnez une découpe sur le canevas ou dans la liste pour voir son analyse',
+  tightOk: ' (déjà au plus juste)', tightCan: ' (peut être resserrée)', tightNone: 'Aucun pixel opaque',
+  kSize: 'Taille', kPos: 'Position', kOpaque: 'Pixels opaques', kFill: 'Remplissage', kSemi: 'Part translucide', kAvgA: 'Alpha moyen', kTight: 'Boîte englobante minimale', kColors: 'Couleurs dominantes',
+  kCount: 'Sélectionnées', kArea: 'Surface totale', kAvgFill: 'Remplissage moyen', trim: 'Resserrer sur les bords opaques',
+  selectedToast: v => `${v.n} ${pl(v.n, 'découpe sélectionnée', 'découpes sélectionnées')}`, trimmed: v => `${v.n} ${pl(v.n, 'découpe resserrée', 'découpes resserrées')} (annulable)`, trimNone: 'Les découpes sélectionnées sont déjà au plus juste'
+};
+const LANGS = [['zh', '简体中文', '简'], ['zh-TW', '繁體中文', '繁'], ['en', 'English', 'EN'], ['ja', '日本語', '日'], ['ko', '한국어', '한'], ['es', 'Español', 'ES'], ['de', 'Deutsch', 'DE'], ['fr', 'Français', 'FR']];
+const HTML_LANG = { zh: 'zh-CN', 'zh-TW': 'zh-TW', en: 'en', ja: 'ja', ko: 'ko', es: 'es', de: 'de', fr: 'fr' };
+const LANG_KEY = 'asset-splitter-lang';
+let lang = 'zh';
+try { lang = localStorage.getItem(LANG_KEY) || ''; } catch (e) {}
+if (!I18N[lang]) {
+  const nl = (navigator.language || '').toLowerCase();
+  lang = /^zh/.test(nl) ? (/(tw|hk|mo|hant)/.test(nl) ? 'zh-TW' : 'zh') : I18N[nl.slice(0, 2)] ? nl.slice(0, 2) : 'en';
+}
+function t(key, vars) {
+  let v = I18N[lang][key]; if (v === undefined) v = I18N.zh[key]; if (v === undefined) return key;
+  if (typeof v === 'function') return v(vars || {});
+  return vars ? v.replace(/\{(\w+)\}/g, (m, k) => k in vars ? vars[k] : m) : v;
+}
+function applyLang() {
+  document.documentElement.lang = HTML_LANG[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+  $('#langLabel').textContent = LANGS.find(l => l[0] === lang)[2];
+  $('#langMenu').querySelectorAll('.mi').forEach(i => { const on = i.dataset.v === lang; i.classList.toggle('on', on); i.setAttribute('aria-selected', on); });
+  const ver = $('#ver'); ver.title = t('verTitle') + ' ' + ver.textContent.replace(/^v/, '');
+  $('#bgLabel').textContent = t(bgKeys[bgMode]);
+  if (!src) $('#sImg').textContent = t('notOpened');
+  renderList(); selChanged();
+}
+function setLang(l) {
+  lang = l; try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+  applyLang();
+}
+
 // ============ 应用状态 ============
 const $ = s => document.querySelector(s);
 const stage = $('#stage'), cv = $('#cv'), ctx = cv.getContext('2d');
@@ -530,8 +915,8 @@ function syncHist() { $('#bUndo').disabled = histIdx <= 0; $('#bRedo').disabled 
 
 // ============ 加载 ============
 async function loadFile(file) {
-  if (!file || !/^image\/(png|webp)$/.test(file.type)) { toast('仅支持带透明通道的 PNG / WebP', 'warn'); return; }
-  if (edited && slices.length && !confirm('当前图集有手动编辑，导入新图集会清空切片和撤销历史，且无法恢复。继续吗？')) return;
+  if (!file || !/^image\/(png|webp)$/.test(file.type)) { toast(t('errType'), 'warn'); return; }
+  if (edited && slices.length && !confirm(t('confirmLoad'))) return;
   try {
     const bmp = await createImageBitmap(file);
     src = document.createElement('canvas'); src.width = W = bmp.width; src.height = H = bmp.height;
@@ -546,8 +931,8 @@ async function loadFile(file) {
     for (let i = 3; i < d.length; i += 4) if (d[i] < 255) { hasAlpha = true; break; }
     fit();
     runDetect(true);
-    if (!hasAlpha) toast('这张图没有透明像素，自动检测无法分割，请用「框选」手动切', 'warn');
-  } catch (e) { toast('无法读取这张图片', 'err'); console.error(e); }
+    if (!hasAlpha) toast(t('noAlpha'), 'warn');
+  } catch (e) { toast(t('errRead'), 'err'); console.error(e); }
 }
 
 // ============ 检测 ============
@@ -566,7 +951,7 @@ function runDetect(first, fromSlider) {
     else { commit(true); burstOpen = !!fromSlider; }
     renderList(); selChanged();
     $('#busy').style.display = 'none';
-    toast(first ? `检测到 ${slices.length} 个素材` : lost ? `重新检测：${slices.length} 个素材，手动编辑已被替换（Ctrl+Z 可恢复）` : `重新检测：${slices.length} 个素材（可撤销）`, lost ? 'warn' : undefined);
+    toast(first ? t('detected', { n: slices.length }) : lost ? t('redetLost', { n: slices.length }) : t('redet', { n: slices.length }), lost ? 'warn' : undefined);
   }, 10);
 }
 
@@ -641,7 +1026,7 @@ function renderList() {
   $('#count').textContent = slices.length;
   const has = slices.length > 0;
   syncExport();
-  if (!has) { box.innerHTML = '<div class="hint">' + (src ? '没有检测到素材，可调整参数或用「框选」手动切' : '导入图集后，切片会显示在这里') + '</div>'; return; }
+  if (!has) { box.innerHTML = '<div class="hint">' + t(src ? 'listNone' : 'listEmpty') + '</div>'; return; }
   const frag = document.createDocumentFragment();
   slices.forEach((s, i) => {
     const el = document.createElement('div'); el.className = 'it'; el.dataset.id = s.id;
@@ -690,12 +1075,12 @@ const selected = () => slices.filter(s => sel.has(s.id));
 function selChanged() {
   syncListSel(); draw();
   const ss = selected();
-  $('#bDel').disabled = ss.length === 0; $('#bMerge').disabled = ss.length < 2;  $('#bDel').textContent = ss.length ? `删除选中 (${ss.length})` : '删除选中 (Del)';
-  $('#sSel').textContent = ss.length === 0 ? `共 ${slices.length} 个切片` : ss.length === 1 ? `选中 ${ss[0].w}×${ss[0].h} @ ${ss[0].x},${ss[0].y}` : `选中 ${ss.length} 个`;
+  $('#bDel').disabled = ss.length === 0; $('#bMerge').disabled = ss.length < 2;  $('#bDel').textContent = ss.length ? t('delN', { n: ss.length }) : t('del');
+  $('#sSel').textContent = ss.length === 0 ? t('selNone', { n: slices.length }) : ss.length === 1 ? t('selOne', { w: ss[0].w, h: ss[0].h, x: ss[0].x, y: ss[0].y }) : t('selMany', { n: ss.length });
   syncExport();
   const one = ss.length === 1;
   $('#editOne').style.display = one ? 'block' : 'none'; $('#editNone').style.display = one ? 'none' : 'block';
-  $('#editNone').textContent = ss.length > 1 ? `已选中 ${ss.length} 个切片，可合并或删除` : '选中一个切片后可编辑坐标、尺寸和名称';
+  $('#editNone').textContent = ss.length > 1 ? t('editMulti', { n: ss.length }) : t('editNone');
   if (one) {
     const s = ss[0]; $('#eName').value = nameOf(s, slices.indexOf(s));
     $('#eX').value = s.x; $('#eY').value = s.y; $('#eW').value = s.w; $('#eH').value = s.h;
@@ -717,7 +1102,7 @@ function deleteSel() {
   if (!sel.size) return;
   const n = sel.size;
   slices = slices.filter(s => !sel.has(s.id)); sel.clear(); lastIdx = -1; commit(); renderList(); selChanged();
-  toast(`已删除 ${n} 个切片，Ctrl+Z 可撤销`);
+  toast(t('deleted', { n }));
 }
 function mergeSel() {
   const ss = selected(); if (ss.length < 2) return;
@@ -796,7 +1181,7 @@ window.addEventListener('mouseup', () => {
     if (r.w >= 2 && r.h >= 2) {
       if ($('#cSnap').checked) {
         const bb = opaqueBBox(imgData.data, W, H, r.x, r.y, r.w, r.h, P.alpha);
-        if (bb) r = bb; else { toast('选区内没有不透明像素', 'warn'); drag = null; draw(); return; }
+        if (bb) r = bb; else { toast(t('emptySel'), 'warn'); drag = null; draw(); return; }
       }
       const n = { id: nextId++, x: r.x, y: r.y, w: r.w, h: r.h, name: '' };
       slices.push(n); sel = new Set([n.id]); commit(); renderList(); selChanged();
@@ -823,18 +1208,18 @@ $('#b100').onclick = () => { if (src) zoomAt(stage.clientWidth / 2, stage.client
 $('#bZoomIn').onclick = () => zoomAt(stage.clientWidth / 2, stage.clientHeight / 2, 1.25);
 $('#bZoomOut').onclick = () => zoomAt(stage.clientWidth / 2, stage.clientHeight / 2, 0.8);
 // 背景选择（自定义下拉）
-const bgNames = { checker: '棋盘格', black: '纯黑', white: '纯白', magenta: '品红' };
+const bgKeys = { checker: 'bgChecker', black: 'bgBlack', white: 'bgWhite', magenta: 'bgMagenta' };
 const bgDd = $('#bgDd');
 function bgOpen(o) {
   bgDd.classList.toggle('open', o); $('#bgBtn').setAttribute('aria-expanded', o);
   if (o) { const c = bgDd.querySelector('.mi.on'); if (c) c.focus(); }
 }
 function setBg(v) {
-  bgMode = v; $('#bgLabel').textContent = bgNames[v]; $('#bgSw').className = 'sw2 ' + v;
+  bgMode = v; $('#bgLabel').textContent = t(bgKeys[v]); $('#bgSw').className = 'sw2 ' + v;
   bgDd.querySelectorAll('.mi').forEach(i => { const on = i.dataset.v === v; i.classList.toggle('on', on); i.setAttribute('aria-selected', on); });
   draw();
 }
-$('#bgBtn').addEventListener('click', e => { e.stopPropagation(); bgOpen(!bgDd.classList.contains('open')); });
+$('#bgBtn').addEventListener('click', e => { e.stopPropagation(); langOpen(false); bgOpen(!bgDd.classList.contains('open')); });
 $('#bgMenu').addEventListener('click', e => { const it = e.target.closest('.mi'); if (!it) return; setBg(it.dataset.v); bgOpen(false); $('#bgBtn').focus(); });
 $('#bgMenu').addEventListener('keydown', e => {
   const items = [...bgDd.querySelectorAll('.mi')], i = items.indexOf(document.activeElement);
@@ -892,30 +1277,30 @@ function uniqueNames(list) {
 async function exportList(list, zipName) {
   if (!list.length) return;
   const names = uniqueNames(list);
-  if (list.length === 1) { download(await cropBlob(list[0]), names[0]); toast('已导出 ' + names[0]); return; }
-  toast('正在打包…');
+  if (list.length === 1) { download(await cropBlob(list[0]), names[0]); toast(t('exported', { name: names[0] })); return; }
+  toast(t('packing'));
   const files = [];
   for (let i = 0; i < list.length; i++) files.push({ name: names[i], data: new Uint8Array(await (await cropBlob(list[i])).arrayBuffer()) });
-  download(makeZip(files), zipName); toast(`已导出 ${files.length} 个素材`);
+  download(makeZip(files), zipName); toast(t('exportedN', { n: files.length }));
 }
 // 按钮文案随“选中数 / 总数”变化：1 个 → PNG，多个 → ZIP，并预告文件名
 function syncExport() {
   const total = slices.length, ss = selected(), n = ss.length;
   const bZip = $('#bZip'), bSel = $('#bExpSel'), info = $('#expInfo');
   bZip.disabled = total === 0;
-  const allLabel = total === 0 ? '导出' : total === 1 ? '导出 PNG' : `导出全部 ZIP（${total}）`;
+  const allLabel = total === 0 ? t('expAll0') : total === 1 ? t('expAll1') : t('expAllN', { n: total });
   bZip.textContent = allLabel;
   // 只有 1 个切片时，“导出选中”与“导出”完全相同，隐藏避免重复
   bSel.style.display = total === 1 ? 'none' : '';
   bSel.disabled = n === 0;
-  bSel.textContent = n === 0 ? '导出选中' : n === 1 ? '导出选中 · PNG' : `导出选中 · ZIP（${n}）`;
-  let t;
-  if (total === 0) t = '导入图集并检测后即可导出。';
-  else if (n === 0 && total === 1) t = `将导出 ${uniqueNames(slices)[0]}（${slices[0].w}×${slices[0].h}）。`;
-  else if (n === 0) t = `未选中切片。右上角“导出”会把 ${total} 个切片打包为 ${baseName}_slices.zip；选中一个或多个切片后，可在这里只导出选中的。`;
-  else if (n === 1) t = `选中的切片将导出为 ${uniqueNames(ss)[0]}（${ss[0].w}×${ss[0].h}）。`;
-  else t = `选中的 ${n} 个切片将打包为 ${baseName}_selected.zip。`;
-  info.textContent = t;
+  bSel.textContent = n === 0 ? t('expSel0') : n === 1 ? t('expSel1') : t('expSelN', { n });
+  let txt;
+  if (total === 0) txt = t('info0');
+  else if (n === 0 && total === 1) txt = t('infoOne', { name: uniqueNames(slices)[0], w: slices[0].w, h: slices[0].h });
+  else if (n === 0) txt = t('infoNoSel', { n: total, zip: baseName + '_slices.zip' });
+  else if (n === 1) txt = t('infoSel1', { name: uniqueNames(ss)[0], w: ss[0].w, h: ss[0].h });
+  else txt = t('infoSelN', { n, zip: baseName + '_selected.zip' });
+  info.textContent = txt;
 }
 $('#bZip').onclick = () => exportList(slices, baseName + '_slices.zip');
 $('#bExpSel').onclick = () => exportList(selected(), baseName + '_selected.zip');
@@ -928,7 +1313,7 @@ function getAn(s) {
   if (!a) { a = analyzeSlice(imgData.data, W, H, s, P.alpha); anCache.set(k, a); }
   return a;
 }
-const FLAG_LABEL = { dup: '重复', small: '过小', big: '过大', edge: '贴边', ratio: '极端长宽比', semi: '半透明多' };
+const FLAG_KEYS = ['dup', 'small', 'big', 'edge', 'ratio', 'semi'];
 function computeFlags() {
   const areas = slices.map(s => s.w * s.h).sort((a, b) => a - b);
   const med = areas.length ? areas[areas.length >> 1] : 0;
@@ -955,56 +1340,56 @@ function stat(arr) {
 function refreshAnalysis() {
   if (!$('#p-analyze').classList.contains('on')) return;
   const box = $('#anBody');
-  if (!imgData || !slices.length) { box.innerHTML = '<div class="hint">导入图集并检测后，可在这里分析切片</div>'; anSets = {}; return; }
+  if (!imgData || !slices.length) { box.innerHTML = '<div class="hint">' + t('anEmpty') + '</div>'; anSets = {}; return; }
   const F = computeFlags(); anSets = { ...F.sets };
   const ws = stat(slices.map(s => s.w)), hs = stat(slices.map(s => s.h));
   const areaSum = slices.reduce((p, s) => p + s.w * s.h, 0);
-  let h = '<h4>概览</h4><div class="kv">' +
-    `<span>切片数量</span><span>${slices.length}</span>` +
-    `<span>宽 最小 / 中位 / 最大</span><span>${ws.min} / ${ws.med} / ${ws.max}</span>` +
-    `<span>高 最小 / 中位 / 最大</span><span>${hs.min} / ${hs.med} / ${hs.max}</span>` +
-    `<span>平均尺寸</span><span>${ws.avg.toFixed(1)}×${hs.avg.toFixed(1)}</span>` +
-    `<span>切片面积占图集</span><span>${pct(areaSum / (W * H))}</span></div>`;
+  let h = `<h4>${t('anOverview')}</h4><div class="kv">` +
+    `<span>${t('anCount')}</span><span>${slices.length}</span>` +
+    `<span>${t('anW')}</span><span>${ws.min} / ${ws.med} / ${ws.max}</span>` +
+    `<span>${t('anH')}</span><span>${hs.min} / ${hs.med} / ${hs.max}</span>` +
+    `<span>${t('anAvg')}</span><span>${ws.avg.toFixed(1)}×${hs.avg.toFixed(1)}</span>` +
+    `<span>${t('anCover')}</span><span>${pct(areaSum / (W * H))}</span></div>`;
   const bk = [[16, '≤16'], [32, '17–32'], [64, '33–64'], [128, '65–128'], [256, '129–256'], [1e9, '>256']];
   const bids = bk.map(() => []);
   for (const s of slices) { const m = Math.max(s.w, s.h); bids[bk.findIndex(b => m <= b[0])].push(s.id); }
   const mx = Math.max(...bids.map(b => b.length));
-  h += '<h4>尺寸分布（按长边，点击选中）</h4><div class="hist">';
+  h += `<h4>${t('anHist')}</h4><div class="hist">`;
   bk.forEach((b, i) => { anSets['h' + i] = bids[i]; const n = bids[i].length;
     h += `<div class="hb ${n ? '' : 'zero'}" ${n ? `data-set="h${i}"` : ''}><span>${b[1]}</span><i style="width:${n / mx * 100}%"></i><span>${n}</span></div>`; });
-  h += '</div><h4>问题检查（点击选中，可再删除）</h4>';
+  h += `</div><h4>${t('anIssues')}</h4>`;
   const rows = [
-    ['dup', `重复切片（${F.dupGroups} 组）`, '像素内容完全相同', F.sets.dup.length],
-    ['dupExtra', '多余副本', '每组保留第一个，其余选中', F.sets.dupExtra.length],
-    ['small', '过小', '宽或高 < 8px，或面积 < 中位数的 10%', F.sets.small.length],
-    ['big', '过大', '面积 > 中位数的 8 倍，可能误合并', F.sets.big.length],
-    ['edge', '触及图集边缘', '素材像素贴着图集边界，可能被裁切', F.sets.edge.length],
-    ['ratio', '极端长宽比', '长边 / 短边 > 8', F.sets.ratio.length],
-    ['semi', '半透明占比高', '半透明像素 > 50%，可能是阴影或光晕', F.sets.semi.length]
+    ['dup', t('issDup', { n: F.dupGroups }), t('issDupD'), F.sets.dup.length],
+    ['dupExtra', t('issDupEx'), t('issDupExD'), F.sets.dupExtra.length],
+    ['small', t('issSmall'), t('issSmallD'), F.sets.small.length],
+    ['big', t('issBig'), t('issBigD'), F.sets.big.length],
+    ['edge', t('issEdge'), t('issEdgeD'), F.sets.edge.length],
+    ['ratio', t('issRatio'), t('issRatioD'), F.sets.ratio.length],
+    ['semi', t('issSemi'), t('issSemiD'), F.sets.semi.length]
   ];
   for (const [k, t, d, n] of rows)
     h += `<div class="iss ${n ? '' : 'zero'}" ${n ? `data-set="${k}"` : ''}><div>${t}<small>${d}</small></div><b>${n || '✓'}</b></div>`;
   const ss = selected();
-  h += '<h4>选中切片</h4>';
-  if (!ss.length) h += '<div class="d" style="color:var(--t3)">在画布或列表中选中切片，查看详细分析</div>';
+  h += `<h4>${t('anSel')}</h4>`;
+  if (!ss.length) h += `<div class="d" style="color:var(--t3)">${t('anSelHint')}</div>`;
   else if (ss.length === 1) {
     const s = ss[0], a = getAn(s);
-    const tags = Object.keys(FLAG_LABEL).filter(k => F.sets[k].includes(s.id)).map(k => `<span class="tag">${FLAG_LABEL[k]}</span>`).join('');
-    const tightTxt = a.tight ? `${a.tight.w}×${a.tight.h}` + (a.tight.w === s.w && a.tight.h === s.h ? '（已最紧）' : '（可收紧）') : '无不透明像素';
+    const tags = FLAG_KEYS.filter(k => F.sets[k].includes(s.id)).map(k => `<span class="tag">${t('flag_' + k)}</span>`).join('');
+    const tightTxt = a.tight ? `${a.tight.w}×${a.tight.h}` + (a.tight.w === s.w && a.tight.h === s.h ? t('tightOk') : t('tightCan')) : t('tightNone');
     h += (tags ? `<div style="margin-bottom:6px">${tags}</div>` : '') + '<div class="kv">' +
-      `<span>尺寸</span><span>${s.w}×${s.h}</span><span>位置</span><span>${s.x}, ${s.y}</span>` +
-      `<span>不透明像素</span><span>${a.opaque} / ${a.total}</span><span>填充率</span><span>${pct(a.fill)}</span>` +
-      `<span>半透明占比</span><span>${pct(a.semiRatio)}</span><span>平均 Alpha</span><span>${a.avgA.toFixed(0)}</span>` +
-      `<span>紧凑包围盒</span><span>${tightTxt}</span></div>` +
-      '<div style="margin-top:8px;color:var(--t2)">主色</div><div>' +
+      `<span>${t('kSize')}</span><span>${s.w}×${s.h}</span><span>${t('kPos')}</span><span>${s.x}, ${s.y}</span>` +
+      `<span>${t('kOpaque')}</span><span>${a.opaque} / ${a.total}</span><span>${t('kFill')}</span><span>${pct(a.fill)}</span>` +
+      `<span>${t('kSemi')}</span><span>${pct(a.semiRatio)}</span><span>${t('kAvgA')}</span><span>${a.avgA.toFixed(0)}</span>` +
+      `<span>${t('kTight')}</span><span>${tightTxt}</span></div>` +
+      `<div style="margin-top:8px;color:var(--t2)">${t('kColors')}</div><div>` +
       (a.colors.length ? a.colors.map(c => `<span style="display:inline-block;margin:4px 12px 0 0"><span class="sw" style="background:${c.hex}"></span><span style="font-family:var(--mono)">${c.hex} ${pct(c.pct)}</span></span>`).join('') : '—') + '</div>';
   } else {
     const ans = ss.map(getAn);
-    h += '<div class="kv">' + `<span>选中数量</span><span>${ss.length}</span>` +
-      `<span>面积合计</span><span>${ss.reduce((p, s) => p + s.w * s.h, 0)}</span>` +
-      `<span>平均填充率</span><span>${pct(ans.reduce((p, a) => p + a.fill, 0) / ans.length)}</span></div>`;
+    h += '<div class="kv">' + `<span>${t('kCount')}</span><span>${ss.length}</span>` +
+      `<span>${t('kArea')}</span><span>${ss.reduce((p, s) => p + s.w * s.h, 0)}</span>` +
+      `<span>${t('kAvgFill')}</span><span>${pct(ans.reduce((p, a) => p + a.fill, 0) / ans.length)}</span></div>`;
   }
-  if (ss.length) h += `<div class="btns" style="margin-top:12px"><button data-act="trim">收紧到不透明边缘</button><button data-act="del">删除选中 (${ss.length})</button></div>`;
+  if (ss.length) h += `<div class="btns" style="margin-top:12px"><button data-act="trim">${t('trim')}</button><button data-act="del">${t('delN', { n: ss.length })}</button></div>`;
   box.innerHTML = h;
 }
 $('#anBody').addEventListener('click', e => {
@@ -1014,7 +1399,7 @@ $('#anBody').addEventListener('click', e => {
   const ids = anSets[t.dataset.set] || [];
   sel = new Set(ids); lastIdx = -1; selChanged();
   if (ids.length) { const f = slices.find(s => s.id === ids[0]); if (f) centerOn(f); }
-  toast(`已选中 ${ids.length} 个切片`);
+  toast(t('selectedToast', { n: ids.length }));
 });
 function trimSel() {
   let n = 0;
@@ -1023,7 +1408,7 @@ function trimSel() {
     if (bb && (bb.x !== s.x || bb.y !== s.y || bb.w !== s.w || bb.h !== s.h)) { Object.assign(s, bb); n++; }
   }
   if (n) { commit(); renderList(); selChanged(); }
-  toast(n ? `已收紧 ${n} 个切片（可撤销）` : '选中的切片已是最紧边界');
+  toast(n ? t('trimmed', { n }) : t('trimNone'));
 }
 function invertSel() { sel = new Set(slices.filter(s => !sel.has(s.id)).map(s => s.id)); lastIdx = -1; selChanged(); }
 $('#bAll').onclick = () => { sel = new Set(slices.map(s => s.id)); selChanged(); };
@@ -1032,6 +1417,7 @@ $('#bInv').onclick = invertSel;
 // ============ 键盘 ============
 window.addEventListener('keydown', e => {
   if (e.key === 'Escape' && bgDd.classList.contains('open')) { bgOpen(false); $('#bgBtn').focus(); return; }
+  if (e.key === 'Escape' && langDd.classList.contains('open')) { langOpen(false); $('#langBtn').focus(); return; }
   const tag = (e.target.tagName || '').toLowerCase();
   if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
   const mod = e.ctrlKey || e.metaKey, k = e.key.toLowerCase();
@@ -1071,6 +1457,24 @@ document.querySelectorAll('#themeSw button').forEach(b => b.addEventListener('cl
 darkMq.addEventListener('change', () => { if (themeMode === 'auto') applyTheme(); });
 applyTheme();
 
+const langDd = $('#langDd');
+function langOpen(o) {
+  if (o) bgOpen(false);
+  langDd.classList.toggle('open', o); $('#langBtn').setAttribute('aria-expanded', o);
+  if (o) { const c = langDd.querySelector('.mi.on'); if (c) c.focus(); }
+}
+$('#langMenu').innerHTML = LANGS.map(l => `<button class="mi" role="option" aria-selected="false" data-v="${l[0]}" lang="${HTML_LANG[l[0]]}">${l[1]}<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.5l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`).join('');
+$('#langBtn').addEventListener('click', e => { e.stopPropagation(); langOpen(!langDd.classList.contains('open')); });
+$('#langMenu').addEventListener('click', e => { const it = e.target.closest('.mi'); if (!it) return; setLang(it.dataset.v); langOpen(false); $('#langBtn').focus(); });
+$('#langMenu').addEventListener('keydown', e => {
+  const items = [...langDd.querySelectorAll('.mi')], i = items.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+  else if (e.key === 'Escape') { langOpen(false); $('#langBtn').focus(); }
+  e.stopPropagation();
+});
+document.addEventListener('click', () => langOpen(false));
+applyLang();
 draw(); syncHist(); selChanged();
 </script>
 </body>
