@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Asset Splitter v0.7.0 · https://github.com/zengtai/asset-splitter -->
+<!-- Asset Splitter v0.8.0 · https://github.com/zengtai/asset-splitter -->
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
@@ -145,6 +145,13 @@ aside{display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .btns{display:flex;gap:8px;flex-wrap:wrap}
 .chk{display:flex;gap:8px;align-items:center;color:var(--t1);margin-bottom:14px}
+.keybox{padding:12px 12px 4px;border:1px solid var(--line);border-radius:12px;background:var(--f3);margin-bottom:20px}
+.keybox .d{margin:2px 0 10px}
+#keyOpts{transition:opacity .15s}#keyOpts.off{opacity:.45;pointer-events:none}
+.krow{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.krow input[type=color]{width:36px;height:26px;padding:0;border:1px solid var(--line2);border-radius:8px;background:none;cursor:pointer}
+.krow .hex{font-family:var(--mono);font-size:12px;color:var(--t2);flex:1}
+button.mini.on{background:var(--acbg);color:var(--ac);border-color:var(--ac-line)}
 details{border-top:1px solid var(--line);padding-top:14px;margin-top:18px}
 summary{cursor:pointer;color:var(--t2);margin-bottom:8px;font-size:12.5px;font-weight:550}
 footer{display:flex;align-items:center;gap:16px;padding:0 10px;color:var(--t3);font:11px var(--mono)}
@@ -209,9 +216,9 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
 <body>
 <header>
   <div class="logo">Asset <b>Splitter</b></div>
-  <span class="ver" id="ver" title="Version 0.7.0">v0.7.0</span>
+  <span class="ver" id="ver" title="Version 0.8.0">v0.8.0</span>
   <button id="bOpen" class="primary" data-i18n="open">导入图集</button>
-  <input id="file" type="file" accept="image/png,image/webp,.json,.plist,.xml,.atlas,.txt" multiple hidden>
+  <input id="file" type="file" accept="image/png,image/webp,image/jpeg,.json,.plist,.xml,.atlas,.txt" multiple hidden>
   <span class="sep"></span>
   <button id="bUndo" class="icon" data-i18n-title="undo" title="撤销 Ctrl+Z" disabled>↶</button>
   <button id="bRedo" class="icon" data-i18n-title="redo" title="重做 Ctrl+Shift+Z" disabled>↷</button>
@@ -271,6 +278,16 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
     </div>
 
     <div class="pane on" id="p-detect">
+      <div class="keybox">
+        <label class="chk" style="margin-bottom:10px"><input id="kOn" type="checkbox"> <b data-i18n="keyTitle">去除背景色</b></label>
+        <div id="keyOpts" class="off">
+          <div class="krow"><input id="kColor" type="color" value="#ffffff" data-i18n-aria="keyTitle" aria-label="去除背景色"><span id="kHex" class="hex">#FFFFFF</span><button id="kPick" class="mini" data-i18n="keyPick">取色</button></div>
+          <div class="f" style="margin-bottom:12px"><label><span data-i18n="keyTol">容差</span> <span id="vTol">10</span></label><input id="kTol" type="range" min="0" max="60" value="10"></div>
+          <div class="f" style="margin-bottom:12px"><label><span data-i18n="keySoft">边缘柔化</span> <span id="vSoft">2</span></label><input id="kSoft" type="range" min="0" max="10" value="2"></div>
+          <label class="chk" style="margin-bottom:10px"><input id="kEdge" type="checkbox" checked> <span data-i18n="keyEdge">仅去除与边缘相连的背景</span></label>
+        </div>
+        <div class="d" data-i18n="keyD">去除背景色</div>
+      </div>
       <div class="f"><label><span data-i18n="alpha">Alpha 阈值</span> <span id="vAlpha">8</span></label>
         <input id="iAlpha" type="range" min="0" max="254" value="8">
         <div class="d" data-i18n="alphaD">透明度不高于此值的像素视为背景</div></div>
@@ -604,6 +621,50 @@ function parseAtlas(text) {
   else r = atlasFromText(s);
   if (!r.frames.length) throw atlasErr('atlasErrEmpty');
   return r;
+}
+// ---- 背景色去除（色键）----
+// 从图片四边取最常见的颜色作为背景色
+function autoBgColor(d, W, H) {
+  const bins = new Map();
+  const add = p => {
+    const i = p * 4; if (d[i + 3] < 128) return;
+    const k = ((d[i] >> 3) << 10) | ((d[i + 1] >> 3) << 5) | (d[i + 2] >> 3);
+    let b = bins.get(k); if (!b) bins.set(k, b = [0, 0, 0, 0]);
+    b[0]++; b[1] += d[i]; b[2] += d[i + 1]; b[3] += d[i + 2];
+  };
+  for (let x = 0; x < W; x++) { add(x); add((H - 1) * W + x); }
+  for (let y = 1; y < H - 1; y++) { add(y * W); add(y * W + W - 1); }
+  let best = null; for (const b of bins.values()) if (!best || b[0] > best[0]) best = b;
+  if (!best) return [255, 255, 255];
+  return [Math.round(best[1] / best[0]), Math.round(best[2] / best[0]), Math.round(best[3] / best[0])];
+}
+// K = { color: [r,g,b], tol: 0-100, soft: 0-10, edge: true=只去除与边缘相连的背景 }；返回新的 RGBA 数组
+function keyOut(src, W, H, K) {
+  const out = new Uint8ClampedArray(src);
+  const br = K.color[0], bg = K.color[1], bb = K.color[2];
+  const thr = K.tol * 2.55, F = K.soft * 6, lim = thr + F, N = W * H;
+  const dist = p => { const i = p * 4; return Math.max(Math.abs(src[i] - br), Math.abs(src[i + 1] - bg), Math.abs(src[i + 2] - bb)); };
+  let region = null;
+  if (K.edge) {
+    region = new Uint8Array(N); const st = new Int32Array(N); let sp = 0;
+    const seed = p => { if (!region[p] && dist(p) <= lim) { region[p] = 1; st[sp++] = p; } };
+    for (let x = 0; x < W; x++) { seed(x); seed((H - 1) * W + x); }
+    for (let y = 0; y < H; y++) { seed(y * W); seed(y * W + W - 1); }
+    while (sp) {
+      const p = st[--sp], x = p % W, y = (p / W) | 0;
+      if (x > 0) seed(p - 1); if (x < W - 1) seed(p + 1); if (y > 0) seed(p - W); if (y < H - 1) seed(p + W);
+    }
+  }
+  for (let p = 0; p < N; p++) {
+    if (region && !region[p]) continue;
+    const d = dist(p); if (d > lim) continue;
+    const i = p * 4;
+    if (d <= thr) { out[i + 3] = 0; continue; }
+    const a = (d - thr) / F;                       // 边缘半透明：按背景色成分反算前景色
+    out[i] = (src[i] - (1 - a) * br) / a; out[i + 1] = (src[i + 1] - (1 - a) * bg) / a; out[i + 2] = (src[i + 2] - (1 - a) * bb) / a;
+    out[i + 3] = src[i + 3] * a;
+  }
+  return out;
 }
 //</pure>
 
@@ -1016,6 +1077,54 @@ Object.assign(I18N.fr, {
   atlasErrFormat: 'Format de données d’atlas non reconnu', atlasErrEmpty: 'Aucun frame trouvé dans le fichier', atlasErrBounds: `Aucun frame ne tient dans l’image. Est-ce la bonne image ?`,
   atlasNeedImage: v => `Coordonnées lues pour ${v.n} ${pl(v.n, 'frame', 'frames')}. Ouvrez maintenant l’image d’atlas correspondante.`, emptyAtlas: 'Vous pouvez aussi déposer un atlas avec son fichier de données .json / .plist / .atlas'
 });
+Object.assign(I18N.zh, {
+  keyTitle: '去除背景色', keyPick: '取色', keyTol: '容差', keySoft: '边缘柔化', keyEdge: '仅去除与边缘相连的背景',
+  keyD: '检测前先把背景色变成透明，纯色背景上的素材也能切开，并带着透明通道导出。自动取的颜色不对时，点“取色”从图上选。', keyPickHint: '点击图片上的背景位置取色（Esc 取消）',
+  noAlpha: '这张图没有透明像素，已自动去除背景色 {c}。可在“检测”标签页微调，或在那里关闭。',
+  errType: '仅支持 PNG / WebP / JPG 图片', emptySub: '支持 PNG、WebP、JPG · 没有透明通道时可去除背景色 · 全程在本机处理，不上传'
+});
+Object.assign(I18N['zh-TW'], {
+  keyTitle: '去除背景色', keyPick: '取色', keyTol: '容差', keySoft: '邊緣柔化', keyEdge: '僅去除與邊緣相連的背景',
+  keyD: '偵測前先把背景色變成透明，純色背景上的素材也能切開，並帶著透明通道匯出。自動取得的顏色不對時，點「取色」從圖上選取。', keyPickHint: '點選圖片上的背景位置取色（Esc 取消）',
+  noAlpha: '這張圖沒有透明像素，已自動去除背景色 {c}。可在「偵測」分頁微調，或在那裡關閉。',
+  errType: '僅支援 PNG / WebP / JPG 圖片', emptySub: '支援 PNG、WebP、JPG · 沒有透明通道時可去除背景色 · 全程在本機處理，不會上傳'
+});
+Object.assign(I18N.en, {
+  keyTitle: 'Remove background color', keyPick: 'Pick', keyTol: 'Tolerance', keySoft: 'Edge softness', keyEdge: 'Only remove background connected to the edges',
+  keyD: 'Turns the background color transparent before detection, so sprites on a solid background can be split and exported with transparency. If the automatic color is off, use "Pick" and click the background.', keyPickHint: 'Click the background in the image to pick its color (Esc to cancel)',
+  noAlpha: 'This image has no transparent pixels, so the background color {c} was removed automatically. Fine-tune it in the Detect tab, or turn it off there.',
+  errType: 'Only PNG, WebP and JPG images are supported', emptySub: 'PNG, WebP and JPG · solid backgrounds can be removed · processed locally, never uploaded'
+});
+Object.assign(I18N.ja, {
+  keyTitle: '背景色を除去', keyPick: 'スポイト', keyTol: '許容値', keySoft: 'エッジのぼかし', keyEdge: '端につながる背景のみ除去',
+  keyD: '検出の前に背景色を透明にします。単色背景のスプライトも切り出せ、透過付きで書き出せます。自動で選ばれた色が違う場合は「スポイト」で画像上から選んでください。', keyPickHint: '画像の背景部分をクリックして色を取得（Esc でキャンセル）',
+  noAlpha: 'この画像には透明ピクセルがないため、背景色 {c} を自動で除去しました。「検出」タブで調整するか、オフにできます。',
+  errType: 'PNG、WebP、JPG の画像のみ対応しています', emptySub: 'PNG・WebP・JPG に対応 · 単色背景は除去可能 · すべてローカルで処理され、アップロードされません'
+});
+Object.assign(I18N.ko, {
+  keyTitle: '배경색 제거', keyPick: '색 선택', keyTol: '허용 오차', keySoft: '가장자리 부드럽게', keyEdge: '가장자리와 이어진 배경만 제거',
+  keyD: '감지 전에 배경색을 투명하게 만들어, 단색 배경 위의 스프라이트도 잘라내고 투명도를 유지한 채 내보낼 수 있습니다. 자동으로 고른 색이 맞지 않으면 「색 선택」으로 이미지에서 직접 고르세요.', keyPickHint: '이미지의 배경 부분을 클릭해 색을 선택하세요 (Esc로 취소)',
+  noAlpha: '이 이미지에는 투명 픽셀이 없어 배경색 {c}을(를) 자동으로 제거했습니다. 「감지」 탭에서 조정하거나 끌 수 있습니다.',
+  errType: 'PNG, WebP, JPG 이미지만 지원합니다', emptySub: 'PNG, WebP, JPG 지원 · 단색 배경은 제거 가능 · 모든 처리는 로컬에서 이뤄지며 업로드되지 않습니다'
+});
+Object.assign(I18N.es, {
+  keyTitle: 'Quitar color de fondo', keyPick: 'Elegir', keyTol: 'Tolerancia', keySoft: 'Suavizado de bordes', keyEdge: 'Quitar solo el fondo conectado a los bordes',
+  keyD: 'Vuelve transparente el color de fondo antes de detectar, para poder separar y exportar con transparencia sprites sobre fondo liso. Si el color automático no es correcto, usa «Elegir» y haz clic en el fondo.', keyPickHint: 'Haz clic en el fondo de la imagen para elegir su color (Esc para cancelar)',
+  noAlpha: 'Esta imagen no tiene píxeles transparentes, así que se quitó automáticamente el color de fondo {c}. Ajústalo en la pestaña Detectar o desactívalo allí.',
+  errType: 'Solo se admiten imágenes PNG, WebP y JPG', emptySub: 'PNG, WebP y JPG · se pueden quitar fondos lisos · se procesa en local, nunca se sube'
+});
+Object.assign(I18N.de, {
+  keyTitle: 'Hintergrundfarbe entfernen', keyPick: 'Aufnehmen', keyTol: 'Toleranz', keySoft: 'Kantenweichzeichnung', keyEdge: 'Nur mit dem Rand verbundenen Hintergrund entfernen',
+  keyD: 'Macht die Hintergrundfarbe vor der Erkennung transparent, damit sich Sprites auf einfarbigem Hintergrund trennen und mit Transparenz exportieren lassen. Stimmt die automatisch gewählte Farbe nicht, wähle mit „Aufnehmen“ den Hintergrund im Bild.', keyPickHint: 'Klicke auf den Hintergrund im Bild, um die Farbe aufzunehmen (Esc zum Abbrechen)',
+  noAlpha: 'Dieses Bild hat keine transparenten Pixel, daher wurde die Hintergrundfarbe {c} automatisch entfernt. Feinjustierung im Tab „Erkennen“, dort lässt sie sich auch ausschalten.',
+  errType: 'Nur PNG-, WebP- und JPG-Bilder werden unterstützt', emptySub: 'PNG, WebP und JPG · einfarbige Hintergründe lassen sich entfernen · wird lokal verarbeitet, nichts wird hochgeladen'
+});
+Object.assign(I18N.fr, {
+  keyTitle: 'Supprimer la couleur de fond', keyPick: 'Pipette', keyTol: 'Tolérance', keySoft: 'Adoucissement des bords', keyEdge: 'Ne supprimer que le fond relié aux bords',
+  keyD: 'Rend la couleur de fond transparente avant la détection, pour pouvoir découper des sprites sur fond uni et les exporter avec transparence. Si la couleur automatique est mauvaise, utilisez « Pipette » et cliquez sur le fond.', keyPickHint: 'Cliquez sur le fond de l’image pour prélever sa couleur (Échap pour annuler)',
+  noAlpha: 'Cette image n’a aucun pixel transparent : la couleur de fond {c} a été supprimée automatiquement. Ajustez-la dans l’onglet Détection ou désactivez-la.',
+  errType: 'Seules les images PNG, WebP et JPG sont prises en charge', emptySub: 'PNG, WebP et JPG · les fonds unis peuvent être supprimés · traitement local, rien n’est envoyé'
+});
 const LANGS = [['zh', '简体中文', '简'], ['zh-TW', '繁體中文', '繁'], ['en', 'English', 'EN'], ['ja', '日本語', '日'], ['ko', '한국어', '한'], ['es', 'Español', 'ES'], ['de', 'Deutsch', 'DE'], ['fr', 'Français', 'FR']];
 const HTML_LANG = { zh: 'zh-CN', 'zh-TW': 'zh-TW', en: 'en', ja: 'ja', ko: 'ko', es: 'es', de: 'de', fr: 'fr' };
 const LANG_KEY = 'asset-splitter-lang';
@@ -1051,7 +1160,10 @@ function setLang(l) {
 // ============ 应用状态 ============
 const $ = s => document.querySelector(s);
 const stage = $('#stage'), cv = $('#cv'), ctx = cv.getContext('2d');
-let src = null, imgData = null, W = 0, H = 0, baseName = 'atlas';
+let src = null, imgData = null, origData = null, W = 0, H = 0, baseName = 'atlas';
+const K = { on: false, color: [255, 255, 255], tol: 10, soft: 2, edge: true };
+let keyDirty = false, picking = false, autoKeyNote = false;
+const hex2 = c => '#' + c.map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase();
 let slices = [], sel = new Set(), nextId = 1, hover = null;
 let view = { s: 1, x: 0, y: 0 };
 let tool = 'select', spaceDown = false, bgMode = 'checker';
@@ -1085,7 +1197,7 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const cleanName = n => n.replace(/[\\/:*?"<>|]/g, '_').replace(/\.png$/i, '').trim();
 
 // ============ 历史 ============
-function snap() { return JSON.stringify({ slices, nextId, P, ed: edited }); }
+function snap() { return JSON.stringify({ slices, nextId, P, K, ed: edited }); }
 // auto=true 表示由自动检测产生（不算“手动编辑”）
 function commit(auto) {
   edited = !auto; burstOpen = false;
@@ -1096,12 +1208,30 @@ function commit(auto) {
 function restore(i) {
   const o = JSON.parse(hist[i]); slices = o.slices; nextId = o.nextId; edited = !!o.ed; burstOpen = false;
   if (o.P) { Object.assign(P, o.P); syncParams(); }
+  if (o.K) {
+    const kc = JSON.stringify(o.K) !== JSON.stringify(K);
+    Object.assign(K, o.K); K.color = [...o.K.color]; syncKey();
+    if (kc) { rebuildImage(); draw(); }
+  }
   sel = new Set([...sel].filter(id => slices.some(s => s.id === id)));
   histIdx = i; syncHist(); renderList(); selChanged();
 }
 function syncParams() {
   [['iAlpha', 'vAlpha', 'alpha'], ['iPad', 'vPad', 'pad'], ['iMin', 'vMin', 'min'], ['iGap', 'vGap', 'gap']].forEach(([i, v, k]) => { $('#' + i).value = P[k]; $('#' + v).textContent = P[k]; });
 }
+function syncKey() {
+  $('#kOn').checked = K.on; $('#keyOpts').classList.toggle('off', !K.on);
+  $('#kColor').value = hex2(K.color).toLowerCase(); $('#kHex').textContent = hex2(K.color);
+  $('#kTol').value = K.tol; $('#vTol').textContent = K.tol; $('#kSoft').value = K.soft; $('#vSoft').textContent = K.soft; $('#kEdge').checked = K.edge;
+  $('#kPick').classList.toggle('on', picking);
+}
+function rebuildImage() {
+  if (!origData || !src) return;
+  imgData = K.on ? new ImageData(keyOut(origData.data, W, H, K), W, H) : origData;
+  src.getContext('2d').putImageData(imgData, 0, 0);
+  anCache.clear();
+}
+function setPicking(on) { picking = on; cv.style.cursor = on ? 'crosshair' : ''; $('#kPick').classList.toggle('on', on); if (on) toast(t('keyPickHint')); }
 function undo() { if (histIdx > 0) restore(histIdx - 1); }
 function redo() { if (histIdx < hist.length - 1) restore(histIdx + 1); }
 function syncHist() { $('#bUndo').disabled = histIdx <= 0; $('#bRedo').disabled = histIdx >= hist.length - 1; }
@@ -1109,31 +1239,34 @@ function syncHist() { $('#bUndo').disabled = histIdx <= 0; $('#bRedo').disabled 
 // ============ 加载 ============
 let pendingAtlas = null;
 async function loadFile(file, atlas) {
-  if (!file || !/^image\/(png|webp)$/.test(file.type)) { toast(t('errType'), 'warn'); return; }
+  if (!file || !/^image\/(png|webp|jpeg)$/.test(file.type)) { toast(t('errType'), 'warn'); return; }
   if (edited && slices.length && !confirm(t('confirmLoad'))) return;
   try {
     const bmp = await createImageBitmap(file);
     src = document.createElement('canvas'); src.width = W = bmp.width; src.height = H = bmp.height;
     const c = src.getContext('2d', { willReadFrequently: true }); c.drawImage(bmp, 0, 0);
-    imgData = c.getImageData(0, 0, W, H);
+    origData = imgData = c.getImageData(0, 0, W, H);
     baseName = (file.name || 'atlas').replace(/\.[^.]+$/, '') || 'atlas';
     if (!$('#iPrefix').dataset.touched) $('#iPrefix').value = baseName + '_';
     anCache.clear(); lastIdx = -1;
     $('#empty').style.display = 'none';
     $('#sImg').textContent = `${W}×${H}px · ${baseName}`;
-    let hasAlpha = false; const d = imgData.data;
+    let hasAlpha = false; const d = origData.data;
     for (let i = 3; i < d.length; i += 4) if (d[i] < 255) { hasAlpha = true; break; }
+    K.color = autoBgColor(d, W, H); const jpg = file.type === 'image/jpeg'; K.tol = jpg ? 20 : 10; K.soft = jpg ? 3 : 2; K.edge = true; K.on = !hasAlpha;
+    picking = false; cv.style.cursor = ''; syncKey();
+    if (K.on) rebuildImage();
     fit();
     atlas = atlas || pendingAtlas; pendingAtlas = null;
     if (atlas && applyAtlas(atlas, true)) return;
+    autoKeyNote = K.on;
     runDetect(true);
     if (atlas) setTimeout(() => toast(t('atlasErrBounds'), 'err'), 80);
-    else if (!hasAlpha) toast(t('noAlpha'), 'warn');
   } catch (e) { toast(t('errRead'), 'err'); console.error(e); }
 }
 
 // ============ 坐标文件 ============
-const isImgFile = f => /^image\/(png|webp)$/.test(f.type);
+const isImgFile = f => /^image\/(png|webp|jpeg)$/.test(f.type);
 const isAtlasFile = f => /\.(json|plist|xml|atlas|txt)$/i.test(f.name || '');
 async function importFiles(files) {
   files = [...files].filter(Boolean); if (!files.length) return;
@@ -1176,7 +1309,13 @@ function applyAtlas(a, first) {
 
 // ============ 检测 ============
 let detTimer;
-function scheduleDetect() { clearTimeout(detTimer); $('#busy').style.display = 'block'; detTimer = setTimeout(() => runDetect(false, true), 140); }
+let detBurst = true;
+function scheduleDetect(keyChanged, discrete) {
+  if (keyChanged === true) keyDirty = true;
+  detBurst = !discrete;   // 开关、取色等一次性操作单独记一步；滑块拖动合并为一步
+  clearTimeout(detTimer); $('#busy').style.display = 'block';
+  detTimer = setTimeout(() => { if (keyDirty) { keyDirty = false; rebuildImage(); } runDetect(false, detBurst); }, 140);
+}
 function runDetect(first, fromSlider) {
   if (!imgData) return;
   $('#busy').style.display = 'block';
@@ -1190,7 +1329,8 @@ function runDetect(first, fromSlider) {
     else { commit(true); burstOpen = !!fromSlider; }
     renderList(); selChanged();
     $('#busy').style.display = 'none';
-    toast(first ? t('detected', { n: slices.length }) : lost ? t('redetLost', { n: slices.length }) : t('redet', { n: slices.length }), lost ? 'warn' : undefined);
+    toast(first ? t('detected', { n: slices.length }) + (autoKeyNote ? ' ' + t('noAlpha', { c: hex2(K.color) }) : '') : lost ? t('redetLost', { n: slices.length }) : t('redet', { n: slices.length }), lost ? 'warn' : undefined);
+    autoKeyNote = false;
   }, 10);
 }
 
@@ -1378,6 +1518,11 @@ function setCursor() { cv.style.cursor = curTool() === 'pan' ? (drag && drag.kin
 
 cv.addEventListener('mousedown', e => {
   if (!src) return;
+  if (picking && e.button === 0) {
+    const pm = mpos(e), pp = toImg(pm.x, pm.y), px = clamp(Math.floor(pp.x), 0, W - 1), py = clamp(Math.floor(pp.y), 0, H - 1), o = (py * W + px) * 4;
+    K.color = [origData.data[o], origData.data[o + 1], origData.data[o + 2]]; K.on = true; burstOpen = false;
+    setPicking(false); syncKey(); scheduleDetect(true, true); return;
+  }
   const m = mpos(e), p = toImg(m.x, m.y), t = e.button === 1 ? 'pan' : curTool();
   if (e.button === 2) return;
   if (t === 'pan') { drag = { kind: 'pan', mx: m.x, my: m.y, vx: view.x, vy: view.y }; }
@@ -1488,6 +1633,13 @@ $('#iPrefix').addEventListener('input', e => { e.target.dataset.touched = '1'; r
 $('#bOpen').onclick = () => $('#file').click();
 $('#file').onchange = e => { importFiles(e.target.files); e.target.value = ''; };
 $('#bAtlas').onclick = () => $('#fileAtlas').click();
+$('#kOn').onchange = e => { K.on = e.target.checked; burstOpen = false; if (!K.on) setPicking(false); syncKey(); scheduleDetect(true, true); };
+$('#kColor').addEventListener('input', e => { const v = e.target.value; K.color = [1, 3, 5].map(i => parseInt(v.slice(i, i + 2), 16)); K.on = true; syncKey(); scheduleDetect(true); });
+$('#kTol').addEventListener('input', e => { K.tol = +e.target.value; syncKey(); scheduleDetect(true); });
+$('#kSoft').addEventListener('input', e => { K.soft = +e.target.value; syncKey(); scheduleDetect(true); });
+$('#kEdge').onchange = e => { K.edge = e.target.checked; burstOpen = false; scheduleDetect(true, true); };
+['kColor', 'kTol', 'kSoft'].forEach(id => $('#' + id).addEventListener('change', () => { burstOpen = false; }));
+$('#kPick').onclick = () => { if (src) setPicking(!picking); };
 $('#fileAtlas').onchange = e => { importFiles(e.target.files); e.target.value = ''; };
 const emptyEl = $('#empty');
 window.addEventListener('dragover', e => { e.preventDefault(); emptyEl.classList.add('hot'); });
@@ -1657,6 +1809,7 @@ $('#bInv').onclick = invertSel;
 
 // ============ 键盘 ============
 window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && picking) { setPicking(false); return; }
   if (e.key === 'Escape' && bgDd.classList.contains('open')) { bgOpen(false); $('#bgBtn').focus(); return; }
   if (e.key === 'Escape' && langDd.classList.contains('open')) { langOpen(false); $('#langBtn').focus(); return; }
   const tag = (e.target.tagName || '').toLowerCase();
