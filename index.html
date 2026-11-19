@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Asset Splitter v0.6.0 · https://github.com/zengtai/asset-splitter -->
+<!-- Asset Splitter v0.7.0 · https://github.com/zengtai/asset-splitter -->
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
@@ -209,9 +209,9 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
 <body>
 <header>
   <div class="logo">Asset <b>Splitter</b></div>
-  <span class="ver" id="ver" title="Version 0.6.0">v0.6.0</span>
+  <span class="ver" id="ver" title="Version 0.7.0">v0.7.0</span>
   <button id="bOpen" class="primary" data-i18n="open">导入图集</button>
-  <input id="file" type="file" accept="image/png,image/webp" hidden>
+  <input id="file" type="file" accept="image/png,image/webp,.json,.plist,.xml,.atlas,.txt" multiple hidden>
   <span class="sep"></span>
   <button id="bUndo" class="icon" data-i18n-title="undo" title="撤销 Ctrl+Z" disabled>↶</button>
   <button id="bRedo" class="icon" data-i18n-title="redo" title="重做 Ctrl+Shift+Z" disabled>↷</button>
@@ -252,6 +252,7 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
       <div class="big" data-i18n="emptyBig">拖拽图集到这里，或点击「导入图集」</div>
       <div data-i18n="emptySub">支持带透明通道的 PNG、WebP · 全程在本机处理，不上传</div>
       <small data-i18n="emptyPaste">也可以直接粘贴图片（Ctrl+V）</small>
+      <small data-i18n="emptyAtlas">也可以把图集和 .json / .plist / .atlas 坐标文件一起拖进来</small>
     </div>
     <div id="tools" class="float">
       <button id="tSelect" class="on" data-i18n-title="toolSelectT" data-i18n-html="toolSelect" title="选择 V">选择<kbd>V</kbd></button>
@@ -283,6 +284,10 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
         <div class="d" data-i18n="gapD">0 为关闭；距离内的相邻碎片合并为一个素材</div></div>
       <div class="btns"><button id="bRedetect" data-i18n="redetect">重新检测</button></div>
       <div class="d" data-i18n="detectNote" style="margin-top:8px;color:var(--t3)">调整参数会重新检测并替换当前切片（包括手动编辑），拖动滑块算一步，可用 Ctrl+Z 连同参数一起恢复。</div>
+      <div class="f" style="margin-top:20px"><label data-i18n="atlasTitle">坐标文件</label>
+        <div class="d" data-i18n="atlasD">导入坐标文件</div></div>
+      <div class="btns"><button id="bAtlas" data-i18n="atlasBtn">导入坐标文件…</button></div>
+      <input id="fileAtlas" type="file" accept=".json,.plist,.xml,.atlas,.txt,application/json" hidden>
     </div>
 
     <div class="pane" id="p-edit">
@@ -471,6 +476,134 @@ function makeZip(files) {
   end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
   end.setUint32(12, cdSize, true); end.setUint32(16, off, true);
   return new Blob([...parts, ...cds, new Uint8Array(end.buffer)], { type: 'application/zip' });
+}
+// ---- 坐标文件解析（JSON / plist / Sparrow XML / libGDX 文本）----
+// 返回 { frames: [{ name, x, y, w, h, rotated }], size: {w,h} | null }；出错时抛出 Error，其 code 对应界面提示。
+const atlasErr = code => Object.assign(new Error(code), { code });
+const atlasNums = v => (String(v).match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
+function atlasRect(o) {
+  if (o == null) return null;
+  let x, y, w, h;
+  if (typeof o === 'string') { const n = atlasNums(o); if (n.length < 4) return null; [x, y, w, h] = n; }
+  else if (Array.isArray(o)) { [x, y, w, h] = o.map(Number); }
+  else { x = +o.x; y = +o.y; w = +(o.w ?? o.width); h = +(o.h ?? o.height); }
+  return [x, y, w, h].every(Number.isFinite) ? { x, y, w, h } : null;
+}
+function atlasFromJSON(s) {
+  let j; try { j = JSON.parse(s); } catch (e) { throw atlasErr('atlasErrFormat'); }
+  let root = j, size = null;
+  if (j && Array.isArray(j.textures)) root = j.textures[0] || {};
+  const sz = root && (root.meta && root.meta.size || root.size);
+  if (sz && Number.isFinite(+sz.w) && Number.isFinite(+sz.h)) size = { w: +sz.w, h: +sz.h };
+  const list = root && (root.frames ?? root.sprites ?? root.slices ?? (Array.isArray(root) ? root : null));
+  const frames = [];
+  const add = (name, o) => {
+    const r = atlasRect(o && typeof o === 'object' && !Array.isArray(o) && o.frame !== undefined ? o.frame : o);
+    if (r) frames.push({ name: String(name ?? ''), ...r, rotated: !!(o && o.rotated === true) });
+  };
+  if (Array.isArray(list)) list.forEach((o, i) => add((o && (o.filename ?? o.name ?? o.id)) ?? '', o));
+  else if (list && typeof list === 'object') Object.keys(list).forEach(k => add(k, list[k]));
+  return { frames, size };
+}
+function plistParse(src) {
+  const body = src.replace(/<\?[\s\S]*?\?>|<!--[\s\S]*?-->|<!DOCTYPE[^>]*>/g, '');
+  const toks = [], re = /<(\/?)([A-Za-z]+)[^>]*?(\/?)>|([^<]+)/g; let m;
+  while ((m = re.exec(body))) {
+    if (m[4] !== undefined) { if (m[4].trim() !== '') toks.push({ t: 'text', v: m[4] }); }
+    else toks.push({ t: m[2], close: !!m[1], self: !!m[3] });
+  }
+  const dec = x => x.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, '&');
+  let pos = 0;
+  function val() {
+    const tk = toks[pos++]; if (!tk) throw atlasErr('atlasErrFormat');
+    if ((tk.t === 'dict' || tk.t === 'array') && tk.self) return tk.t === 'dict' ? {} : [];
+    if (tk.t === 'dict') {
+      const d = {};
+      while (toks[pos] && !(toks[pos].t === 'dict' && toks[pos].close)) {
+        const k = toks[pos++]; if (k.t !== 'key') throw atlasErr('atlasErrFormat');
+        let name = ''; if (!k.self) { if (toks[pos].t === 'text') name = dec(toks[pos++].v); pos++; }
+        d[name] = val();
+      }
+      pos++; return d;
+    }
+    if (tk.t === 'array') {
+      const a = [];
+      while (toks[pos] && !(toks[pos].t === 'array' && toks[pos].close)) a.push(val());
+      pos++; return a;
+    }
+    if (tk.t === 'true') return true;
+    if (tk.t === 'false') return false;
+    if (tk.self) return '';
+    let v = ''; if (toks[pos] && toks[pos].t === 'text') v = toks[pos++].v; pos++;
+    return tk.t === 'integer' || tk.t === 'real' ? Number(v) : dec(v);
+  }
+  while (pos < toks.length && toks[pos].t !== 'plist') pos++;
+  pos++;
+  return val();
+}
+function atlasFromPlist(s) {
+  const root = plistParse(s), fr = root && root.frames, meta = root && root.metadata || {};
+  if (!fr || typeof fr !== 'object') return { frames: [], size: null };
+  const frames = [];
+  for (const k of Object.keys(fr)) {
+    const d = fr[k]; if (!d || typeof d !== 'object') continue;
+    const r = atlasRect(d.frame ?? d.textureRect ?? (d.x !== undefined ? d : null));
+    if (r) frames.push({ name: k, ...r, rotated: d.rotated === true || d.textureRotated === true });
+  }
+  const n = atlasNums(meta.size ?? meta.realTextureSize ?? '');
+  return { frames, size: n.length >= 2 ? { w: n[0], h: n[1] } : null };
+}
+function atlasFromSparrow(s) {
+  const frames = [], re = /<SubTexture\b([^>]*?)\/?>/gi; let m;
+  while ((m = re.exec(s))) {
+    const a = {}; m[1].replace(/([\w:-]+)\s*=\s*"([^"]*)"/g, (_, k, v) => { a[k] = v; });
+    const r = atlasRect({ x: a.x, y: a.y, w: a.width, h: a.height });
+    if (r) frames.push({ name: a.name || '', ...r, rotated: a.rotated === 'true' });
+  }
+  return { frames, size: null };
+}
+function atlasFromText(s) {
+  const lines = s.split(/\r?\n/), ents = []; let cur = null, size = null;
+  const gdx = /^\s*(xy|bounds)\s*:/m.test(s);
+  if (gdx) {
+    for (const raw of lines) {
+      const ln = raw.trim();
+      if (!ln) { cur = null; continue; }
+      const i = ln.indexOf(':');
+      if (i < 0) { cur = { name: ln }; ents.push(cur); continue; }
+      if (!cur) continue;
+      const key = ln.slice(0, i).trim().toLowerCase(), n = atlasNums(ln.slice(i + 1)), val = ln.slice(i + 1).trim().toLowerCase();
+      if (key === 'xy' && n.length >= 2) { cur.x = n[0]; cur.y = n[1]; }
+      else if (key === 'size' && n.length >= 2) { cur.w = n[0]; cur.h = n[1]; }
+      else if (key === 'bounds' && n.length >= 4) { [cur.x, cur.y, cur.w, cur.h] = n; }
+      else if (key === 'rotate') cur.rotated = val === 'true' || (Number(val) % 180 !== 0 && Number.isFinite(Number(val)));
+      else if (key === 'index' && n.length && n[0] >= 0) cur.index = n[0];
+    }
+    const frames = [];
+    for (const e of ents) {
+      if (e.x === undefined) { if (!size && e.w) size = { w: e.w, h: e.h }; continue; }
+      if (!Number.isFinite(e.w) || !Number.isFinite(e.h)) continue;
+      frames.push({ name: e.index !== undefined ? `${e.name}_${e.index}` : e.name, x: e.x, y: e.y, w: e.w, h: e.h, rotated: !!e.rotated });
+    }
+    return { frames, size };
+  }
+  const frames = [];
+  for (const raw of lines) {
+    const ln = raw.trim(); if (!ln || ln[0] === '#' || ln.startsWith('//')) continue;
+    const m = ln.match(/^(.+?)\s*[=\s,;]\s*(-?\d+)[\s,;]+(-?\d+)[\s,;]+(\d+)[\s,;]+(\d+)$/);
+    if (m) frames.push({ name: m[1].trim(), x: +m[2], y: +m[3], w: +m[4], h: +m[5], rotated: false });
+  }
+  return { frames, size: null };
+}
+function parseAtlas(text) {
+  const s = String(text).replace(/^﻿/, '').trim();
+  let r;
+  if (s[0] === '{' || s[0] === '[') r = atlasFromJSON(s);
+  else if (/<plist[\s>]/.test(s)) r = atlasFromPlist(s);
+  else if (/<TextureAtlas[\s>]/i.test(s)) r = atlasFromSparrow(s);
+  else r = atlasFromText(s);
+  if (!r.frames.length) throw atlasErr('atlasErrEmpty');
+  return r;
 }
 //</pure>
 
@@ -823,6 +956,66 @@ I18N.fr = {
   kCount: 'Sélectionnées', kArea: 'Surface totale', kAvgFill: 'Remplissage moyen', trim: 'Resserrer sur les bords opaques',
   selectedToast: v => `${v.n} ${pl(v.n, 'découpe sélectionnée', 'découpes sélectionnées')}`, trimmed: v => `${v.n} ${pl(v.n, 'découpe resserrée', 'découpes resserrées')} (annulable)`, trimNone: 'Les découpes sélectionnées sont déjà au plus juste'
 };
+Object.assign(I18N.zh, {
+  atlasTitle: '坐标文件', atlasD: '导入 .json、.plist、.xml 或 .atlas 坐标文件，按文件里的坐标直接切图，不再自动检测。导入后会替换当前切片，可用 Ctrl+Z 撤销。也可以把图片和坐标文件一起拖进窗口。', atlasBtn: '导入坐标文件…',
+  atlasOk: '已从 {file} 导入 {n} 个切片', atlasRot: '其中 {n} 个旋转帧按图集中的原样导出，不会转回正向。', atlasSize: '文件里记录的图集尺寸（{fw}×{fh}）和当前图片（{w}×{h}）不一致。',
+  atlasClip: '{n} 个超出图片范围的帧已裁到图内。', atlasSkip: '{n} 个完全在图片之外的帧已跳过。',
+  atlasErrFormat: '无法识别坐标文件格式', atlasErrEmpty: '文件里没有找到任何帧', atlasErrBounds: '所有帧都在图片范围之外，请确认图片和坐标文件是否对应',
+  atlasNeedImage: '已读取 {n} 个帧的坐标，请再导入对应的图集图片。', emptyAtlas: '也可以把图集和 .json / .plist / .atlas 坐标文件一起拖进来'
+});
+Object.assign(I18N['zh-TW'], {
+  atlasTitle: '座標檔', atlasD: '匯入 .json、.plist、.xml 或 .atlas 座標檔，直接依檔案內的座標切圖，不再自動偵測。匯入後會取代目前的切片，可用 Ctrl+Z 復原。也可以把圖片和座標檔一起拖曳到視窗。', atlasBtn: '匯入座標檔…',
+  atlasOk: '已從 {file} 匯入 {n} 個切片', atlasRot: '其中 {n} 個旋轉影格依圖集中的原樣匯出，不會轉回正向。', atlasSize: '檔案記錄的圖集尺寸（{fw}×{fh}）與目前圖片（{w}×{h}）不一致。',
+  atlasClip: '{n} 個超出圖片範圍的影格已裁切到圖內。', atlasSkip: '{n} 個完全在圖片之外的影格已略過。',
+  atlasErrFormat: '無法辨識座標檔格式', atlasErrEmpty: '檔案中找不到任何影格', atlasErrBounds: '所有影格都在圖片範圍之外，請確認圖片與座標檔是否對應',
+  atlasNeedImage: '已讀取 {n} 個影格的座標，請再匯入對應的圖集圖片。', emptyAtlas: '也可以把圖集和 .json / .plist / .atlas 座標檔一起拖進來'
+});
+Object.assign(I18N.en, {
+  atlasTitle: 'Atlas data', atlasD: 'Import a .json, .plist, .xml or .atlas file to slice by its coordinates instead of auto-detecting. It replaces the current slices, and Ctrl+Z restores them. You can also drop the image and the data file together.', atlasBtn: 'Import atlas data…',
+  atlasOk: v => `Imported ${v.n} ${pl(v.n, 'slice', 'slices')} from ${v.file}`, atlasRot: v => `${v.n} rotated ${pl(v.n, 'frame is', 'frames are')} exported as stored in the atlas (not rotated back).`,
+  atlasSize: 'The atlas size in the file ({fw}×{fh}) differs from the image ({w}×{h}).',
+  atlasClip: v => `${v.n} ${pl(v.n, 'frame', 'frames')} extending past the image ${pl(v.n, 'was', 'were')} clipped.`, atlasSkip: v => `${v.n} ${pl(v.n, 'frame', 'frames')} completely outside the image ${pl(v.n, 'was', 'were')} skipped.`,
+  atlasErrFormat: 'Unrecognized atlas data format', atlasErrEmpty: 'No frames were found in the file', atlasErrBounds: 'None of the frames fit inside the image. Is this the matching image?',
+  atlasNeedImage: v => `Read coordinates for ${v.n} ${pl(v.n, 'frame', 'frames')}. Now open the matching atlas image.`, emptyAtlas: 'You can also drop an atlas together with its .json / .plist / .atlas data file'
+});
+Object.assign(I18N.ja, {
+  atlasTitle: '座標ファイル', atlasD: '.json、.plist、.xml、.atlas の座標ファイルを読み込み、自動検出の代わりにその座標で切り出します。現在のスライスは置き換えられ、Ctrl+Z で元に戻せます。画像と座標ファイルを一緒にドロップすることもできます。', atlasBtn: '座標ファイルを読み込む…',
+  atlasOk: '{file} から {n} 個のスライスを読み込みました', atlasRot: '回転フレーム {n} 個は、アトラス内の向きのまま書き出されます（元の向きには戻しません）。', atlasSize: 'ファイル内のアトラスサイズ（{fw}×{fh}）が現在の画像（{w}×{h}）と一致しません。',
+  atlasClip: '画像からはみ出す {n} 個のフレームを切り詰めました。', atlasSkip: '画像の完全に外側にある {n} 個のフレームをスキップしました。',
+  atlasErrFormat: '座標ファイルの形式を認識できません', atlasErrEmpty: 'ファイルにフレームが見つかりません', atlasErrBounds: 'すべてのフレームが画像の範囲外です。画像と座標ファイルが対応しているか確認してください',
+  atlasNeedImage: '{n} 個のフレームの座標を読み込みました。続けて対応するアトラス画像を開いてください。', emptyAtlas: 'アトラスと .json / .plist / .atlas の座標ファイルを一緒にドロップすることもできます'
+});
+Object.assign(I18N.ko, {
+  atlasTitle: '좌표 파일', atlasD: '.json, .plist, .xml, .atlas 좌표 파일을 가져와 자동 감지 대신 파일의 좌표대로 자릅니다. 현재 슬라이스를 대체하며 Ctrl+Z로 복원할 수 있습니다. 이미지와 좌표 파일을 함께 끌어다 놓아도 됩니다.', atlasBtn: '좌표 파일 가져오기…',
+  atlasOk: '{file}에서 슬라이스 {n}개를 가져왔습니다', atlasRot: '회전된 프레임 {n}개는 아틀라스에 저장된 방향 그대로 내보냅니다(원래 방향으로 돌리지 않음).', atlasSize: '파일에 기록된 아틀라스 크기({fw}×{fh})가 현재 이미지({w}×{h})와 다릅니다.',
+  atlasClip: '이미지 밖으로 나간 프레임 {n}개를 안쪽으로 잘라냈습니다.', atlasSkip: '이미지 밖에 완전히 벗어난 프레임 {n}개를 건너뛰었습니다.',
+  atlasErrFormat: '좌표 파일 형식을 알 수 없습니다', atlasErrEmpty: '파일에서 프레임을 찾지 못했습니다', atlasErrBounds: '모든 프레임이 이미지 범위 밖입니다. 이미지와 좌표 파일이 맞는지 확인하세요',
+  atlasNeedImage: '프레임 {n}개의 좌표를 읽었습니다. 이어서 해당 아틀라스 이미지를 여세요.', emptyAtlas: '아틀라스와 .json / .plist / .atlas 좌표 파일을 함께 끌어다 놓을 수도 있습니다'
+});
+Object.assign(I18N.es, {
+  atlasTitle: 'Datos del atlas', atlasD: 'Importa un archivo .json, .plist, .xml o .atlas para recortar según sus coordenadas en lugar de detectar automáticamente. Reemplaza los recortes actuales y Ctrl+Z los restaura. También puedes soltar la imagen y el archivo de datos juntos.', atlasBtn: 'Importar datos del atlas…',
+  atlasOk: v => `${pl(v.n, 'Se importó', 'Se importaron')} ${v.n} ${pl(v.n, 'recorte', 'recortes')} de ${v.file}`, atlasRot: v => `${v.n} ${pl(v.n, 'fotograma girado se exporta', 'fotogramas girados se exportan')} tal como ${pl(v.n, 'está guardado', 'están guardados')} en el atlas (sin volver a girarse).`,
+  atlasSize: 'El tamaño del atlas indicado en el archivo ({fw}×{fh}) no coincide con la imagen ({w}×{h}).',
+  atlasClip: v => `${v.n} ${pl(v.n, 'fotograma que sobresalía', 'fotogramas que sobresalían')} de la imagen se ${pl(v.n, 'recortó', 'recortaron')}.`, atlasSkip: v => `${v.n} ${pl(v.n, 'fotograma totalmente fuera', 'fotogramas totalmente fuera')} de la imagen se ${pl(v.n, 'omitió', 'omitieron')}.`,
+  atlasErrFormat: 'Formato de datos del atlas no reconocido', atlasErrEmpty: 'No se encontró ningún fotograma en el archivo', atlasErrBounds: 'Ningún fotograma cabe en la imagen. ¿Es la imagen correspondiente?',
+  atlasNeedImage: v => `Se leyeron las coordenadas de ${v.n} ${pl(v.n, 'fotograma', 'fotogramas')}. Abre ahora la imagen del atlas correspondiente.`, emptyAtlas: 'También puedes soltar un atlas junto con su archivo de datos .json / .plist / .atlas'
+});
+Object.assign(I18N.de, {
+  atlasTitle: 'Atlas-Daten', atlasD: 'Importiere eine .json-, .plist-, .xml- oder .atlas-Datei, um nach ihren Koordinaten statt per automatischer Erkennung zu schneiden. Sie ersetzt die aktuellen Ausschnitte, mit Strg+Z stellst du sie wieder her. Du kannst auch Bild und Datendatei zusammen hineinziehen.', atlasBtn: 'Atlas-Daten importieren…',
+  atlasOk: v => `${v.n} ${pl(v.n, 'Ausschnitt', 'Ausschnitte')} aus ${v.file} importiert`, atlasRot: v => `${v.n} ${pl(v.n, 'gedrehtes Frame wird', 'gedrehte Frames werden')} so exportiert, wie im Atlas gespeichert (nicht zurückgedreht).`,
+  atlasSize: 'Die Atlasgröße in der Datei ({fw}×{fh}) weicht vom Bild ({w}×{h}) ab.',
+  atlasClip: v => `${v.n} ${pl(v.n, 'Frame', 'Frames')} über den Bildrand hinaus ${pl(v.n, 'wurde', 'wurden')} beschnitten.`, atlasSkip: v => `${v.n} ${pl(v.n, 'Frame', 'Frames')} komplett außerhalb des Bildes ${pl(v.n, 'wurde', 'wurden')} übersprungen.`,
+  atlasErrFormat: 'Atlas-Datenformat nicht erkannt', atlasErrEmpty: 'In der Datei wurden keine Frames gefunden', atlasErrBounds: 'Kein Frame liegt innerhalb des Bildes. Ist es das passende Bild?',
+  atlasNeedImage: v => `Koordinaten für ${v.n} ${pl(v.n, 'Frame', 'Frames')} gelesen. Öffne jetzt das passende Atlas-Bild.`, emptyAtlas: 'Du kannst auch einen Atlas zusammen mit seiner .json- / .plist- / .atlas-Datei hineinziehen'
+});
+Object.assign(I18N.fr, {
+  atlasTitle: 'Données d’atlas', atlasD: `Importez un fichier .json, .plist, .xml ou .atlas pour découper selon ses coordonnées au lieu de la détection automatique. Il remplace les découpes actuelles, et Ctrl+Z les restaure. Vous pouvez aussi déposer l’image et le fichier de données ensemble.`, atlasBtn: 'Importer les données d’atlas…',
+  atlasOk: v => `${v.n} ${pl(v.n, 'découpe importée', 'découpes importées')} depuis ${v.file}`, atlasRot: v => `${v.n} ${pl(v.n, 'frame pivoté est exporté tel', 'frames pivotés sont exportés tels')} que stocké${v.n === 1 ? '' : 's'} dans l’atlas (sans être remis à l’endroit).`,
+  atlasSize: `La taille d’atlas indiquée dans le fichier ({fw}×{fh}) diffère de l’image ({w}×{h}).`,
+  atlasClip: v => `${v.n} ${pl(v.n, 'frame dépassant', 'frames dépassant')} de l’image ${pl(v.n, 'a été rogné', 'ont été rognés')}.`, atlasSkip: v => `${v.n} ${pl(v.n, 'frame entièrement hors', 'frames entièrement hors')} de l’image ${pl(v.n, 'a été ignoré', 'ont été ignorés')}.`,
+  atlasErrFormat: 'Format de données d’atlas non reconnu', atlasErrEmpty: 'Aucun frame trouvé dans le fichier', atlasErrBounds: `Aucun frame ne tient dans l’image. Est-ce la bonne image ?`,
+  atlasNeedImage: v => `Coordonnées lues pour ${v.n} ${pl(v.n, 'frame', 'frames')}. Ouvrez maintenant l’image d’atlas correspondante.`, emptyAtlas: 'Vous pouvez aussi déposer un atlas avec son fichier de données .json / .plist / .atlas'
+});
 const LANGS = [['zh', '简体中文', '简'], ['zh-TW', '繁體中文', '繁'], ['en', 'English', 'EN'], ['ja', '日本語', '日'], ['ko', '한국어', '한'], ['es', 'Español', 'ES'], ['de', 'Deutsch', 'DE'], ['fr', 'Français', 'FR']];
 const HTML_LANG = { zh: 'zh-CN', 'zh-TW': 'zh-TW', en: 'en', ja: 'ja', ko: 'ko', es: 'es', de: 'de', fr: 'fr' };
 const LANG_KEY = 'asset-splitter-lang';
@@ -882,7 +1075,7 @@ readTC();
 let toastT;
 function toast(msg, kind) {
   const t = $('#toast'); t.textContent = msg; t.className = 'show ' + (kind || '');
-  clearTimeout(toastT); toastT = setTimeout(() => t.className = '', 2600);
+  clearTimeout(toastT); toastT = setTimeout(() => t.className = '', Math.min(9000, Math.max(2600, msg.length * 75)));
 }
 const pad3 = n => String(n).padStart(3, '0');
 const prefix = () => $('#iPrefix').value;
@@ -914,7 +1107,8 @@ function redo() { if (histIdx < hist.length - 1) restore(histIdx + 1); }
 function syncHist() { $('#bUndo').disabled = histIdx <= 0; $('#bRedo').disabled = histIdx >= hist.length - 1; }
 
 // ============ 加载 ============
-async function loadFile(file) {
+let pendingAtlas = null;
+async function loadFile(file, atlas) {
   if (!file || !/^image\/(png|webp)$/.test(file.type)) { toast(t('errType'), 'warn'); return; }
   if (edited && slices.length && !confirm(t('confirmLoad'))) return;
   try {
@@ -930,9 +1124,54 @@ async function loadFile(file) {
     let hasAlpha = false; const d = imgData.data;
     for (let i = 3; i < d.length; i += 4) if (d[i] < 255) { hasAlpha = true; break; }
     fit();
+    atlas = atlas || pendingAtlas; pendingAtlas = null;
+    if (atlas && applyAtlas(atlas, true)) return;
     runDetect(true);
-    if (!hasAlpha) toast(t('noAlpha'), 'warn');
+    if (atlas) setTimeout(() => toast(t('atlasErrBounds'), 'err'), 80);
+    else if (!hasAlpha) toast(t('noAlpha'), 'warn');
   } catch (e) { toast(t('errRead'), 'err'); console.error(e); }
+}
+
+// ============ 坐标文件 ============
+const isImgFile = f => /^image\/(png|webp)$/.test(f.type);
+const isAtlasFile = f => /\.(json|plist|xml|atlas|txt)$/i.test(f.name || '');
+async function importFiles(files) {
+  files = [...files].filter(Boolean); if (!files.length) return;
+  const img = files.find(isImgFile), dsc = files.find(isAtlasFile);
+  if (!img && !dsc) { toast(t('errType'), 'warn'); return; }
+  let atlas = null;
+  if (dsc) {
+    try { atlas = parseAtlas(await dsc.text()); atlas.file = dsc.name; }
+    catch (e) { toast(t(e.code && I18N.zh[e.code] ? e.code : 'atlasErrFormat'), 'err'); return; }
+  }
+  if (img) await loadFile(img, atlas);
+  else if (src) applyAtlas(atlas, false);
+  else { pendingAtlas = atlas; toast(t('atlasNeedImage', { n: atlas.frames.length }), 'warn'); }
+}
+// 按坐标文件生成切片；成功返回 true。first=true 表示刚载入图片（重置历史）。
+function applyAtlas(a, first) {
+  const fits = r => r.x >= 0 && r.y >= 0 && r.x + r.w <= W && r.y + r.h <= H;
+  const out = []; let rotated = 0, clipped = 0, skipped = 0;
+  for (const f of a.frames) {
+    let r = { x: Math.round(f.x), y: Math.round(f.y), w: Math.round(f.w), h: Math.round(f.h) };
+    if (f.rotated) { rotated++; const sw = { x: r.x, y: r.y, w: r.h, h: r.w }; if (fits(sw) || !fits(r)) r = sw; }
+    const x0 = Math.max(0, r.x), y0 = Math.max(0, r.y), x1 = Math.min(W, r.x + r.w), y1 = Math.min(H, r.y + r.h);
+    if (x1 - x0 < 1 || y1 - y0 < 1) { skipped++; continue; }
+    if (x0 !== r.x || y0 !== r.y || x1 - x0 !== r.w || y1 - y0 !== r.h) clipped++;
+    out.push({ id: 0, x: x0, y: y0, w: x1 - x0, h: y1 - y0, name: cleanName(String(f.name).replace(/\.(png|jpe?g|webp|bmp|tga)$/i, '')) });
+  }
+  if (!out.length) { toast(t('atlasErrBounds'), 'err'); return false; }
+  out.forEach(s => { s.id = nextId++; });
+  slices = out; sel.clear(); lastIdx = -1;
+  if (first) { hist = []; histIdx = -1; }
+  commit(); renderList(); selChanged();
+  const msg = [t('atlasOk', { n: out.length, file: a.file || '' })];
+  if (rotated) msg.push(t('atlasRot', { n: rotated }));
+  if (a.size && (a.size.w !== W || a.size.h !== H)) msg.push(t('atlasSize', { fw: a.size.w, fh: a.size.h, w: W, h: H }));
+  if (clipped) msg.push(t('atlasClip', { n: clipped }));
+  if (skipped) msg.push(t('atlasSkip', { n: skipped }));
+  toast(msg.join(' '), msg.length > 1 ? 'warn' : undefined);
+  return true;
 }
 
 // ============ 检测 ============
@@ -1247,12 +1486,14 @@ $('#iPrefix').addEventListener('input', e => { e.target.dataset.touched = '1'; r
 
 // ============ 导入 ============
 $('#bOpen').onclick = () => $('#file').click();
-$('#file').onchange = e => { loadFile(e.target.files[0]); e.target.value = ''; };
+$('#file').onchange = e => { importFiles(e.target.files); e.target.value = ''; };
+$('#bAtlas').onclick = () => $('#fileAtlas').click();
+$('#fileAtlas').onchange = e => { importFiles(e.target.files); e.target.value = ''; };
 const emptyEl = $('#empty');
 window.addEventListener('dragover', e => { e.preventDefault(); emptyEl.classList.add('hot'); });
 window.addEventListener('dragleave', e => { if (!e.relatedTarget) emptyEl.classList.remove('hot'); });
-window.addEventListener('drop', e => { e.preventDefault(); emptyEl.classList.remove('hot'); loadFile(e.dataTransfer.files[0]); });
-window.addEventListener('paste', e => { const f = [...(e.clipboardData?.files || [])][0]; if (f) loadFile(f); });
+window.addEventListener('drop', e => { e.preventDefault(); emptyEl.classList.remove('hot'); importFiles(e.dataTransfer.files); });
+window.addEventListener('paste', e => { const f = [...(e.clipboardData?.files || [])][0]; if (f) importFiles([f]); });
 emptyEl.addEventListener('click', () => $('#file').click());
 
 // ============ 导出 ============
