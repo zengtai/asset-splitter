@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Asset Splitter v0.8.0 · https://github.com/zengtai/asset-splitter -->
+<!-- Asset Splitter v0.8.1 · https://github.com/zengtai/asset-splitter -->
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
@@ -144,6 +144,9 @@ aside{display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .f .d,.d{color:var(--t3);font-size:12px;margin-top:5px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .btns{display:flex;gap:8px;flex-wrap:wrap}
+.dz{display:block;width:100%;padding:16px 12px;border:1.5px dashed var(--dash);border-radius:12px;background:var(--empty-bg);color:var(--t2);text-align:center;cursor:pointer;transition:border-color .12s,background .12s,color .12s;font:inherit}
+.dz:hover,.dz:focus-visible{border-color:var(--ac-line);background:var(--empty-bg-h);color:var(--t1);outline:none}
+.dz.hot{border-color:var(--ac);background:var(--acbg);color:var(--ac)}
 .chk{display:flex;gap:8px;align-items:center;color:var(--t1);margin-bottom:14px}
 .keybox{padding:12px 12px 4px;border:1px solid var(--line);border-radius:12px;background:var(--f3);margin-bottom:20px}
 .keybox .d{margin:2px 0 10px}
@@ -216,7 +219,7 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
 <body>
 <header>
   <div class="logo">Asset <b>Splitter</b></div>
-  <span class="ver" id="ver" title="Version 0.8.0">v0.8.0</span>
+  <span class="ver" id="ver" title="Version 0.8.1">v0.8.1</span>
   <button id="bOpen" class="primary" data-i18n="open">导入图集</button>
   <input id="file" type="file" accept="image/png,image/webp,image/jpeg,.json,.plist,.xml,.atlas,.txt" multiple hidden>
   <span class="sep"></span>
@@ -303,7 +306,7 @@ header .seg button[aria-pressed=true]:hover:not(:disabled){background:var(--rais
       <div class="d" data-i18n="detectNote" style="margin-top:8px;color:var(--t3)">调整参数会重新检测并替换当前切片（包括手动编辑），拖动滑块算一步，可用 Ctrl+Z 连同参数一起恢复。</div>
       <div class="f" style="margin-top:20px"><label data-i18n="atlasTitle">坐标文件</label>
         <div class="d" data-i18n="atlasD">导入坐标文件</div></div>
-      <div class="btns"><button id="bAtlas" data-i18n="atlasBtn">导入坐标文件…</button></div>
+      <div id="bAtlas" class="dz" role="button" tabindex="0" data-i18n="atlasBtn">把坐标文件拖到这里，或点击选择</div>
       <input id="fileAtlas" type="file" accept=".json,.plist,.xml,.atlas,.txt,application/json" hidden>
     </div>
 
@@ -1018,21 +1021,21 @@ I18N.fr = {
   selectedToast: v => `${v.n} ${pl(v.n, 'découpe sélectionnée', 'découpes sélectionnées')}`, trimmed: v => `${v.n} ${pl(v.n, 'découpe resserrée', 'découpes resserrées')} (annulable)`, trimNone: 'Les découpes sélectionnées sont déjà au plus juste'
 };
 Object.assign(I18N.zh, {
-  atlasTitle: '坐标文件', atlasD: '导入 .json、.plist、.xml 或 .atlas 坐标文件，按文件里的坐标直接切图，不再自动检测。导入后会替换当前切片，可用 Ctrl+Z 撤销。也可以把图片和坐标文件一起拖进窗口。', atlasBtn: '导入坐标文件…',
+  atlasTitle: '坐标文件', atlasD: '导入 .json、.plist、.xml 或 .atlas 坐标文件，按文件里的坐标直接切图，不再自动检测。导入后会替换当前切片，可用 Ctrl+Z 撤销。也可以把图片和坐标文件一起拖进窗口。', atlasBtn: '把坐标文件拖到这里，或点击选择',
   atlasOk: '已从 {file} 导入 {n} 个切片', atlasRot: '其中 {n} 个旋转帧按图集中的原样导出，不会转回正向。', atlasSize: '文件里记录的图集尺寸（{fw}×{fh}）和当前图片（{w}×{h}）不一致。',
   atlasClip: '{n} 个超出图片范围的帧已裁到图内。', atlasSkip: '{n} 个完全在图片之外的帧已跳过。',
   atlasErrFormat: '无法识别坐标文件格式', atlasErrEmpty: '文件里没有找到任何帧', atlasErrBounds: '所有帧都在图片范围之外，请确认图片和坐标文件是否对应',
   atlasNeedImage: '已读取 {n} 个帧的坐标，请再导入对应的图集图片。', emptyAtlas: '也可以把图集和 .json / .plist / .atlas 坐标文件一起拖进来'
 });
 Object.assign(I18N['zh-TW'], {
-  atlasTitle: '座標檔', atlasD: '匯入 .json、.plist、.xml 或 .atlas 座標檔，直接依檔案內的座標切圖，不再自動偵測。匯入後會取代目前的切片，可用 Ctrl+Z 復原。也可以把圖片和座標檔一起拖曳到視窗。', atlasBtn: '匯入座標檔…',
+  atlasTitle: '座標檔', atlasD: '匯入 .json、.plist、.xml 或 .atlas 座標檔，直接依檔案內的座標切圖，不再自動偵測。匯入後會取代目前的切片，可用 Ctrl+Z 復原。也可以把圖片和座標檔一起拖曳到視窗。', atlasBtn: '把座標檔拖曳到這裡，或點擊選擇',
   atlasOk: '已從 {file} 匯入 {n} 個切片', atlasRot: '其中 {n} 個旋轉影格依圖集中的原樣匯出，不會轉回正向。', atlasSize: '檔案記錄的圖集尺寸（{fw}×{fh}）與目前圖片（{w}×{h}）不一致。',
   atlasClip: '{n} 個超出圖片範圍的影格已裁切到圖內。', atlasSkip: '{n} 個完全在圖片之外的影格已略過。',
   atlasErrFormat: '無法辨識座標檔格式', atlasErrEmpty: '檔案中找不到任何影格', atlasErrBounds: '所有影格都在圖片範圍之外，請確認圖片與座標檔是否對應',
   atlasNeedImage: '已讀取 {n} 個影格的座標，請再匯入對應的圖集圖片。', emptyAtlas: '也可以把圖集和 .json / .plist / .atlas 座標檔一起拖進來'
 });
 Object.assign(I18N.en, {
-  atlasTitle: 'Atlas data', atlasD: 'Import a .json, .plist, .xml or .atlas file to slice by its coordinates instead of auto-detecting. It replaces the current slices, and Ctrl+Z restores them. You can also drop the image and the data file together.', atlasBtn: 'Import atlas data…',
+  atlasTitle: 'Atlas data', atlasD: 'Import a .json, .plist, .xml or .atlas file to slice by its coordinates instead of auto-detecting. It replaces the current slices, and Ctrl+Z restores them. You can also drop the image and the data file together.', atlasBtn: 'Drop an atlas data file here, or click to choose',
   atlasOk: v => `Imported ${v.n} ${pl(v.n, 'slice', 'slices')} from ${v.file}`, atlasRot: v => `${v.n} rotated ${pl(v.n, 'frame is', 'frames are')} exported as stored in the atlas (not rotated back).`,
   atlasSize: 'The atlas size in the file ({fw}×{fh}) differs from the image ({w}×{h}).',
   atlasClip: v => `${v.n} ${pl(v.n, 'frame', 'frames')} extending past the image ${pl(v.n, 'was', 'were')} clipped.`, atlasSkip: v => `${v.n} ${pl(v.n, 'frame', 'frames')} completely outside the image ${pl(v.n, 'was', 'were')} skipped.`,
@@ -1040,21 +1043,21 @@ Object.assign(I18N.en, {
   atlasNeedImage: v => `Read coordinates for ${v.n} ${pl(v.n, 'frame', 'frames')}. Now open the matching atlas image.`, emptyAtlas: 'You can also drop an atlas together with its .json / .plist / .atlas data file'
 });
 Object.assign(I18N.ja, {
-  atlasTitle: '座標ファイル', atlasD: '.json、.plist、.xml、.atlas の座標ファイルを読み込み、自動検出の代わりにその座標で切り出します。現在のスライスは置き換えられ、Ctrl+Z で元に戻せます。画像と座標ファイルを一緒にドロップすることもできます。', atlasBtn: '座標ファイルを読み込む…',
+  atlasTitle: '座標ファイル', atlasD: '.json、.plist、.xml、.atlas の座標ファイルを読み込み、自動検出の代わりにその座標で切り出します。現在のスライスは置き換えられ、Ctrl+Z で元に戻せます。画像と座標ファイルを一緒にドロップすることもできます。', atlasBtn: '座標ファイルをここにドロップ、またはクリックして選択',
   atlasOk: '{file} から {n} 個のスライスを読み込みました', atlasRot: '回転フレーム {n} 個は、アトラス内の向きのまま書き出されます（元の向きには戻しません）。', atlasSize: 'ファイル内のアトラスサイズ（{fw}×{fh}）が現在の画像（{w}×{h}）と一致しません。',
   atlasClip: '画像からはみ出す {n} 個のフレームを切り詰めました。', atlasSkip: '画像の完全に外側にある {n} 個のフレームをスキップしました。',
   atlasErrFormat: '座標ファイルの形式を認識できません', atlasErrEmpty: 'ファイルにフレームが見つかりません', atlasErrBounds: 'すべてのフレームが画像の範囲外です。画像と座標ファイルが対応しているか確認してください',
   atlasNeedImage: '{n} 個のフレームの座標を読み込みました。続けて対応するアトラス画像を開いてください。', emptyAtlas: 'アトラスと .json / .plist / .atlas の座標ファイルを一緒にドロップすることもできます'
 });
 Object.assign(I18N.ko, {
-  atlasTitle: '좌표 파일', atlasD: '.json, .plist, .xml, .atlas 좌표 파일을 가져와 자동 감지 대신 파일의 좌표대로 자릅니다. 현재 슬라이스를 대체하며 Ctrl+Z로 복원할 수 있습니다. 이미지와 좌표 파일을 함께 끌어다 놓아도 됩니다.', atlasBtn: '좌표 파일 가져오기…',
+  atlasTitle: '좌표 파일', atlasD: '.json, .plist, .xml, .atlas 좌표 파일을 가져와 자동 감지 대신 파일의 좌표대로 자릅니다. 현재 슬라이스를 대체하며 Ctrl+Z로 복원할 수 있습니다. 이미지와 좌표 파일을 함께 끌어다 놓아도 됩니다.', atlasBtn: '좌표 파일을 여기에 끌어다 놓거나 클릭하여 선택',
   atlasOk: '{file}에서 슬라이스 {n}개를 가져왔습니다', atlasRot: '회전된 프레임 {n}개는 아틀라스에 저장된 방향 그대로 내보냅니다(원래 방향으로 돌리지 않음).', atlasSize: '파일에 기록된 아틀라스 크기({fw}×{fh})가 현재 이미지({w}×{h})와 다릅니다.',
   atlasClip: '이미지 밖으로 나간 프레임 {n}개를 안쪽으로 잘라냈습니다.', atlasSkip: '이미지 밖에 완전히 벗어난 프레임 {n}개를 건너뛰었습니다.',
   atlasErrFormat: '좌표 파일 형식을 알 수 없습니다', atlasErrEmpty: '파일에서 프레임을 찾지 못했습니다', atlasErrBounds: '모든 프레임이 이미지 범위 밖입니다. 이미지와 좌표 파일이 맞는지 확인하세요',
   atlasNeedImage: '프레임 {n}개의 좌표를 읽었습니다. 이어서 해당 아틀라스 이미지를 여세요.', emptyAtlas: '아틀라스와 .json / .plist / .atlas 좌표 파일을 함께 끌어다 놓을 수도 있습니다'
 });
 Object.assign(I18N.es, {
-  atlasTitle: 'Datos del atlas', atlasD: 'Importa un archivo .json, .plist, .xml o .atlas para recortar según sus coordenadas en lugar de detectar automáticamente. Reemplaza los recortes actuales y Ctrl+Z los restaura. También puedes soltar la imagen y el archivo de datos juntos.', atlasBtn: 'Importar datos del atlas…',
+  atlasTitle: 'Datos del atlas', atlasD: 'Importa un archivo .json, .plist, .xml o .atlas para recortar según sus coordenadas en lugar de detectar automáticamente. Reemplaza los recortes actuales y Ctrl+Z los restaura. También puedes soltar la imagen y el archivo de datos juntos.', atlasBtn: 'Suelta aquí un archivo de datos del atlas o haz clic para elegir',
   atlasOk: v => `${pl(v.n, 'Se importó', 'Se importaron')} ${v.n} ${pl(v.n, 'recorte', 'recortes')} de ${v.file}`, atlasRot: v => `${v.n} ${pl(v.n, 'fotograma girado se exporta', 'fotogramas girados se exportan')} tal como ${pl(v.n, 'está guardado', 'están guardados')} en el atlas (sin volver a girarse).`,
   atlasSize: 'El tamaño del atlas indicado en el archivo ({fw}×{fh}) no coincide con la imagen ({w}×{h}).',
   atlasClip: v => `${v.n} ${pl(v.n, 'fotograma que sobresalía', 'fotogramas que sobresalían')} de la imagen se ${pl(v.n, 'recortó', 'recortaron')}.`, atlasSkip: v => `${v.n} ${pl(v.n, 'fotograma totalmente fuera', 'fotogramas totalmente fuera')} de la imagen se ${pl(v.n, 'omitió', 'omitieron')}.`,
@@ -1062,7 +1065,7 @@ Object.assign(I18N.es, {
   atlasNeedImage: v => `Se leyeron las coordenadas de ${v.n} ${pl(v.n, 'fotograma', 'fotogramas')}. Abre ahora la imagen del atlas correspondiente.`, emptyAtlas: 'También puedes soltar un atlas junto con su archivo de datos .json / .plist / .atlas'
 });
 Object.assign(I18N.de, {
-  atlasTitle: 'Atlas-Daten', atlasD: 'Importiere eine .json-, .plist-, .xml- oder .atlas-Datei, um nach ihren Koordinaten statt per automatischer Erkennung zu schneiden. Sie ersetzt die aktuellen Ausschnitte, mit Strg+Z stellst du sie wieder her. Du kannst auch Bild und Datendatei zusammen hineinziehen.', atlasBtn: 'Atlas-Daten importieren…',
+  atlasTitle: 'Atlas-Daten', atlasD: 'Importiere eine .json-, .plist-, .xml- oder .atlas-Datei, um nach ihren Koordinaten statt per automatischer Erkennung zu schneiden. Sie ersetzt die aktuellen Ausschnitte, mit Strg+Z stellst du sie wieder her. Du kannst auch Bild und Datendatei zusammen hineinziehen.', atlasBtn: 'Atlas-Datei hierher ziehen oder zum Auswählen klicken',
   atlasOk: v => `${v.n} ${pl(v.n, 'Ausschnitt', 'Ausschnitte')} aus ${v.file} importiert`, atlasRot: v => `${v.n} ${pl(v.n, 'gedrehtes Frame wird', 'gedrehte Frames werden')} so exportiert, wie im Atlas gespeichert (nicht zurückgedreht).`,
   atlasSize: 'Die Atlasgröße in der Datei ({fw}×{fh}) weicht vom Bild ({w}×{h}) ab.',
   atlasClip: v => `${v.n} ${pl(v.n, 'Frame', 'Frames')} über den Bildrand hinaus ${pl(v.n, 'wurde', 'wurden')} beschnitten.`, atlasSkip: v => `${v.n} ${pl(v.n, 'Frame', 'Frames')} komplett außerhalb des Bildes ${pl(v.n, 'wurde', 'wurden')} übersprungen.`,
@@ -1070,7 +1073,7 @@ Object.assign(I18N.de, {
   atlasNeedImage: v => `Koordinaten für ${v.n} ${pl(v.n, 'Frame', 'Frames')} gelesen. Öffne jetzt das passende Atlas-Bild.`, emptyAtlas: 'Du kannst auch einen Atlas zusammen mit seiner .json- / .plist- / .atlas-Datei hineinziehen'
 });
 Object.assign(I18N.fr, {
-  atlasTitle: 'Données d’atlas', atlasD: `Importez un fichier .json, .plist, .xml ou .atlas pour découper selon ses coordonnées au lieu de la détection automatique. Il remplace les découpes actuelles, et Ctrl+Z les restaure. Vous pouvez aussi déposer l’image et le fichier de données ensemble.`, atlasBtn: 'Importer les données d’atlas…',
+  atlasTitle: 'Données d’atlas', atlasD: `Importez un fichier .json, .plist, .xml ou .atlas pour découper selon ses coordonnées au lieu de la détection automatique. Il remplace les découpes actuelles, et Ctrl+Z les restaure. Vous pouvez aussi déposer l’image et le fichier de données ensemble.`, atlasBtn: 'Déposez un fichier d’atlas ici ou cliquez pour choisir',
   atlasOk: v => `${v.n} ${pl(v.n, 'découpe importée', 'découpes importées')} depuis ${v.file}`, atlasRot: v => `${v.n} ${pl(v.n, 'frame pivoté est exporté tel', 'frames pivotés sont exportés tels')} que stocké${v.n === 1 ? '' : 's'} dans l’atlas (sans être remis à l’endroit).`,
   atlasSize: `La taille d’atlas indiquée dans le fichier ({fw}×{fh}) diffère de l’image ({w}×{h}).`,
   atlasClip: v => `${v.n} ${pl(v.n, 'frame dépassant', 'frames dépassant')} de l’image ${pl(v.n, 'a été rogné', 'ont été rognés')}.`, atlasSkip: v => `${v.n} ${pl(v.n, 'frame entièrement hors', 'frames entièrement hors')} de l’image ${pl(v.n, 'a été ignoré', 'ont été ignorés')}.`,
@@ -1632,7 +1635,19 @@ $('#iPrefix').addEventListener('input', e => { e.target.dataset.touched = '1'; r
 // ============ 导入 ============
 $('#bOpen').onclick = () => $('#file').click();
 $('#file').onchange = e => { importFiles(e.target.files); e.target.value = ''; };
-$('#bAtlas').onclick = () => $('#fileAtlas').click();
+{
+  const dz = $('#bAtlas'); let depth = 0;
+  const hasFiles = e => [...(e.dataTransfer?.types || [])].includes('Files');
+  dz.onclick = () => $('#fileAtlas').click();
+  dz.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('#fileAtlas').click(); } };
+  dz.addEventListener('dragenter', e => { if (hasFiles(e)) { depth++; dz.classList.add('hot'); } });
+  dz.addEventListener('dragover', e => { if (hasFiles(e)) { e.preventDefault(); e.stopPropagation(); e.dataTransfer.dropEffect = 'copy'; } });
+  dz.addEventListener('dragleave', () => { if (--depth <= 0) { depth = 0; dz.classList.remove('hot'); } });
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); e.stopPropagation(); depth = 0; dz.classList.remove('hot');
+    importFiles(e.dataTransfer.files);
+  });
+}
 $('#kOn').onchange = e => { K.on = e.target.checked; burstOpen = false; if (!K.on) setPicking(false); syncKey(); scheduleDetect(true, true); };
 $('#kColor').addEventListener('input', e => { const v = e.target.value; K.color = [1, 3, 5].map(i => parseInt(v.slice(i, i + 2), 16)); K.on = true; syncKey(); scheduleDetect(true); });
 $('#kTol').addEventListener('input', e => { K.tol = +e.target.value; syncKey(); scheduleDetect(true); });
